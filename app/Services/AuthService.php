@@ -17,7 +17,7 @@ class AuthService
         $attempt = Auth::attempt([
             'email' => $credentials['email'],
             'password' => $credentials['password'],
-        ], $remember);
+        ]);
 
         if ($attempt) {
             return [

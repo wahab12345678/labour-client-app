@@ -88,6 +88,14 @@
                         <!-- Login-->
                         <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+                                @if(session('success'))
+                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                @endif
+                                @if ($errors->has('invalid'))
+                                    <div class="alert alert-danger mb-2">
+                                        <p>{{ $errors->first('invalid') }}</p>
+                                    </div>
+                                @endif
                                 <h2 class="card-title fw-bold mb-1">Welcome to {{env('APP_NAME')}}! 👋</h2>
                                 <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
                                 <form class="auth-login-form mt-2" action="{{ route('login.post') }}" method="POST">
