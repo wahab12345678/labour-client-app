@@ -26,8 +26,16 @@ class LoginController extends Controller
     {
         $result = $this->authService->authenticate($request->validated());
         if ($result['success']) {
-            return redirect()->intended('dashboard')->with('success', $result['message']);
+            return redirect()->route('admin.dashboard')->with('success', $result['message']);
         }
-        return back()->withErrors(['email' => $result['message']])->onlyInput('email');
+        // Add the email to session and return errors
+        return back()->withErrors(['invalid' => $result['message']]); // Retains email in input
+    }
+
+    // Handle logout
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/admin')->with('success', 'You have been logged out!');
     }
 }
