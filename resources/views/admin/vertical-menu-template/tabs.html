@@ -1,0 +1,574 @@
+@extends("admin::layouts.admin")
+{{-- @section('title', 'Category') --}}
+@section('css')
+    <style>
+        .parameterHeading
+        {
+            text-transform: capitalize;
+            font-weight: 500;
+            font-size: 18px;
+            padding-bottom: 10px;
+        }
+    </style>
+@endsection
+@section('content')
+
+<!-- BEGIN: Content-->
+<div class="app-content content ">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+       <div class="content-header row">
+          <div class="content-header-left col-md-9 col-12 mb-2">
+             <div class="row breadcrumbs-top">
+                <div class="col-12">
+                   <h2 class="content-header-title float-start mb-0">Member Evaluation</h2>
+                   <div class="breadcrumb-wrapper">
+                      <ol class="breadcrumb">
+                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                         </li>
+                         <li class="breadcrumb-item"><a href="{{ route('admin.member.index') }}">Members</a>
+                         </li>
+                         <li class="breadcrumb-item active">Evaluate
+                         </li>
+                      </ol>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="content-body">
+          <div class="row">
+             <div class="col-md-6 col-lg-5">
+                   <img src="{{ asset($user->avatar) }}" alt="" height="400px">
+             </div>
+             <div class="col-md-6 col-lg-7">
+                <!-- Accordion with margin start -->
+                <!-- Basic tabs start -->
+                <section id="basic-tabs-components">
+                   <div class="row match-height">
+                      <!-- Basic Tabs starts -->
+                      <div class="col-xl-12 col-lg-12">
+                         <div class="card">
+                            <div class="card-body">
+                               <ul class="nav nav-tabs" role="tablist">
+
+                                  <li class="nav-item">
+                                     <a class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                                        href="#evaluation" aria-controls="home" role="tab"
+                                        aria-selected="true">Evaluation</a>
+                                  </li>
+                                  {{-- <li class="nav-item">
+                                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                                        href="#previousEvaluation" aria-controls="profile" role="tab"
+                                        aria-selected="false">Previous Evaluations</a>
+                                  </li> --}}
+                                  <li class="nav-item">
+                                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                                        href="#competitionEvaluation" aria-controls="profile" role="tab"
+                                        aria-selected="false">Competition Evaluations</a>
+                                  </li>
+                                  <li class="nav-item">
+                                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                                        href="#testEvaluation" aria-controls="profile" role="tab"
+                                        aria-selected="false">Test Assessment Evaluations</a>
+                                  </li>
+                                  <li class="nav-item">
+                                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                                        href="#trainingEvaluation" aria-controls="profile" role="tab"
+                                        aria-selected="false">Training Evaluations</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" id="profile-table" data-bs-toggle="tab"
+                                       href="#profile" aria-controls="profile" role="tab"
+                                       aria-selected="true">Profile</a>
+                                 </li>
+                               </ul>
+                            </div>
+                         </div>
+                         <div class="tab-content">
+
+                            <div class="tab-pane active" id="evaluation" aria-labelledby="home-tab"
+                               role="tabpanel">
+                               <form action="" id="eveluationFrom">
+                                  @isset($user->teamDetail->category)
+                                  @forelse ($user->teamDetail->category as $category)
+                                  @foreach ($category->paramter as $key => $parameter)
+                                  <input type="hidden" name="category_parameter_id[]"
+                                     value="{{ $parameter->id }}" readonly>
+                                  <input type="hidden" name="member_id"
+                                     value="{{ $user->id }}" readonly>
+                                  <div class="accordion accordion-margin" id="1">
+                                     <div class="accordion-item">
+                                        <h2 class="accordion-header"
+                                           id="headingMarginOne{{ $parameter->id }}">
+                                           <button class="accordion-button collapsed"
+                                              type="button" data-bs-toggle="collapse"
+                                              data-bs-target="#accordionMarginOne{{ $parameter->id }}"
+                                              aria-expanded="false"
+                                              aria-controls="accordionMarginOne{{ $parameter->id }}">
+                                           {{ Str::ucfirst($parameter->name) }}
+                                           </button>
+                                        </h2>
+                                        <div id="accordionMarginOne{{ $parameter->id }}"
+                                           class="accordion-collapse collapse @if ($key == 0) show @endif"
+                                           aria-labelledby="headingMarginOne{{ $parameter->id }}"
+                                           data-bs-parent="#accordionMargin{{ $parameter->id }}">
+                                           <div class="accordion-body">
+                                              <div class="row">
+                                                 <div class="col-12 col-md-3">
+                                                    <div class="mb-1">
+                                                       <div class="mb-1">
+                                                          <label
+                                                             class="form-label"
+                                                             for="">Trial 1</label>
+                                                          <input type="number"
+                                                             required id=""
+                                                             class="form-control"
+                                                             name="trial1[]"
+                                                             placeholder="{{ Str::ucfirst($parameter->name) }}  traial 1 ." />
+                                                       </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="col-12 col-md-3">
+                                                    <div class="mb-1">
+                                                       <div class="mb-1">
+                                                          <label
+                                                             class="form-label"
+                                                             for="">Trial 2</label>
+                                                          <input type="number"
+                                                             required id=""
+                                                             name="trial2[]"
+                                                             class="form-control"
+                                                             placeholder="{{ Str::ucfirst($parameter->name) }}  trail 2 ." />
+                                                       </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="col-12 col-md-3">
+                                                    <div class="mb-1">
+                                                       <div class="mb-1">
+                                                          <label
+                                                             class="form-label"
+                                                             for="">Trial 3</label>
+                                                          <input type="number"
+                                                             required id=""
+                                                             name="trial3[]"
+                                                             class="form-control"
+                                                             placeholder="{{ Str::ucfirst($parameter->name) }}  trail 3 ." />
+                                                       </div>
+                                                    </div>
+                                                 </div>
+                                                 <div class="col-12 col-md-3">
+                                                    <div class="mb-1">
+                                                       <div class="mb-1">
+                                                          <label class="form-label" for="basicSelect">Select type</label>
+                                                          <select class="form-select" id="type" name="type[]" required>
+                                                             <option selected disabled>Select type</option>
+                                                             <option value="competition">Competition</option>
+                                                             <option value="test">Test Asessment</option>
+                                                             <option value="training">Training</option>
+                                                          </select>
+                                                       </div>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  @endforeach
+                                  @empty
+                                  @endforelse
+                                  @endisset
+                                  <div class="col-12 mt-3">
+                                     <button type="submit" class="btn btn-primary me-1 submitBtn"
+                                        style="float: right">Submit</button>
+                                  </div>
+                               </form>
+                            </div>
+
+                            <div class="tab-pane" id="previousEvaluation"
+                               aria-labelledby="profile-tab" role="tabpanel">
+                               @foreach (evaluationSummarys($user->id) as $key => $evaluationSummary)
+                               @foreach ($evaluationSummary->evaluation as $evaluation)
+                               {{-- @foreach ($evaluationSummary->evaluation->where('previous', '!=', 0) as $evaluation) --}}
+                               <div class="card">
+                                  <div class="card-body">
+                                     <div class="row">
+                                        <h4 class="parameterHeading">{{ $evaluation->parameter->name }}</h4>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailOneAverage($evaluation->trial1, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 1</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-primary p-50">
+                                                    <div class="avatar-content">
+                                                       <i class='fas fa-tachometer-alt' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailTwoAverage($evaluation->trial2, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 2</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-success p-50">
+                                                    <div class="avatar-content">
+                                                       <i data-feather='slack' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailThreeAverage($evaluation->trial3, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 3</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-warning p-50">
+                                                    <div class="avatar-content">
+                                                       <i data-feather='clock' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                               @endforeach
+                               @endforeach
+                            </div>
+
+                            <div class="tab-pane" id="competitionEvaluation"
+                               aria-labelledby="profile-tab" role="tabpanel">
+                               @foreach (evaluationSummarys($user->id) as $key => $evaluationSummary)
+                               @foreach ($evaluationSummary->evaluation->where('type','competition') as $evaluation)
+                               {{-- @foreach ($evaluationSummary->evaluation->where('previous', '!=', 0) as $evaluation) --}}
+                               <div class="card">
+                                  <div class="card-body">
+                                     <div class="row">
+                                        <h4 class="parameterHeading">{{ $evaluation->parameter->name }}</h4>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailOneAverage($evaluation->trial1, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 1</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-primary p-50">
+                                                    <div class="avatar-content">
+                                                       <i class='fas fa-tachometer-alt' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailTwoAverage($evaluation->trial2, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 2</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-success p-50">
+                                                    <div class="avatar-content">
+                                                       <i data-feather='slack' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailThreeAverage($evaluation->trial3, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 3</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-warning p-50">
+                                                    <div class="avatar-content">
+                                                       <i data-feather='clock' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                               @endforeach
+                               @endforeach
+                            </div>
+
+                            <div class="tab-pane" id="testEvaluation"
+                               aria-labelledby="profile-tab" role="tabpanel">
+                               @foreach (evaluationSummarys($user->id) as $key => $evaluationSummary)
+                               @foreach ($evaluationSummary->evaluation->where('type','test') as $evaluation)
+                               {{-- @foreach ($evaluationSummary->evaluation->where('previous', '!=', 0) as $evaluation) --}}
+                               <div class="card">
+                                  <div class="card-body">
+                                     <div class="row">
+                                        <h4 class="parameterHeading">{{ $evaluation->parameter->name }}</h4>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailOneAverage($evaluation->trial1, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 1</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-primary p-50">
+                                                    <div class="avatar-content">
+                                                       <i class='fas fa-tachometer-alt' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailTwoAverage($evaluation->trial2, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 2</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-success p-50">
+                                                    <div class="avatar-content">
+                                                       <i data-feather='slack' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailThreeAverage($evaluation->trial3, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 3</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-warning p-50">
+                                                    <div class="avatar-content">
+                                                       <i data-feather='clock' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                               @endforeach
+                               @endforeach
+                            </div>
+
+                            <div class="tab-pane" id="trainingEvaluation"
+                               aria-labelledby="profile-tab" role="tabpanel">
+                               @foreach (evaluationSummarys($user->id) as $key => $evaluationSummary)
+                               @foreach ($evaluationSummary->evaluation->where('type','training') as $evaluation)
+                               {{-- @foreach ($evaluationSummary->evaluation->where('previous', '!=', 0) as $evaluation) --}}
+                               <div class="card">
+                                  <div class="card-body">
+                                     <div class="row">
+                                        <h4 class="parameterHeading">{{ $evaluation->parameter->name }}</h4>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailOneAverage($evaluation->trial1, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 1</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-primary p-50">
+                                                    <div class="avatar-content">
+                                                       <i class='fas fa-tachometer-alt' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailTwoAverage($evaluation->trial2, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 2</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-success p-50">
+                                                    <div class="avatar-content">
+                                                       <i data-feather='slack' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                       {{ trailThreeAverage($evaluation->trial3, $evaluation->member_id, $evaluation->category_parameter_id) }}%
+                                                    </h2>
+                                                    <p class="card-text">Trail 3</p>
+                                                 </div>
+                                                 <div class="avatar bg-light-warning p-50">
+                                                    <div class="avatar-content">
+                                                       <i data-feather='clock' style="color: {{parameterColor($evaluation->parameter)}}"></i>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                               @endforeach
+                               @endforeach
+                            </div>
+
+                            <div class="tab-pane" id="profile"
+                               aria-labelledby="profile-tab" role="tabpanel">
+
+                               <div class="card">
+                                  <div class="card-body">
+                                     <div class="row">
+                                        <div class="col-lg-12 col-sm-6 col-12">
+                                           <div class="card">
+                                              <div class="card-header align-items-start pb-0">
+                                                 <div>
+                                                    <h2 class="fw-bolder">
+                                                        Member Profile
+                                                    </h2>
+                                                    <p class="card-text"><b>Name</b> : {{Str::ucfirst($user->name)}}</p>
+                                                    <p class="card-text"><b>Date of Birth</b> : {{$user->teamDetail->dob}}</p>
+                                                    <p class="card-text"><b>Team Owner</b> : {{Str::ucfirst($user->teamDetail->member->name)}}</p>
+                                                    <p class="card-text"><b>Support</b> : {{Str::ucfirst($user->teamDetail->category[0]->name ?? '')}}</p>
+                                                 </div>
+
+                                              </div>
+                                           </div>
+                                        </div>
+
+                                     </div>
+                                  </div>
+                               </div>
+
+                            </div>
+                         </div>
+                      </div>
+                      <!-- Basic Tabs ends -->
+                   </div>
+                </section>
+                <!-- Basic Tabs end -->
+                <!-- Accordion with margin end -->
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+<!-- END: Content-->
+
+
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $("#eveluationFrom").validate({
+                rules: {
+                    'trial1[]': {
+                        required: true,
+                        minlength: 1
+                    },
+                    'trial2[]': {
+                        required: true,
+                        minlength: 1
+                    },
+                    'trial3[]': {
+                        required: true,
+                        minlength: 1
+                    },
+                    'type[]': {
+                        required: true,
+                        minlength: 1
+                    },
+                },
+                submitHandler: function(form) {
+                    $(".submitBtn").attr('disabled','disabled');
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        url: '{{ route('admin.evaluation.store') }}',
+                        type: 'POST',
+                        data: new FormData(form),
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(response) {
+                            toastr.success('Evaluation is done.');
+                            setTimeout(function() {
+                            $(".submitBtn").removeAttr('disabled');
+                                window.location.href =
+                                    '{{ route('admin.member.index') }}';
+                            }, 1000);
+                        },
+                        error: function(jqXHR) {
+                            var msg = '';
+
+                            if (jqXHR.status == 500) {
+                                msg = 'Internal Server Error [500]';
+                            } else if (jqXHR.status == 422) {
+                                $.each(jqXHR.responseJSON.errors, function(key, item) {
+                                    if (item) {
+                                        msg += item + '<br>';
+                                    }
+                                });
+                            }
+                    $(".submitBtn").removeAttr('disabled');
+
+
+                            toastr.error(msg);
+
+                        }
+                    });
+
+                }
+            });
+
+        });
+    </script>
+@endsection
