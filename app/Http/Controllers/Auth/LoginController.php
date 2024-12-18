@@ -29,7 +29,7 @@ class LoginController extends Controller
             return redirect()->route('admin.dashboard')->with('success', $result['message']);
         }
         // Add the email to session and return errors
-        return back()->withErrors(['invalid' => $result['message']]); // Retains email in input
+        return back()->with(['error' => $result['message']]); // Retains email in input
     }
 
     // Handle logout

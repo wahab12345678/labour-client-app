@@ -91,9 +91,9 @@
                                 @if(session('success'))
                                     <div class="alert alert-success">{{ session('success') }}</div>
                                 @endif
-                                @if ($errors->has('invalid'))
+                                @if ($errors->has('error'))
                                     <div class="alert alert-danger mb-2">
-                                        <p>{{ $errors->first('invalid') }}</p>
+                                        <p>{{ $errors->first('error') }}</p>
                                     </div>
                                 @endif
                                 <h2 class="card-title fw-bold mb-1">Welcome to {{env('APP_NAME')}}! 👋</h2>
