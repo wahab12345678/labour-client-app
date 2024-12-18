@@ -39,7 +39,7 @@
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
-
+    @yield('header')
 </head>
 <!-- END: Head-->
 <!-- BEGIN: Body-->

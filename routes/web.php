@@ -11,9 +11,13 @@ Route::middleware('guest')->group(function () {
 });
 // Backend Routes Start
     // Auth Admin Role Middleware Routes
-    Route::prefix('dashboard')->group(function () {
-        Route::middleware(['role:admin'])->group(function () {
+    Route::middleware(['role:admin'])->group(function () {
+        Route::prefix('dashboard')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+        });
+        Route::prefix('category')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.category');
+            Route::get('/list', [\App\Http\Controllers\Admin\CategoryController::class, 'list'])->name('admin.category.list');
         });
     });
 // Backend Routes End
