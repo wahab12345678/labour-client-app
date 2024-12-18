@@ -27,6 +27,8 @@
 <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
 <!-- END: Page JS-->
 
+@yield('footer')
+
 <script>
     $(window).on('load', function() {
         if (feather) {

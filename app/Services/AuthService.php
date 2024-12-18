@@ -13,19 +13,27 @@ class AuthService
      */
     public function authenticate(array $credentials)
     {
-        $remember = $credentials['remember-me'] ?? false;
+        // Attempt to log in the user
         $attempt = Auth::attempt([
             'email' => $credentials['email'],
             'password' => $credentials['password'],
         ]);
-
         if ($attempt) {
+            $user = Auth::user(); // Get the authenticated user
+            // Check if the user has the 'admin' role
+            if ($user->hasRole('admin')) {
+                return [
+                    'success' => true,
+                    'message' => 'Login successful.',
+                ];
+            }
+            // Log out the user if they don't have the required role
+            Auth::logout();
             return [
-                'success' => true,
-                'message' => 'Login successful.',
+                'success' => false,
+                'message' => 'Invalid role. Only admin can log in.',
             ];
         }
-
         return [
             'success' => false,
             'message' => 'Invalid email or password.',
