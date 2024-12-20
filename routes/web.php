@@ -18,6 +18,9 @@ Route::middleware('guest')->group(function () {
         Route::prefix('category')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.category');
             Route::get('/list', [\App\Http\Controllers\Admin\CategoryController::class, 'list'])->name('admin.category.list');
+            Route::put('/categories',  [\App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
+            Route::delete('/categories/{id}', [\App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
+
         });
     });
 // Backend Routes End
