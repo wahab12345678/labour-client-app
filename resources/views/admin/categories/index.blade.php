@@ -1,5 +1,8 @@
 @extends('admin.includes.main')
 @section('header')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+
 <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css">
@@ -84,6 +87,48 @@
                         </form>
                     </div>
                 </div>
+
+              <!-- Modal -->
+              <div class="modal modal-slide-in fade" id="modals-slide-in-edit">
+                <div class="modal-dialog sidebar-sm">
+                    <form class="edit-record modal-content pt-0" method="POST" action="{{ route('categories.update') }}">
+                        @csrf
+                        @method('PUT') <!-- This simulates a PUT request -->
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                        <div class="modal-header mb-1">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                        </div>
+                        <div class="modal-body flex-grow-1">
+                            <div class="mb-1">
+                                <label class="form-label" for="edit-category-name">Name</label>
+                                <input type="text" class="form-control dt-full-name" id="edit-category-name" name="name" placeholder="Enter Name of Category" aria-label="Category Name" />
+                            </div>
+                            <div class="mb-1">
+                                <label class="form-label" for="edit-category-description">Description</label>
+                                <textarea class="form-control" id="edit-category-description" name="description" rows="3" placeholder="Enter Description"></textarea>
+                            </div>
+                            <div class="mb-1">
+                                <div class="form-check form-switch form-check-success">
+                                    <label class="form-check-label mb-50" for="edit-customSwitch">Active</label>
+                                    <input type="checkbox" class="form-check-input" id="edit-customSwitch" name="status"  />
+                                    <label class="form-check-label" for="edit-customSwitch">
+                                        <span class="switch-icon-left"><i data-feather="check"></i></span>
+                                        <span class="switch-icon-right"><i data-feather="x"></i></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="hidden" class="form-control dt-full-name" id="edit-category-id" name="category_id" placeholder="Enter Name of Category" aria-label="Category Name" />
+                            <button type="submit" class="btn btn-primary data-submit me-1" id="update-category">Save Changes</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+
+
+                
             </section>
             <!--/ Basic table -->
 

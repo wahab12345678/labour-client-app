@@ -11,7 +11,7 @@ $(function () {
 
     // DataTable with buttons
     // --------------------------------------------------------------------
-
+ 
     if (dt_basic_table.length) {
       var dt_basic = dt_basic_table.DataTable({
         ajax: assetPath + '/list',
@@ -50,9 +50,26 @@ $(function () {
                 }
             },
             {
-                targets: 4, // Status
+                // targets: 4, // Status
+                // render: function (data, type, full, meta) {
+                //     return full.status == 1 ? 'Active' : 'Inactive'; // Render status
+                // }
+                targets: 4, // Action column
                 render: function (data, type, full, meta) {
-                    return full.status == 1 ? 'Active' : 'Inactive'; // Render status
+                    return `
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton${full.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${full.id}">
+                                <li><a class="dropdown-item modal-slide-in-edit" href="javascript:void(0);" data-id="${full.id}" data-name="${full.name}" data-description="${full.description}" data-status="${full.status}">Edit</a></li>
+                                <li><a class="dropdown-item delete-category" href="javascript:void(0);" data-id="${full.id}">Delete</a></li>
+                                <li><a class="dropdown-item toggle-status" href="javascript:void(0);" data-id="${full.id}" data-status="${full.status}">
+                                    ${full.status == 1 ? 'Deactivate' : 'Activate'}
+                                </a></li>
+                            </ul>
+                        </div>
+                    `;
                 }
             }
         ],
@@ -153,3 +170,58 @@ $(function () {
       dt_basic.row($(this).parents('tr')).remove().draw();
     });
   });
+  // Edit Category
+  $(document).on('click', '.modal-slide-in-edit', function () {
+    // Get data from the clicked edit button
+    const id = $(this).data('id');
+    const name = $(this).data('name');
+    const description = $(this).data('description');
+    const status = $(this).data('status');
+    // Populate the modal form with the category data
+    $('#edit-category-name').val(name);
+    $('#edit-category-description').val(description);
+
+    // Set the status checkbox based on the category's status
+    $('#edit-customSwitch').prop('checked', status === 1);
+    $('#edit-customSwitch').val(status);
+
+    // Set the form action to update the category
+    $('#edit-category-id').val(id); 
+    
+    // Show the modal
+    $('#modals-slide-in-edit').modal('show');
+});
+
+// Event listener for delete action
+// Event listener for delete action
+// Event listener for delete action
+$(document).on('click', '.delete-category', function () {
+  const categoryId = $(this).data('id');  // Get category ID from the button data attribute
+  
+  // Show confirmation prompt before deletion
+  if (confirm('Are you sure you want to delete this category?')) {
+
+    alert("TES");
+      // Send the AJAX request to delete the category
+      $.ajax({
+          url: `/category/categories/${categoryId}`,  // Correct URL with category prefix
+          type: 'DELETE',  // HTTP method
+          data: {
+              _token: $('meta[name="csrf-token"]').attr('content')  // Include CSRF token
+          },
+          success: function (response) {
+              // On success, reload or update the table data
+              alert('Category deleted successfully');
+              location.reload();  // Reload the page to reflect changes (you can also update the table dynamically)
+          },
+          error: function (error) {
+              // Handle errors
+              console.error('Error deleting category:', error);
+              alert('There was an error deleting the category.');
+          }
+      });
+  }
+});
+
+
+
