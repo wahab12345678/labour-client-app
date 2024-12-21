@@ -145,22 +145,37 @@ $(function () {
     // ? Remove/Update this code as per your requirements ?
     var count = 101;
     $('.data-submit').on('click', function () {
-      var $new_name = $('.add-new-record .dt-full-name').val(),
-        $new_post = $('.add-new-record .dt-post').val(),
-        $new_email = $('.add-new-record .dt-email').val(),
-        $new_date = $('.add-new-record .dt-date').val(),
-        $new_salary = $('.add-new-record .dt-salary').val();
+      
+      var url         = $(this).data('url'); // Get the URL from the data-url attribute
+      alert(url);
+      var $new_status = $('#edit-customSwitch').is(':checked') ? '1' : '0';
 
+      // var $new_status   = $('#edit-customSwitch').is(':checked') ? 'Active' : 'Inactive';
+
+      var   $new_name   = $('.add-new-record .dt-full-name').val();
+      var   $new_des    = $('.add-new-record .dt-description').val(); // Ensure this targets the textarea
+    
       if ($new_name != '') {
-        dt_basic.row
-          .add({
-            id: count,
-            name: $new_name,
-            description: $new_post,
-            status: $new_email,
-          })
-          .draw();
-        count++;
+        
+          $.ajax({
+            url:     url  , 
+            method: 'POST',
+            data: {
+                name        : $new_name,
+                description : $new_des,
+                status      : $new_status,
+                _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+
+            },
+            success: function (response) {
+                dt_basic.row.add(response).draw(); // Add to DataTable
+                $('.modal').modal('hide'); // Hide the modal
+            },
+            error: function (error) {
+                console.error('Error adding data:', error);
+            }
+        });
+
         $('.modal').modal('hide');
       }
     });

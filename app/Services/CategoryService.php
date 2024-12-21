@@ -43,9 +43,9 @@ class CategoryService
     public function create(Request $request)
     {
         Category::create([
-            'name' => $request->name,
+            'name'        => $request->name,
             'description' => $request->description,
-            'status' => $request->status ==  1 ? CategoryStatus::Active->value : CategoryStatus::Inactive->value,
+            'status'      => $request->status ==  1 ? CategoryStatus::Active->value : CategoryStatus::Inactive->value,
         ]);
         return response()->json([
             'success' => true,
