@@ -18,9 +18,17 @@ Route::middleware('guest')->group(function () {
         Route::prefix('category')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.category');
             Route::get('/list', [\App\Http\Controllers\Admin\CategoryController::class, 'list'])->name('admin.category.list');
+            Route::get('/create', [\App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('admin.category.create');
             Route::put('/categories',  [\App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
             Route::delete('/categories/{id}', [\App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
-
+        });
+        Route::prefix('labour')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\LabourController::class, 'index'])->name('admin.labour');
+            Route::get('/list', [\App\Http\Controllers\Admin\LabourController::class, 'list'])->name('admin.labour.list');
+            Route::post('/store', [\App\Http\Controllers\Admin\LabourController::class, 'store'])->name('admin.labour.store');
+            Route::put('/update',  [\App\Http\Controllers\Admin\LabourController::class, 'update'])->name('admin.labour.update');
+            Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\LabourController::class, 'destroy'])->name('admin.labour.destroy');
+            Route::post('/change-status', [\App\Http\Controllers\Admin\LabourController::class, 'toggleStatus'])->name('admin.labour.change-status');
         });
     });
 // Backend Routes End

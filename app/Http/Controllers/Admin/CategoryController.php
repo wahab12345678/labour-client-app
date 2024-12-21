@@ -27,6 +27,13 @@ class CategoryController extends Controller
     {
         return $category->update($request);
     }
+    public function create(CategoryService $category, CategoryRequest $request)
+    {
+        dd($request->all());
+
+        return $category->create($request);
+    }
+
     public function destroy($id)
     {
         $category = Category::findOrFail($id);

@@ -49,4 +49,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function meta()
+    {
+        return $this->hasOne(UserMeta::class, 'user_id', 'id');
+    }
+
+    public function accounts()
+    {
+        return $this->hasMany(UserAccount::class, 'user_id', 'id');
+    }
 }

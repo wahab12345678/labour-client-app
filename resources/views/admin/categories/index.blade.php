@@ -57,7 +57,10 @@
                 <!-- Modal to add new record -->
                 <div class="modal modal-slide-in fade" id="modals-slide-in">
                     <div class="modal-dialog sidebar-sm">
-                        <form class="add-new-record modal-content pt-0">
+                        <form class="add-new-record modal-content pt-0" method="POST" >
+                            @csrf
+                            @method('POST') <!-- This simulates a PUT request -->
+
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                             <div class="modal-header mb-1">
                                 <h5 class="modal-title" id="exampleModalLabel">New Category</h5>
@@ -69,19 +72,19 @@
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-post">Description</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3" placeholder="Enter Description"></textarea>
+                                    <textarea class="form-control dt-description" id="exampleFormControlTextarea1" name="description" rows="3" placeholder="Enter Description"></textarea>
                                 </div>
                                 <div class="mb-1">
                                     <div class="form-check form-switch form-check-success">
-                                        <label class="form-check-label mb-50" for="customSwitch111">Active</label>
-                                        <input type="checkbox" class="form-check-input" id="customSwitch111" checked />
-                                        <label class="form-check-label" for="customSwitch111">
+                                        <label class="form-check-label mb-50" for="edit-customSwitch">Active</label>
+                                        <input type="checkbox" class="form-check-input" id="edit-customSwitch" name="status"  />
+                                        <label class="form-check-label" for="edit-customSwitch">
                                             <span class="switch-icon-left"><i data-feather="check"></i></span>
                                             <span class="switch-icon-right"><i data-feather="x"></i></span>
                                         </label>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-primary data-submit me-1">Submit</button>
+                                <button type="button" class="btn btn-primary data-submit me-1" -url="{{ routedata('admin.category.create') }}">Submit</button>
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                             </div>
                         </form>
