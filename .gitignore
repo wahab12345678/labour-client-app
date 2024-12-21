@@ -3,6 +3,8 @@
 /public/build
 /public/hot
 /public/storage
+/public/cnic_front
+/public/cnic_back
 /storage/*.key
 /storage/pail
 /vendor
