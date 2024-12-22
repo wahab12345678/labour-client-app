@@ -30,5 +30,21 @@ Route::middleware('guest')->group(function () {
             Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\LabourController::class, 'destroy'])->name('admin.labour.destroy');
             Route::post('/change-status', [\App\Http\Controllers\Admin\LabourController::class, 'toggleStatus'])->name('admin.labour.change-status');
         });
+        Route::prefix('client')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('admin.client');
+            Route::get('/list', [\App\Http\Controllers\Admin\ClientController::class, 'list'])->name('admin.client.list');
+            Route::post('/store', [\App\Http\Controllers\Admin\ClientController::class, 'store'])->name('admin.client.store');
+            Route::put('/update',  [\App\Http\Controllers\Admin\ClientController::class, 'update'])->name('admin.client.update');
+            Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'destroy'])->name('admin.client.destroy');
+            Route::post('/change-status', [\App\Http\Controllers\Admin\ClientController::class, 'toggleStatus'])->name('admin.client.change-status');
+        });
+        Route::prefix('booking')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\BookingController::class, 'index'])->name('admin.booking');
+            Route::get('/list', [\App\Http\Controllers\Admin\BookingController::class, 'list'])->name('admin.booking.list');
+            Route::post('/store', [\App\Http\Controllers\Admin\BookingController::class, 'store'])->name('admin.booking.store');
+            Route::put('/update',  [\App\Http\Controllers\Admin\BookingController::class, 'update'])->name('admin.booking.update');
+            Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\BookingController::class, 'destroy'])->name('admin.booking.destroy');
+            Route::post('/change-status', [\App\Http\Controllers\Admin\BookingController::class, 'toggleStatus'])->name('admin.booking.change-status');
+        });
     });
 // Backend Routes End
