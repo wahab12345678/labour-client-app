@@ -60,26 +60,26 @@ class LabourService
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request)
-    {
-        $id = $request->category_id;
-        $category = Category::findOrFail($id);
-        if($category) {
-            $category->update([
-                'name' => $request->name,
-                'description' => $request->description,
-                'status' => $request->status ==  1 ? UserStatus::Active->value : UserStatus::Inactive->value,
-            ]);
-            return response()->json([
-                'success' => true,
-                'message' => 'Category Updated Successfully'
-            ]);
-        }
-        return response()->json([
-            'success' => false,
-            'message' => 'Category Not Found'
-        ]);
-    }
+    // public function update(Request $request)
+    // {
+    //     $id      = $request->category_id;
+    //     $category = Category::findOrFail($id);
+    //     if($category) {
+    //         $category->update([
+    //             'name' => $request->name,
+    //             'description' => $request->description,
+    //             'status' => $request->status ==  1 ? UserStatus::Active->value : UserStatus::Inactive->value,
+    //         ]);
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Category Updated Successfully'
+    //         ]);
+    //     }
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'Category Not Found'
+    //     ]);
+    // }
     /**
      * Store a newly created labour in the database.
      *
@@ -107,12 +107,12 @@ class LabourService
             ]);
             // Create user meta
             UserMeta::create([
-                'user_id' => $user->id,
-                'category_id' => $request->category_id,
-                'cnic_no' => $request->cnic_no,
+                'user_id'        => $user->id,
+                'category_id'    => $request->category_id,
+                'cnic_no'        => $request->cnic_no,
                 'cnic_front_img' => $this->storeImageInPublicFolder($request->file('cnic_front_img'), 'cnic_front'),
-                'cnic_back_img' => $this->storeImageInPublicFolder($request->file('cnic_back_img'), 'cnic_back'),
-                'address' => $request->address,
+                'cnic_back_img'  => $this->storeImageInPublicFolder($request->file('cnic_back_img'), 'cnic_back'),
+                'address'        => $request->address,
             ]);
             // Use createMany to add multiple accounts
             foreach ($request->accounts as $account) {
@@ -139,6 +139,86 @@ class LabourService
             ], 500);
         }
     }
+
+    public function update(LabourRequest $request)
+    {
+        $id  = $request->user_id;
+        // dd($request->all());
+
+        DB::beginTransaction();
+
+        try 
+        {
+            // Find the user by ID
+            $user = User::findOrFail($id);
+            
+            // Update the user's basic information
+            $user->update([
+                'name'   => $request->name,
+                'email'  => $request->phone . '@gmail.com', // Update email based on phone
+                'phone'  => $request->phone,
+                'status' => $request->status == "1" ? UserStatus::Active->value : UserStatus::Inactive->value,
+            ]);
+    
+            // Update user meta
+            $userMeta = $user->meta; // Assuming you have a one-to-one relationship with UserMeta
+            $userMeta->update([
+                'category_id' => $request->category_id,
+                'cnic_no'     => $request->cnic_no,
+                'address'     => $request->address,
+            ]);
+    
+            // Update images only if new files are uploaded
+            if ($request->hasFile('cnic_front_img')) 
+            {
+                $userMeta->cnic_front_img = $this->storeImageInPublicFolder($request->file('cnic_front_img'), 'cnic_front');
+            }
+            if ($request->hasFile('cnic_back_img')) 
+            {
+                $userMeta->cnic_back_img = $this->storeImageInPublicFolder($request->file('cnic_back_img'), 'cnic_back');
+            }
+    
+            // Save the updated user meta
+            $userMeta->save();
+    
+            // Update user accounts
+            // First, delete existing accounts
+            $user->accounts()->delete();
+            
+            // Add updated accounts
+            foreach ($request->accounts as $account) {
+                UserAccount::create([
+                    'user_id'         => $user->id,
+                    'account_type_id' => $account['type'],
+                    'account_no'      => $account['number'],
+                    'account_title'   => $account['title'],
+                ]);
+            }
+    
+            // Assign role if not already assigned
+            if (!$user->hasRole('labour')) 
+            {
+                $user->assignRole('labour');
+            }
+    
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Labour updated successfully!',
+            ], 200);
+        } 
+        catch (\Exception $e) 
+        {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while updating the labour.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
+    
     /**
      * Store uploaded file in the public folder.
      *
@@ -207,6 +287,22 @@ class LabourService
                 'message' => 'An error occurred while deleting the labour',
             ]);
         }
+    }
+
+    public function edit($id)
+    {
+        $categoryList    =   $this->categoryList();
+        $accountTypeList =   $this->accountTypeList();
+
+        $user = User::where('id', $id)->with('accounts','meta')->get();
+       
+
+        return response()->json([
+            'user'            => $user,
+            'categoryList'    => $categoryList,
+            'accountTypeList' => $accountTypeList,
+        ]);
+
     }
 
     /**

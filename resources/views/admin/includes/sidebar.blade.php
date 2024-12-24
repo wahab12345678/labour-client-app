@@ -46,7 +46,13 @@
             </li>
             <li class=" nav-item"><a class="d-flex align-items-center"href="{{ route('admin.category') }}"><i data-feather="mail"></i><span class="menu-title text-truncate" data-i18n="Category">Categories</span></a>
             </li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="app-chat.html"><i data-feather="message-square"></i><span class="menu-title text-truncate" data-i18n="Chat">Chat</span></a>
+            <li class=" nav-item"><a class="d-flex align-items-center"href="{{ route('admin.labour') }}"><i data-feather="mail"></i><span class="feather feather-user" data-i18n="Category">Labour</span></a>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center"href="{{ route('admin.client') }}"><i data-feather="mail"></i><span class="feather feather-user" data-i18n="Category">Client</span></a>
+            </li>
+            <li class=" nav-item"><a class="d-flex align-items-center"href="{{ route('admin.booking') }}"><i data-feather="mail"></i><span class="feather feather-user" data-i18n="Category">Booking</span></a>
+            </li>
+            {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="app-chat.html"><i data-feather="message-square"></i><span class="menu-title text-truncate" data-i18n="Chat">Chat</span></a>
             </li>
             <li class=" nav-item"><a class="d-flex align-items-center" href="app-todo.html"><i data-feather="check-square"></i><span class="menu-title text-truncate" data-i18n="Todo">Todo</span></a>
             </li>
@@ -229,8 +235,8 @@
                         </ul>
                     </li>
                 </ul>
-            </li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="modal-examples.html"><i data-feather="square"></i><span class="menu-title text-truncate" data-i18n="Modal Examples">Modal Examples</span></a>
+            </li> --}}
+            {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="modal-examples.html"><i data-feather="square"></i><span class="menu-title text-truncate" data-i18n="Modal Examples">Modal Examples</span></a>
             </li>
             <li class=" navigation-header"><span data-i18n="User Interface">User Interface</span><i data-feather="more-horizontal"></i>
             </li>
@@ -431,7 +437,7 @@
             <li class=" nav-item"><a class="d-flex align-items-center" href="https://pixinvent.com/demo/vuexy-html-bootstrap-admin-template/documentation" target="_blank"><i data-feather="folder"></i><span class="menu-title text-truncate" data-i18n="Documentation">Documentation</span></a>
             </li>
             <li class=" nav-item"><a class="d-flex align-items-center" href="https://pixinvent.ticksy.com/" target="_blank"><i data-feather="life-buoy"></i><span class="menu-title text-truncate" data-i18n="Raise Support">Raise Support</span></a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 </div>

@@ -57,7 +57,7 @@
                 <!-- Modal to add new record -->
                 <div class="modal modal-slide-in fade" id="modals-slide-in">
                     <div class="modal-dialog sidebar-sm">
-                        <form class="add-new-record modal-content pt-0" method="POST" >
+                        <form class="add-new-record modal-content pt-0"  method="POST" action="{{ route('admin.category.create') }}">
                             @csrf
                             @method('POST') <!-- This simulates a PUT request -->
 
@@ -74,17 +74,36 @@
                                     <label class="form-label" for="basic-icon-default-post">Description</label>
                                     <textarea class="form-control dt-description" id="exampleFormControlTextarea1" name="description" rows="3" placeholder="Enter Description"></textarea>
                                 </div>
-                                <div class="mb-1">
+
+                                {{-- <div class="mb-1">
                                     <div class="form-check form-switch form-check-success">
                                         <label class="form-check-label mb-50" for="edit-customSwitch">Active</label>
-                                        <input type="checkbox" class="form-check-input" id="edit-customSwitch" name="status"  />
+                                        <input type="checkbox" class="form-check-input" id="status" name="status"  />
                                         <label class="form-check-label" for="edit-customSwitch">
                                             <span class="switch-icon-left"><i data-feather="check"></i></span>
                                             <span class="switch-icon-right"><i data-feather="x"></i></span>
                                         </label>
                                     </div>
+                                </div> --}}
+                                {{-- <div class="mb-1">
+                                    <label class="form-label" for="category-type">Category Type</label>
+                                    <select class="form-select" id="status" name="status">
+                                        <option value="" selected disabled>Select Category Type</option>
+                                        <option value="1">Active</option>
+                                        <option value="O">In Active</option>
+                                    </select>
+                                </div> --}}
+                                <div class="mb-1">
+                                    <label class="form-label d-block">Status</label>
+                                    <div class="btn-group" role="group" aria-label="Toggle Active/Inactive">
+                                        <input type="radio" class="btn-check" name="status" id="active" value="1" checked>
+                                        <label class="btn btn-outline-success" for="active">Active</label>
+                                
+                                        <input type="radio" class="btn-check" name="status" id="inactive" value="0">
+                                        <label class="btn btn-outline-danger" for="inactive">Inactive</label>
+                                    </div>
                                 </div>
-                                <button type="button" class="btn btn-primary data-submit me-1" -url="{{ routedata('admin.category.create') }}">Submit</button>
+                                <button type="submit" class="btn btn-primary data-submit me-1" >Submit</button>
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                             </div>
                         </form>
@@ -102,6 +121,8 @@
                         <div class="modal-header mb-1">
                             <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
                         </div>
+                        <input type="hidden" name="status" value="0">
+
                         <div class="modal-body flex-grow-1">
                             <div class="mb-1">
                                 <label class="form-label" for="edit-category-name">Name</label>
@@ -114,13 +135,23 @@
                             <div class="mb-1">
                                 <div class="form-check form-switch form-check-success">
                                     <label class="form-check-label mb-50" for="edit-customSwitch">Active</label>
-                                    <input type="checkbox" class="form-check-input" id="edit-customSwitch" name="status"  />
+                                    <input type="checkbox" class="form-check-input" id="status" name="status"  />
                                     <label class="form-check-label" for="edit-customSwitch">
                                         <span class="switch-icon-left"><i data-feather="check"></i></span>
                                         <span class="switch-icon-right"><i data-feather="x"></i></span>
                                     </label>
                                 </div>
                             </div>
+                            {{-- <div class="mb-1">
+                                <label class="form-label d-block">Status</label>
+                                <div class="btn-group" role="group" aria-label="Toggle Active/Inactive">
+                                    <input type="radio" class="btn-check" name="status" id="active" value="1" >
+                                    <label class="btn btn-outline-success" for="active">Active</label>
+                            
+                                    <input type="radio" class="btn-check" name="status" id="inactive" value="0">
+                                    <label class="btn btn-outline-danger" for="inactive">Inactive</label>
+                                </div>
+                            </div> --}}
                             <input type="hidden" class="form-control dt-full-name" id="edit-category-id" name="category_id" placeholder="Enter Name of Category" aria-label="Category Name" />
                             <button type="submit" class="btn btn-primary data-submit me-1" id="update-category">Save Changes</button>
                             <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
