@@ -46,7 +46,7 @@ $(function () {
             {
                 targets: 3, // Status
                 render: function (data, type, full, meta) {
-                    return full.status == 1 ? 'Active' : 'Inactive'; // Render status
+                  return full.status; // Directly render the description
                 }
             },
             {
@@ -144,68 +144,67 @@ $(function () {
     // Add New record
     // ? Remove/Update this code as per your requirements ?
     var count = 101;
-    $('.data-submit').on('click', function () {
-      
-      var url         = $(this).data('url'); // Get the URL from the data-url attribute
-      alert(url);
-      var $new_status = $('#edit-customSwitch').is(':checked') ? '1' : '0';
+    // $('.data-submit').on('click', function () {
+    //   var $new_name = $('.add-new-record .dt-full-name').val(),
+    //     $new_post = $('.add-new-record .dt-post').val(),
+    //     $new_email = $('.add-new-record .dt-email').val(),
+    //     $new_date = $('.add-new-record .dt-date').val(),
+    //     $new_salary = $('.add-new-record .dt-salary').val();
 
-      // var $new_status   = $('#edit-customSwitch').is(':checked') ? 'Active' : 'Inactive';
-
-      var   $new_name   = $('.add-new-record .dt-full-name').val();
-      var   $new_des    = $('.add-new-record .dt-description').val(); // Ensure this targets the textarea
-    
-      if ($new_name != '') {
-        
-          $.ajax({
-            url:     url  , 
-            method: 'POST',
-            data: {
-                name        : $new_name,
-                description : $new_des,
-                status      : $new_status,
-                _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
-
-            },
-            success: function (response) {
-                dt_basic.row.add(response).draw(); // Add to DataTable
-                $('.modal').modal('hide'); // Hide the modal
-            },
-            error: function (error) {
-                console.error('Error adding data:', error);
-            }
-        });
-
-        $('.modal').modal('hide');
-      }
-    });
+    //   if ($new_name != '') {
+    //     dt_basic.row
+    //       .add({
+    //         id: count,
+    //         name: $new_name,
+    //         description: $new_post,
+    //         status: $new_email,
+    //       })
+    //       .draw();
+    //     count++;
+    //     $('.modal').modal('hide');
+    //   }
+    // });
 
     // Delete Record
-    $('.datatables-basic tbody').on('click', '.delete-record', function () {
+    
+    $('.datatables-basic tbody').on('click', '.delete-record', function () 
+    {
       dt_basic.row($(this).parents('tr')).remove().draw();
     });
+
   });
   // Edit Category
-  $(document).on('click', '.modal-slide-in-edit', function () {
-    // Get data from the clicked edit button
-    const id = $(this).data('id');
-    const name = $(this).data('name');
-    const description = $(this).data('description');
-    const status = $(this).data('status');
-    // Populate the modal form with the category data
-    $('#edit-category-name').val(name);
-    $('#edit-category-description').val(description);
 
-    // Set the status checkbox based on the category's status
-    $('#edit-customSwitch').prop('checked', status === 1);
-    $('#edit-customSwitch').val(status);
+$(document).on('click', '.modal-slide-in-edit', function () {
+  // Get data from the clicked edit button
+  const id          = $(this).data('id');
+  const name        = $(this).data('name');
+  const description = $(this).data('description');
+  const status      = $(this).data('status'); // Assuming 1 for Active, 0 for Inactive
+  // Populate the modal form with the category data
+  $('#edit-category-name').val(name);
+  $('#edit-category-description').val(description);
 
-    // Set the form action to update the category
-    $('#edit-category-id').val(id); 
-    
-    // Show the modal
-    $('#modals-slide-in-edit').modal('show');
+  // Set the status radio button based on the category's status
+  if (status == 'Active') 
+  {
+    $('#status').prop('checked', true);  // Check the checkbox
+  } 
+  else 
+  {
+    $('#status').prop('checked', false);  // Check the checkbox
+  }
+
+  // Store the status value in a hidden field or update the checkbox value attribute
+  // $('#status').val(status);
+
+  // Set the form's hidden category ID field
+  $('#edit-category-id').val(id);
+
+  // Show the modal
+  $('#modals-slide-in-edit').modal('show');
 });
+
 
 // Event listener for delete action
 // Event listener for delete action

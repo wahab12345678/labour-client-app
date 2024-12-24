@@ -14,8 +14,8 @@ class LabourController extends Controller
 {
     public function index(LabourService $labour, Request $request)
     {
-        $categories = $labour->categoryList();
-        $data['category'] = CategoryResource::collection($categories);
+        $categories           = $labour->categoryList();
+        $data['category']     = CategoryResource::collection($categories);
         $data['accountTypes'] = $labour->accountTypeList();
         return view('admin.labours.index', $data);
     }
@@ -23,7 +23,7 @@ class LabourController extends Controller
     public function list(Request $request)
     {
         $labours = User::role('labour')->get();
-        $data = LabourResource::collection($labours);
+        $data    = LabourResource::collection($labours);
         return response()->json(['data' => $data]);
     }
 
@@ -40,5 +40,13 @@ class LabourController extends Controller
     public function toggleStatus(LabourService $labour, Request $request)
     {
         return $labour->toggleStatus($request);
+    }
+    public function edit(LabourService $labour,$id)
+    {
+        return $labour->edit($id);
+    }
+    public function update(LabourService $labour, LabourRequest $request)
+    {
+        return $labour->update($request);
     }
 }

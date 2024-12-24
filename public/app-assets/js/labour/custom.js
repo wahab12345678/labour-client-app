@@ -110,10 +110,11 @@ $(function () {
                     'Delete</a>' +
                     '</div>' +
                     '</div>' +
-                    '<a href="javascript:;" class="item-edit">' +
-                    feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
-                    '</a>'
-                );
+                     // Edit button to trigger the modal
+                  '<a href="javascript:;" class="item-edit modal-slide-in-edit" data-id="' + full.id + '" data-name="' + full.name + '" data-phone="' + full.phone + '" data-category_name="' + full.category_name + '">' +
+                  feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
+                  '</a>'
+                      );
               }
             }
           ],
@@ -231,6 +232,117 @@ $(function () {
             });
         }
     });
+
+    $(document).on('click', '.modal-slide-in-edit', function () {
+  
+      var labourId = $(this).data('id'); 
+    
+      $.ajax({
+    
+          url: `${assetPath}/edit/${labourId}`,
+    
+          method: 'GET',
+          success: function (response) 
+          {
+            
+              $('.labour-name').val(response.user[0].name);
+              $('.labour-phone').val(response.user[0].phone);
+              $('.labour-cnic_no').val(response.user[0].meta.cnic_no);
+              $('.labour-address').val(response.user[0].meta.address);
+              $('.user_id').val(response.user[0].id);
+
+              if (response.user[0].meta.cnic_front_img) 
+              {
+                $('#front-preview').html(`<img src="${response.user[0].meta.cnic_front_img}" class="img-fluid" style="max-width: 200px; max-height: 150px; margin-top: 10px;" alt="CNIC Front">`);
+                $('.labour-cnic_front_img').removeAttr('required');  // Optional on update
+
+              } 
+              else 
+              {
+                $('#front-preview').html(`<p>No CNIC front image available.</p>`);
+              }
+
+              if(response.user[0].meta.cnic_back_img) 
+              {
+                $('#back-preview').html(`<img src="${response.user[0].meta.cnic_back_img}" class="img-fluid" style="max-width: 200px; max-height: 150px; margin-top: 10px;" alt="CNIC Back">`);
+                $('.labour-cnic_back_img').removeAttr('required');  // Optional on update
+
+              } 
+              else 
+              {
+                $('#back-preview').html(`<p>No CNIC back image available.</p>`);
+              }
+
+
+              var categoryDropdown = $('.labour-category'); 
+              categoryDropdown.empty(); 
+
+              categoryDropdown.append('<option value="">Select Category</option>');
+
+              if (response.categoryList && Array.isArray(response.categoryList)) 
+              {
+                  response.categoryList.forEach(function (category) 
+                  {
+                      categoryDropdown.append(
+                          `<option value="${category.id}" ${category.id == response.user[0].meta.category_id ? 'selected' : ''}>${category.name}</option>`
+                      );
+                  });
+              }
+              
+              let accountIndexEdit          = response.user[0].accounts.length; // Tracks the number of account rows
+              let accountDetailsWrapper = $('#account-details-wrapper-edit');
+
+              if (response.user[0].accounts && Array.isArray(response.user[0].accounts)) 
+                {
+               
+                  response.user[0].accounts.forEach((account, index) => 
+                    {
+                      let accountTypeOptions = `<option value="">Select Type</option>`;
+                      
+                      if (response.accountTypeList && Array.isArray(response.accountTypeList)) 
+                        {
+                          response.accountTypeList.forEach(accountType => 
+                            {
+                              accountTypeOptions += `<option value="${accountType.id}" ${account.account_type_id == accountType.id ? 'selected' : ''}>${accountType.name}</option>`;
+                            });
+                      }
+                      const accountRow = `
+                          <div class="account-detail mb-2 d-flex align-items-center">
+                              <div class="me-1">
+                                  <label class="form-label" for="account-type-${index}">Account Type</label>
+                                  <select class="form-select" name="accounts[${index}][type]" id="account-type-${index}" required>
+                                      ${accountTypeOptions}
+                                  </select>
+                              </div>
+                              <div class="me-1">
+                                  <label class="form-label" for="account-number-${index}">Account Number</label>
+                                  <input type="text" class="form-control" name="accounts[${index}][number]" id="account-number-${index}" 
+                                        placeholder="Enter Number" value="${account.account_no}" required>
+                              </div>
+                              <div class="me-1">
+                                  <label class="form-label" for="account-title-${index}">Account Title</label>
+                                  <input type="text" class="form-control" name="accounts[${index}][title]" id="account-title-${index}" 
+                                        placeholder="Enter Title" value="${account.account_title}" required>
+                              </div>
+                          </div>`;
+
+                      $("#account-details-wrapper-edit").append(accountRow);
+                  });
+              }             
+             
+              $('#modals-slide-in-edit').modal('show');
+          },
+          error: function (error) {
+              console.log('Error fetching data:', error);
+              alert('Failed to load data.');
+          }
+      });
+
+    });
+
+
+
+
   });
     // Add New Labour
     // on submit of form
@@ -285,27 +397,115 @@ $(function () {
         });
     });
 
-  // Edit Labour
-  $(document).on('click', '.modal-slide-in-edit', function () {
-    // Get data from the clicked edit button
-    const id = $(this).data('id');
-    const name = $(this).data('name');
-    const description = $(this).data('description');
-    const status = $(this).data('status');
-    // Populate the modal form with the category data
-    $('#edit-category-name').val(name);
-    $('#edit-category-description').val(description);
+    // Add update Labour
+    // on update of form
+    $('#update-labour').on('submit', function (e) {
+      e.preventDefault();
 
-    // Set the status checkbox based on the category's status
-    $('#edit-customSwitch').prop('checked', status === 1);
-    $('#edit-customSwitch').val(status);
+      // Clear previous error messages
+      $('.invalid-feedback').text('').hide();
+      $('.is-invalid').removeClass('is-invalid');
 
-    // Set the form action to update the category
-    $('#edit-category-id').val(id);
+      // Get form action URL and initialize FormData
+      const actionUrl = $(this).attr('action');
+      const formData  = new FormData(this);
+      // Handle the status value for the checkbox
+      const statusCheckbox = $('#customSwitch111').is(':checked') ? '1' : '0';
+      formData.set('status', statusCheckbox);
 
-    // Show the modal
-    $('#modals-slide-in-edit').modal('show');
-});
+      // Include CSRF token (important for Laravel)
+      const csrfToken = $('meta[name="csrf-token"]').attr('content');
+      formData.append('_token', csrfToken);
+
+      // Send AJAX request
+      $.ajax({
+          url: actionUrl,
+          type: 'POST',
+          data: formData,
+          processData: false, // Required for FormData
+          contentType: false, // Required for FormData
+          success: function (response) {
+              // Hide the modal
+              $('#modals-slide-in-edit').modal('hide');
+              // Optionally reload the page or update the table
+              alert('Labour Updated successfully!');
+              location.reload();
+          },
+          error: function (xhr) {
+              if (xhr.status === 422) {
+                  // Validation errors
+                  const errors = xhr.responseJSON.errors;
+                  for (const [key, messages] of Object.entries(errors)) {
+                      // Show error message
+                      const keyName = key.includes('.') ? key.replace('.', '[').replace('.', ']') : key; // Handle nested fields
+                      $(`.${keyName}-error`).text(messages[0]).show();
+                      $(`[name="${keyName}"]`).addClass('is-invalid');
+                  }
+              } else {
+                  alert('An unexpected error occurred.');
+                  console.error(xhr);
+              }
+          }
+      });
+      
+    });
+
+    $('#labour-cnic_front_img').on('change', function(event) {
+      // Get the selected file
+      const file = event.target.files[0];
+      
+      if (file) {
+          const reader = new FileReader();
+
+          // Once the file is read, display the preview
+          reader.onload = function(e) {
+              // Set the preview container's HTML to display the image
+              $('#front-preview').html(
+                  `<img src="${e.target.result}" class="img-fluid" style="max-width: 200px; max-height: 150px; margin-top: 10px;" alt="CNIC Front">`
+              );
+          }
+
+          // Read the selected file as a Data URL
+          reader.readAsDataURL(file);
+      }
+    });
+
+    // Images changes front side
+    $('#labour-cnic_front_img').on('change', function(event) {
+      // Get the selected file
+      const file = event.target.files[0];
+      
+      if (file) {
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+
+            $('#front-preview').html(
+                  `<img src="${e.target.result}" class="img-fluid" style="max-width: 200px; max-height: 150px; margin-top: 10px;" alt="CNIC Front">`
+              );
+          }
+
+          reader.readAsDataURL(file);
+      }
+    });
+
+    // Images changes back side
+    $('#labour-cnic_back_img').on('change', function(event) {
+      // Get the selected file
+      const file = event.target.files[0];
+      
+      if (file) {
+          const reader = new FileReader();
+
+          reader.onload = function(e) 
+          {
+              $('#back-preview').html(
+                  `<img src="${e.target.result}" class="img-fluid" style="max-width: 200px; max-height: 150px; margin-top: 10px;" alt="CNIC Front">`
+              );
+          }
+          reader.readAsDataURL(file);
+      }
+    });
 
 // Event listener for delete action
 $(document).on('click', '.delete-category', function () {
@@ -348,7 +548,25 @@ $("#add-account-btn").on("click", function () {
     // Increment the index
     accountIndex++;
 });
+
+$("#add-account-btn-edit").on("click", function () {
+
+  let accountIndexEdit = $("#account-details-wrapper-edit").children().length;
+  // Clone the hidden template and update it
+  let template = $("#account-template-edit").html();
+  template = template.replace(/__INDEX__/g, accountIndexEdit); // Replace placeholder with index
+  // Convert the string to HTML and append to the wrapper
+  const $newAccountRow = $(template);
+  $("#account-details-wrapper-edit").append($newAccountRow);
+  // Increment the index
+});
+
 // Remove Account Button Click
 $("#account-details-wrapper").on("click", ".btn-remove-account", function () {
     $(this).closest(".account-detail").remove();
 });
+
+
+
+
+

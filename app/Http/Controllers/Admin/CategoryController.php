@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Enums\CategoryStatus;
 use App\Services\CategoryService;
 use App\Http\Resources\CategoryResource;
+use App\Http\Requests\CategoryRequest;
 
 
 class CategoryController extends Controller
@@ -29,8 +30,6 @@ class CategoryController extends Controller
     }
     public function create(CategoryService $category, CategoryRequest $request)
     {
-        dd($request->all());
-
         return $category->create($request);
     }
 

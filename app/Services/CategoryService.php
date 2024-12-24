@@ -4,6 +4,9 @@ namespace App\Services;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Enums\CategoryStatus;
+
+use App\Http\Requests\CategoryRequest;
+
 class CategoryService
 {
     /**
@@ -20,7 +23,7 @@ class CategoryService
     {
         return Category::find($id);
     }
-    public function update(Request $request)
+    public function update(CategoryRequest $request)
     {
         $id = $request->category_id;
         $category = Category::findOrFail($id);
@@ -28,7 +31,7 @@ class CategoryService
             $category->update([
                 'name' => $request->name,
                 'description' => $request->description,
-                'status' => $request->status ==  1 ? CategoryStatus::Active->value : CategoryStatus::Inactive->value,
+                'status' => $request->status ==  'on' ? CategoryStatus::Active->value : CategoryStatus::Inactive->value,
             ]);
             return response()->json([
                 'success' => true,
@@ -40,7 +43,7 @@ class CategoryService
             'message' => 'Category Not Found'
         ]);
     }
-    public function create(Request $request)
+    public function create(CategoryRequest $request)
     {
         Category::create([
             'name'        => $request->name,

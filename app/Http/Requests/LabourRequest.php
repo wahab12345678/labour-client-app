@@ -21,19 +21,22 @@ class LabourRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = $this->input('user_id'); // Retrieve the user_id from the form
+
         return [
             'name' => 'required',
-            'phone' => 'required|unique:users',
-            'address' => 'required',
-            'category_id' => 'required',
-            'cnic_no' => 'required|numeric',
-            'cnic_front_img' => 'required',
-            'cnic_back_img' => 'required',
-            'status' => 'required',
-            'accounts' => 'required|array|min:1', // Ensure accounts is an array with at least one item
-            'accounts.*.type' => 'required|integer|exists:account_types,id', // Ensure type exists in the account_types table
+            // 'phone' => 'required|unique:users',
+            'phone' => 'required|unique:users,phone,' . $userId,
+            'address'           => 'required',
+            'category_id'       => 'required',
+            'cnic_no'           => 'required|numeric',
+            'cnic_front_img'    => '',
+            'cnic_back_img'     => '',
+            'status'            => 'required',
+            'accounts'          => 'required|array|min:1', // Ensure accounts is an array with at least one item
+            'accounts.*.type'   => 'required|integer|exists:account_types,id', // Ensure type exists in the account_types table
             'accounts.*.number' => 'required|string|max:255', // Validate account number
-            'accounts.*.title' => 'required|string|max:255', // Validate account title
+            'accounts.*.title'  => 'required|string|max:255', // Validate account title
         ];
     }
 }
