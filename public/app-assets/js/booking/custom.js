@@ -14,144 +14,112 @@ $(function () {
 
     if (dt_basic_table.length) {
         var dt_basic = dt_basic_table.DataTable({
-          ajax: assetPath + '/list',
-          columns: [
-            { data: 'id' },
-            { data: 'name' },
-            { data: 'phone' },
-            { data: 'status' },
-            { data: 'cnic_no' },
-            { data: 'cnic_front_img' },
-            { data: 'cnic_back_img' },
-            { data: 'created_at' },
-            { data: 'action' }
-          ],
+            ajax: assetPath + '/list',
+            columns: [
+                { data: 'id' },
+                { data: 'client_name' },
+                { data: 'labour_name' },
+                { data: 'start_date' },
+                { data: 'end_date' },
+                { data: 'status' },
+                { data: 'price' },
+                { data: 'created_at' },
+                { data: 'action' }
+            ],
             createdRow: function (row, data, dataIndex) {
                 // Add data-id attribute to the row
                 $(row).attr('data-id', data.id);
             },
-          columnDefs: [
-            {
-              targets: 0, // id
-              render: function (data, type, full, meta) {
-                return full.id; // Directly render the id
-              }
-            },
-            {
-              targets: 1, // Name
-              render: function (data, type, full, meta) {
-                return full.name; // Directly render the name
-              }
-            },
-            {
-              targets: 2, // Phone
-              render: function (data, type, full, meta) {
-                return full.phone; // Directly render the phone number
-              }
-            },
-            {
-            targets: 3, // Status
-                render: function (data, type, full, meta) {
-                    // Checking if status is 1 (Active) or 0 (Inactive) and applying the appropriate badge class
-                    if (full.status == "Active") {
-                    return '<span class="badge badge-glow bg-success">Active</span>'; // Green badge for Active
-                    } else {
-                    return '<span class="badge badge-glow bg-danger">Inactive</span>'; // Red badge for Inactive
+            columnDefs: [
+                {
+                    targets: 1, // Client Name
+                    render: function (data, type, full, meta) {
+                        return full.client_name; // Render client_name directly
+                    }
+                },
+                {
+                    targets: 2, // Labour Name
+                    render: function (data, type, full, meta) {
+                        return full.labour_name; // Render labour_name directly
+                    }
+                },
+                {
+                    targets: 5, // Status
+                    render: function (data, type, full, meta) {
+                        return `<span class="badge badge-glow bg-${full.status == 'completed' ? 'success' : 'info'}">${full.status.toUpperCase()}</span>`;
+                    }
+                },
+                {
+                    targets: 8, // Action column
+                    render: function (data, type, full, meta) {
+                        return (
+                            '<div class="d-inline-flex">' +
+                            '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown">' +
+                            feather.icons['more-vertical'].toSvg({ class: 'font-small-4' }) +
+                            '</a>' +
+                            '<div class="dropdown-menu dropdown-menu-end">' +
+                            ['pending', 'accepted', 'completed', 'cancelled'].map(status => {
+                                return (
+                                    '<a href="javascript:;" class="dropdown-item change-status" data-id="' + full.id + '" data-status="' + status + '">' +
+                                    feather.icons['repeat'].toSvg({ class: 'font-small-4 me-50' }) +
+                                    (status.charAt(0).toUpperCase() + status.slice(1)) + // Capitalize the status
+                                    '</a>'
+                                );
+                            }).join('') + // Combine all status options into one string
+                            '<a href="javascript:;" class="dropdown-item delete-record">' +
+                            feather.icons['trash-2'].toSvg({ class: 'font-small-4 me-50' }) +
+                            'Delete</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '<a href="javascript:;" class="item-edit">' +
+                            feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
+                            '</a>'
+                        );
+                    }
+                }
+            ],
+            dom: '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-end"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+            displayLength: 7,
+            lengthMenu: [7, 10, 25, 50, 75, 100],
+            buttons: [
+                {
+                    text: feather.icons['plus'].toSvg({ class: 'me-50 font-small-4' }) + 'Add New Booking',
+                    className: 'create-new btn btn-primary',
+                    attr: {
+                        'data-bs-toggle': 'modal',
+                        'data-bs-target': '#modals-slide-in'
+                    },
+                    init: function (api, node, config) {
+                        $(node).removeClass('btn-secondary');
+                    }
+                }
+            ],
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.modal({
+                        header: function (row) {
+                            var data = row.data();
+                            return 'Details of ' + data['client_name'];
+                        }
+                    }),
+                    type: 'column',
+                    renderer: function (api, rowIdx, columns) {
+                        var data = $.map(columns, function (col, i) {
+                            return col.title !== '' ? '<tr data-dt-row="' + col.rowIdx + '" data-dt-column="' + col.columnIndex + '">' +
+                                '<td>' + col.title + ':' + '</td> ' +
+                                '<td>' + col.data + '</td>' +
+                                '</tr>' : '';
+                        }).join('');
+                        return data ? $('<table class="table"/>').append('<tbody>' + data + '</tbody>') : false;
                     }
                 }
             },
-            {
-              targets: 4, // CNIC number
-              render: function (data, type, full, meta) {
-                return full.cnic_no; // Render CNIC number
-              }
-            },
-            {
-              targets: 5, // CNIC front image
-              render: function (data, type, full, meta) {
-                return full.cnic_front_img ? `<img src="${full.cnic_front_img}" alt="CNIC Front" width="50" height="50">` : ''; // Render image or empty if not available
-              }
-            },
-            {
-              targets: 6, // CNIC back image
-              render: function (data, type, full, meta) {
-                return full.cnic_back_img ? `<img src="${full.cnic_back_img}" alt="CNIC Back" width="50" height="50">` : ''; // Render image or empty if not available
-              }
-            },
-            {
-              targets: 7, // Created at
-              render: function (data, type, full, meta) {
-                return full.created_at; // Render creation date
-              }
-            },
-            {
-              targets: 8, // Action column
-              render: function (data, type, full, meta) {
-                return (
-                    '<div class="d-inline-flex">' +
-                    '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown">' +
-                    feather.icons['more-vertical'].toSvg({ class: 'font-small-4' }) +
-                    '</a>' +
-                    '<div class="dropdown-menu dropdown-menu-end">' +
-                    // Conditionally display "Activate/Deactivate" based on the current status
-                    '<a href="javascript:;" class="dropdown-item toggle-status" data-id="' + full.id + '" data-status="' + full.status + '">' +
-                    feather.icons['archive'].toSvg({ class: 'font-small-4 me-50' }) +
-                    (full.status == 'Active' ? 'Deactivate' : 'Activate') +
-                    '</a>' +
-                    '<a href="javascript:;" class="dropdown-item delete-record">' +
-                    feather.icons['trash-2'].toSvg({ class: 'font-small-4 me-50' }) +
-                    'Delete</a>' +
-                    '</div>' +
-                    '</div>' +
-                    '<a href="javascript:;" class="item-edit">' +
-                    feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
-                    '</a>'
-                );
-              }
-            }
-          ],
-          dom: '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-end"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-          displayLength: 7,
-          lengthMenu: [7, 10, 25, 50, 75, 100],
-          buttons: [
-            {
-              text: feather.icons['plus'].toSvg({ class: 'me-50 font-small-4' }) + 'Add New Booking',
-              className: 'create-new btn btn-primary',
-              attr: {
-                'data-bs-toggle': 'modal',
-                'data-bs-target': '#modals-slide-in'
-              },
-              init: function (api, node, config) {
-                $(node).removeClass('btn-secondary');
-              }
-            }
-          ],
-          responsive: {
-            details: {
-              display: $.fn.dataTable.Responsive.display.modal({
-                header: function (row) {
-                  var data = row.data();
-                  return 'Details of ' + data['name'];
+            language: {
+                paginate: {
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
                 }
-              }),
-              type: 'column',
-              renderer: function (api, rowIdx, columns) {
-                var data = $.map(columns, function (col, i) {
-                  return col.title !== '' ? '<tr data-dt-row="' + col.rowIdx + '" data-dt-column="' + col.columnIndex + '">' +
-                    '<td>' + col.title + ':' + '</td> ' +
-                    '<td>' + col.data + '</td>' +
-                    '</tr>' : '';
-                }).join('');
-                return data ? $('<table class="table"/>').append('<tbody>' + data + '</tbody>') : false;
-              }
             }
-          },
-          language: {
-            paginate: {
-              previous: '&nbsp;',
-              next: '&nbsp;'
-            }
-          }
         });
 
         $('div.head-label').html('<h6 class="mb-0">List of Bookings</h6>');
@@ -194,7 +162,7 @@ $(function () {
         }
     });
     // Change Status
-    $('.datatables-basic tbody').on('click', '.toggle-status', function () {
+    $('.datatables-basic tbody').on('click', '.change-status', function () {
         // Get the row and retrieve the ID (assuming it's stored in a data attribute)
         const row = $(this).parents('tr');
         const id = row.data('id'); // Assuming the ID is stored as data-id in the row
