@@ -48,12 +48,12 @@
                                 <thead>
                                     <tr>
                                         <th>id</th>
-                                        <th>Name</th>
-                                        <th>Phone</th>
+                                        <th>Client Name</th>
+                                        <th>Labour Name</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
                                         <th>Status</th>
-                                        <th>CNIC</th>
-                                        <th>CNIC Front Img</th>
-                                        <th>CNIC Back Img</th>
+                                        <th>Price</th>
                                         <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
