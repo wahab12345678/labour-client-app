@@ -29,7 +29,7 @@ Route::middleware('guest')->group(function () {
             Route::post('/update', [\App\Http\Controllers\Admin\LabourController::class, 'update'])->name('admin.labour.update');
             Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\LabourController::class, 'destroy'])->name('admin.labour.destroy');
             Route::post('/change-status', [\App\Http\Controllers\Admin\LabourController::class, 'toggleStatus'])->name('admin.labour.change-status');
-        
+
             Route::get('/edit/{id}', [\App\Http\Controllers\Admin\LabourController::class,  'edit'])->name('labour.edit');
 
         });
@@ -51,6 +51,14 @@ Route::middleware('guest')->group(function () {
             Route::put('/update',  [\App\Http\Controllers\Admin\BookingController::class, 'update'])->name('admin.booking.update');
             Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\BookingController::class, 'destroy'])->name('admin.booking.destroy');
             Route::post('/change-status', [\App\Http\Controllers\Admin\BookingController::class, 'toggleStatus'])->name('admin.booking.change-status');
+        });
+        Route::prefix('review')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.review');
+            Route::get('/list', [\App\Http\Controllers\Admin\ReviewController::class, 'list'])->name('admin.review.list');
+            // Route::post('/store', [\App\Http\Controllers\Admin\ReviewController::class, 'store'])->name('admin.review.store');
+            // Route::put('/update',  [\App\Http\Controllers\Admin\ReviewController::class, 'update'])->name('admin.review.update');
+            // Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('admin.review.destroy');
+            // Route::post('/change-status', [\App\Http\Controllers\Admin\ReviewController::class, 'toggleStatus'])->name('admin.review.change-status');
         });
     });
 // Backend Routes End
