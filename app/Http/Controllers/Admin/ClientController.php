@@ -39,4 +39,12 @@ class ClientController extends Controller
     {
         return $client->toggleStatus($request);
     }
+    public function edit(ClientService $client,$id)
+    {
+        return $client->edit($id);
+    }
+    public function update(ClientService $client, ClientRequest $request)
+    {
+        return $client->update($request);
+    }
 }

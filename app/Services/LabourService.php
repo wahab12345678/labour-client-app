@@ -169,13 +169,13 @@ class LabourService
             ]);
     
             // Update images only if new files are uploaded
-            if ($request->hasFile('cnic_front_img')) 
+            if ($request->hasFile('labour-cnic_front_img')) 
             {
-                $userMeta->cnic_front_img = $this->storeImageInPublicFolder($request->file('cnic_front_img'), 'cnic_front');
+                $userMeta->cnic_front_img = $this->storeImageInPublicFolder($request->file('labour-cnic_front_img'), 'cnic_front');
             }
-            if ($request->hasFile('cnic_back_img')) 
+            if ($request->hasFile('labour-cnic_back_img')) 
             {
-                $userMeta->cnic_back_img = $this->storeImageInPublicFolder($request->file('cnic_back_img'), 'cnic_back');
+                $userMeta->cnic_back_img = $this->storeImageInPublicFolder($request->file('labour-cnic_back_img'), 'cnic_back');
             }
     
             // Save the updated user meta

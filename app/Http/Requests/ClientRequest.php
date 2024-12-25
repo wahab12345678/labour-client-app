@@ -21,13 +21,15 @@ class ClientRequest extends FormRequest
      */
     public function rules(): array
     {
+        $clientId = $this->input('client_id'); 
+
         return [
             'name' => 'required',
-            'phone' => 'required|unique:users',
+            'phone' => 'required|unique:users,phone,' . $clientId, // Exclude the current client's phone
             'address' => 'required',
             'cnic_no' => 'required|numeric',
-            'cnic_front_img' => 'required',
-            'cnic_back_img' => 'required',
+            'cnic_front_img' => $clientId ? 'nullable' : 'required', // Image is not required if userId is present
+            'cnic_back_img' => $clientId ? 'nullable' : 'required', // Image is not required if userId is present
             'status' => 'required',
             'accounts' => 'required|array|min:1', // Ensure accounts is an array with at least one item
             'accounts.*.type' => 'required|integer|exists:account_types,id', // Ensure type exists in the account_types table

@@ -244,6 +244,7 @@ $(function () {
           method: 'GET',
           success: function (response) 
           {
+            console.log(response);
             
               $('.labour-name').val(response.user[0].name);
               $('.labour-phone').val(response.user[0].phone);
@@ -562,7 +563,7 @@ $("#add-account-btn-edit").on("click", function () {
 });
 
 // Remove Account Button Click
-$("#account-details-wrapper").on("click", ".btn-remove-account", function () {
+$("#account-details-wrapper-edit").on("click", ".btn-remove-account", function () {
     $(this).closest(".account-detail").remove();
 });
 

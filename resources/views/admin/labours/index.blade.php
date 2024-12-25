@@ -234,17 +234,7 @@
                                 <textarea id="basic-icon-default-fullname" class="form-control labour-address" name="address" placeholder="Enter Address" aria-label="Address" required></textarea>
                                 <div class="invalid-feedback address-error"></div>
                             </div>
-                            <div class="mb-1">
-                                <div class="form-check form-switch form-check-success">
-                                    <label class="form-check-label mb-50" for="customSwitch111">Active</label>
-                                    <input type="checkbox" name="status" class="form-check-input" id="customSwitch111" checked />
-                                    <label class="form-check-label" for="customSwitch111">
-                                        <span class="switch-icon-left"><i data-feather="check"></i></span>
-                                        <span class="switch-icon-right"><i data-feather="x"></i></span>
-                                    </label>
-                                </div>
-                                <div class="invalid-feedback status-error"></div>
-                            </div>
+                          
                             <div class="mb-3">
                                 <h5 class="form-label">Account Details</h5>
                                 <div id="account-details-wrapper-edit">
