@@ -103,8 +103,8 @@ $(function () {
                     'Delete</a>' +
                     '</div>' +
                     '</div>' +
-                    '<a href="javascript:;" class="item-edit">' +
-                    feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
+                    '<a href="javascript:;" class="item-edit modals-slide-in-edit" data-id="' + full.id + '">' +
+                        feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
                     '</a>'
                 );
               }
@@ -224,6 +224,103 @@ $(function () {
             });
         }
     });
+
+    $(document).on('click', '.modals-slide-in-edit', function () {
+  
+      var clientId = $(this).data('id'); 
+      $('#modals-slide-in-edit').modal('show');
+
+      $.ajax({
+    
+          url: `${assetPath}/edit/${clientId}`,
+    
+          method: 'GET',
+          success: function (response) 
+          {
+            console.log(response);
+            
+              $('.client-name').val(response.user[0].name);
+              $('.client-phone').val(response.user[0].phone);
+              $('.client-cnic_no').val(response.user[0].meta.cnic_no);
+              $('.client-address').val(response.user[0].meta.address);
+              $('.client_id').val(response.user[0].id);
+
+              if (response.user[0].meta.cnic_front_img) 
+              {
+                $('#front-preview').html(`<img src="${response.user[0].meta.cnic_front_img}" class="img-fluid" style="max-width: 200px; max-height: 150px; margin-top: 10px;" alt="CNIC Front">`);
+                $('#labour-cnic_front_img').removeAttr('required');  // Optional on update
+
+              } 
+              else 
+              {
+                $('#front-preview').html(`<p>No CNIC front image available.</p>`);
+              }
+
+              if(response.user[0].meta.cnic_back_img) 
+              {
+                $('#back-preview').html(`<img src="${response.user[0].meta.cnic_back_img}" class="img-fluid" style="max-width: 200px; max-height: 150px; margin-top: 10px;" alt="CNIC Back">`);
+                $('#labour-cnic_back_img').removeAttr('required');  // Optional on update
+
+              } 
+              else 
+              {
+                $('#back-preview').html(`<p>No CNIC back image available.</p>`);
+              }
+
+
+              
+              
+              let accountIndexEdit          = response.user[0].accounts.length; // Tracks the number of account rows
+              let accountDetailsWrapper = $('#account-details-wrapper-edit');
+
+              if (response.user[0].accounts && Array.isArray(response.user[0].accounts)) 
+                {
+               
+                  response.user[0].accounts.forEach((account, index) => 
+                    {
+                      let accountTypeOptions = `<option value="">Select Type</option>`;
+                      
+                      if (response.accountTypeList && Array.isArray(response.accountTypeList)) 
+                        {
+                          response.accountTypeList.forEach(accountType => 
+                            {
+                              accountTypeOptions += `<option value="${accountType.id}" ${account.account_type_id == accountType.id ? 'selected' : ''}>${accountType.name}</option>`;
+                            });
+                      }
+                      const accountRow = `
+                          <div class="account-detail mb-2 d-flex align-items-center">
+                              <div class="me-1">
+                                  <label class="form-label" for="account-type-${index}">Account Type</label>
+                                  <select class="form-select" name="accounts[${index}][type]" id="account-type-${index}" required>
+                                      ${accountTypeOptions}
+                                  </select>
+                              </div>
+                              <div class="me-1">
+                                  <label class="form-label" for="account-number-${index}">Account Number</label>
+                                  <input type="text" class="form-control" name="accounts[${index}][number]" id="account-number-${index}" 
+                                        placeholder="Enter Number" value="${account.account_no}" required>
+                              </div>
+                              <div class="me-1">
+                                  <label class="form-label" for="account-title-${index}">Account Title</label>
+                                  <input type="text" class="form-control" name="accounts[${index}][title]" id="account-title-${index}" 
+                                        placeholder="Enter Title" value="${account.account_title}" required>
+                              </div>
+                          </div>`;
+
+                      $("#account-details-wrapper-edit").append(accountRow);
+                  });
+              }             
+             
+              $('#modals-slide-in-edit').modal('show');
+          },
+          error: function (error) {
+              console.log('Error fetching data:', error);
+              alert('Failed to load data.');
+          }
+      });
+
+    });
+
   });
     // Add New Client
     // on submit of form
@@ -341,7 +438,108 @@ $("#add-account-btn").on("click", function () {
     // Increment the index
     accountIndex++;
 });
+
+$("#add-account-btn-edit").on("click", function () {
+
+  let accountIndexEdit = $("#account-details-wrapper-edit").children().length;
+  // Clone the hidden template and update it
+  let template = $("#account-template-edit").html();
+  template = template.replace(/__INDEX__/g, accountIndexEdit); // Replace placeholder with index
+  // Convert the string to HTML and append to the wrapper
+  const $newAccountRow = $(template);
+  $("#account-details-wrapper-edit").append($newAccountRow);
+  // Increment the index
+});
 // Remove Account Button Click
-$("#account-details-wrapper").on("click", ".btn-remove-account", function () {
+$("#account-details-wrapper-edit").on("click", ".btn-remove-account", function () {
     $(this).closest(".account-detail").remove();
+});
+
+
+ // Images changes front side
+ $('#client-cnic_front_img').on('change', function(event) {
+
+  // Get the selected file
+  const file = event.target.files[0];
+  if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+
+        $('#front-preview').html(
+              `<img src="${e.target.result}" class="img-fluid" style="max-width: 200px; max-height: 150px; margin-top: 10px;" alt="CNIC Front">`
+          );
+      }
+
+      reader.readAsDataURL(file);
+  }
+});
+
+// Images changes back side
+$('#client-cnic_back_img').on('change', function(event) {
+  // Get the selected file
+  const file = event.target.files[0];
+  
+  if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function(e) 
+      {
+          $('#back-preview').html(
+              `<img src="${e.target.result}" class="img-fluid" style="max-width: 200px; max-height: 150px; margin-top: 10px;" alt="CNIC Front">`
+          );
+      }
+      reader.readAsDataURL(file);
+  }
+});
+$('#update-client').on('submit', function (e) {
+  
+  e.preventDefault();
+
+  // Clear previous error messages
+  $('.invalid-feedback').text('').hide();
+  $('.is-invalid').removeClass('is-invalid');
+
+  // Get form action URL and initialize FormData
+  const actionUrl = $(this).attr('action');
+  const formData  = new FormData(this);
+  // Handle the status value for the checkbox
+  const statusCheckbox = $('#customSwitch111').is(':checked') ? '1' : '0';
+  formData.set('status', statusCheckbox);
+
+  // Include CSRF token (important for Laravel)
+  const csrfToken = $('meta[name="csrf-token"]').attr('content');
+  formData.append('_token', csrfToken);
+
+  // Send AJAX request
+  $.ajax({
+      url: actionUrl,
+      type: 'POST',
+      data: formData,
+      processData: false, // Required for FormData
+      contentType: false, // Required for FormData
+      success: function (response) {
+          // Hide the modal
+          $('#modals-slide-in-edit').modal('hide');
+          // Optionally reload the page or update the table
+          alert('Client Updated successfully!');
+          location.reload();
+      },
+      error: function (xhr) {
+          if (xhr.status === 422) {
+              // Validation errors
+              const errors = xhr.responseJSON.errors;
+              for (const [key, messages] of Object.entries(errors)) {
+                  // Show error message
+                  const keyName = key.includes('.') ? key.replace('.', '[').replace('.', ']') : key; // Handle nested fields
+                  $(`.${keyName}-error`).text(messages[0]).show();
+                  $(`[name="${keyName}"]`).addClass('is-invalid');
+              }
+          } else {
+              alert('An unexpected error occurred.');
+              console.error(xhr);
+          }
+      }
+  });
+  
 });

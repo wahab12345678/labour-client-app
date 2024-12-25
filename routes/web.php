@@ -37,9 +37,12 @@ Route::middleware('guest')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('admin.client');
             Route::get('/list', [\App\Http\Controllers\Admin\ClientController::class, 'list'])->name('admin.client.list');
             Route::post('/store', [\App\Http\Controllers\Admin\ClientController::class, 'store'])->name('admin.client.store');
-            Route::put('/update',  [\App\Http\Controllers\Admin\ClientController::class, 'update'])->name('admin.client.update');
+            Route::post('/update',  [\App\Http\Controllers\Admin\ClientController::class, 'update'])->name('admin.client.update');
             Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'destroy'])->name('admin.client.destroy');
             Route::post('/change-status', [\App\Http\Controllers\Admin\ClientController::class, 'toggleStatus'])->name('admin.client.change-status');
+
+            Route::get('/edit/{id}', [\App\Http\Controllers\Admin\ClientController::class,  'edit'])->name('admin.client.edit');
+
         });
         Route::prefix('booking')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\BookingController::class, 'index'])->name('admin.booking');

@@ -60,26 +60,73 @@ class ClientService
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request)
+    public function update(ClientRequest $request)
     {
-        $id = $request->category_id;
-        $category = Category::findOrFail($id);
-        if($category) {
-            $category->update([
+        $id  = $request->client_id;
+
+        DB::beginTransaction();
+        try 
+        {
+            // Find the user by ID
+            $user = User::findOrFail($id);
+    
+            // Update user information
+            $user->update([
                 'name' => $request->name,
-                'description' => $request->description,
-                'status' => $request->status ==  1 ? UserStatus::Active->value : UserStatus::Inactive->value,
+                'email' => $request->phone . '@gmail.com',
+                'phone' => $request->phone,
+                'status' => $request->status == "1" ? UserStatus::Active->value : UserStatus::Inactive->value,
             ]);
+    
+           // Update user meta
+           $userMeta = $user->meta; // Assuming you have a one-to-one relationship with UserMeta
+           $userMeta->update([
+               'cnic_no'     => $request->cnic_no,
+               'address'     => $request->address,
+           ]);
+   
+           // Update images only if new files are uploaded
+           if ($request->hasFile('cnic_front_img')) 
+           {
+               $userMeta->cnic_front_img = $this->storeImageInPublicFolder($request->file('cnic_front_img'), 'cnic_front');
+           }
+           if ($request->hasFile('cnic_back_img')) 
+           {
+               $userMeta->cnic_back_img = $this->storeImageInPublicFolder($request->file('cnic_back_img'), 'cnic_back');
+           }
+   
+           // Save the updated user meta
+           $userMeta->save();
+   
+           // Update user accounts
+           // First, delete existing accounts
+           $user->accounts()->delete();
+           
+           // Add updated accounts
+           foreach ($request->accounts as $account) {
+               UserAccount::create([
+                   'user_id'         => $user->id,
+                   'account_type_id' => $account['type'],
+                   'account_no'      => $account['number'],
+                   'account_title'   => $account['title'],
+               ]);
+           }
+   
+            DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Category Updated Successfully'
-            ]);
+                'message' => 'Client updated successfully!',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while updating the client.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-        return response()->json([
-            'success' => false,
-            'message' => 'Category Not Found'
-        ]);
     }
+    
     /**
      * Store a newly created Client in the database.
      *
@@ -207,6 +254,21 @@ class ClientService
             ]);
         }
     }
+
+    public function edit($id)
+    {
+        $accountTypeList =   $this->accountTypeList();
+      
+        $user = User::where('id', $id)->with('accounts','meta')->get();
+       
+
+        return response()->json([
+            'user'            => $user,
+            'accountTypeList' => $accountTypeList,
+        ]);
+
+    }
+
 
     /**
      * Toggle the status of the specified client

@@ -164,6 +164,88 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="modal modal-slide-in fade" id="modals-slide-in-edit">
+                    <div class="modal-dialog sidebar-sm">
+                        <form id="update-client" class="add-new-record modal-content pt-0" method="POST" action="{{ route('admin.client.update') }}" enctype="multipart/form-data">
+                            @csrf
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                            <div class="modal-header mb-1">
+                                <h5 class="modal-title" id="exampleModalLabel">New Client</h5>
+                            </div>
+                            <input type="hidden" class="client_id" id="client_id" name="client_id" />
+
+                            <div class="modal-body flex-grow-1">
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Name</label>
+                                    <input type="text" class="form-control client-name" id="basic-icon-default-fullname" name="name" placeholder="Enter Name of Client" aria-label="John Doe" required/>
+                                    <div class="invalid-feedback name-error"></div>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Phone Number</label>
+                                    <input type="text" class="form-control client-phone" id="basic-icon-default-fullname" name="phone" placeholder="Enter Phone Number" aria-label="03002200222" required/>
+                                    <div class="invalid-feedback phone-error"></div>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">CNIC Number</label>
+                                    <input type="text" class="form-control client-cnic_no" id="basic-icon-default-fullname" name="cnic_no" placeholder="Enter CNIC without dashes" aria-label="3660100000000" required/>
+                                    <div class="invalid-feedback cnic_no-error"></div>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">CNIC Front Image</label>
+                                    <input type="file" class="form-control client-cnic_front_img" id="client-cnic_front_img" name="cnic_front_img" />
+                                    <div class="invalid-feedback cnic_front_img-error"></div>
+                                    <div id="front-preview" class="mt-2"></div>
+
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">CNIC Back Image</label>
+                                    <input type="file" class="form-control client-cnic_back_img" id="client-cnic_back_img" name="cnic_back_img" />
+                                    <div class="invalid-feedback cnic_back_img-error"></div>
+                                    <div id="back-preview" class="mt-2"></div>
+
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Address</label>
+                                    <textarea id="basic-icon-default-fullname" class="form-control client-address" name="address" placeholder="Enter Address" aria-label="Address" required></textarea>
+                                    <div class="invalid-feedback address-error"></div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <h5 class="form-label">Account Details</h5>
+                                    <div id="account-details-wrapper-edit">
+                                    </div>
+                                    <button type="button" id="add-account-btn-edit" class="btn btn-info btn-sm mt-1">+ Add</button>
+                                </div>
+                                <button type="submit" class="btn btn-primary data-submit me-1">Submit</button>
+                                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                        <!-- Hidden template -->
+                        <div id="account-template-edit" class="d-none">
+                            <div class="account-detail mb-2 d-flex align-items-center">
+                                <div class="me-1">
+                                    <label class="form-label">Account Type</label>
+                                    <select class="form-select" name="accounts[__INDEX__][type]" required>
+                                        <option value="">Select Type</option>
+                                        @foreach ($accountTypes as $accountType)
+                                            <option value="{{$accountType->id}}">{{$accountType->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="me-1">
+                                    <label class="form-label">Account Number</label>
+                                    <input type="text" class="form-control" name="accounts[__INDEX__][number]" placeholder="Enter Number" required>
+                                </div>
+                                <div class="me-1">
+                                    <label class="form-label">Account Title</label>
+                                    <input type="text" class="form-control" name="accounts[__INDEX__][title]" placeholder="Enter Title" required>
+                                </div>
+                                <button type="button" class="btn btn-danger btn-remove-account mt-2"><i data-feather="x"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
               <!-- Modal -->
             </section>
             <!--/ Basic table -->
