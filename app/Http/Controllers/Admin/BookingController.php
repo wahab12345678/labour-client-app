@@ -48,10 +48,14 @@ class BookingController extends Controller
     {
         return $booking->store($request);
     }
-
-    public function edit($id)
+    public function update(BookingService $booking, BookingRequest $request)
     {
+        return $booking->update($request);
+    }
 
+    public function edit(BookingService $booking,$id)
+    {
+        return $booking->edit($id);
     }
 
     /**

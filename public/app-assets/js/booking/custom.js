@@ -71,8 +71,8 @@ $(function () {
                             'Delete</a>' +
                             '</div>' +
                             '</div>' +
-                            '<a href="javascript:;" class="item-edit">' +
-                            feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
+                            '<a href="javascript:;" class="item-edit modals-slide-in-edit" data-id="' + full.id + '">' +
+                                feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
                             '</a>'
                         );
                     }
@@ -192,6 +192,69 @@ $(function () {
             });
         }
     });
+
+    $(document).on('click', '.modals-slide-in-edit', function () {
+  
+        var BookingId = $(this).data('id'); 
+     
+        $.ajax({
+      
+            url: `${assetPath}/edit/${BookingId}`,
+      
+            method: 'GET',
+            success: function (response) 
+            {
+              console.log(response);
+              
+              if (response.booking && response.booking.length > 0) 
+                {
+                    const clientId    = response.booking[0].client_id;   
+                    const labourId    = response.booking[0].labour_id;   
+                    const startDate   = response.booking[0].start_date; 
+                    const endDate     = response.booking[0].end_date; 
+                    const price       = response.booking[0].price; 
+                    const description = response.booking[0].description; 
+
+                    $('#client_id_Edit').val(clientId).trigger('change.select2');
+                    $('#labour_id_Edit').val(labourId).trigger('change.select2');
+                    $('#start_date_edit').val(startDate);
+                    $('#end_date_edit').val(endDate);
+                    $('#price_edit').val(price);
+                    $('#description_edit').val(description);
+                    $('#booking_id').val(response.booking[0].id);
+
+                    // Update the Flatpickr instance if applicable
+                    if ($('#start_date_edit').hasClass('flatpickr-date-time')) 
+                        {
+                        const flatpickrInstance = $('#start_date_edit')[0]._flatpickr;
+                        if (flatpickrInstance) {
+                            flatpickrInstance.setDate(startDate, true); // Set the date and trigger change event
+                        }
+                    }
+                     // Update the Flatpickr instance if applicable
+                     if ($('#end_date_edit').hasClass('flatpickr-date-time')) 
+                        {
+                        const flatpickrInstance = $('#end_date_edit')[0]._flatpickr;
+                        if (flatpickrInstance) {
+                            flatpickrInstance.setDate(endDate, true); // Set the date and trigger change event
+                        }
+                    }
+
+                } 
+                else 
+                {
+                    console.error("Booking data is missing or invalid.");
+                }
+                $('#modals-slide-in-edit').modal('show');
+            },
+            error: function (error) {
+                console.log('Error fetching data:', error);
+                alert('Failed to load data.');
+            }
+        });
+  
+      });
+
   });
     // Add New Booking
     // on submit of form
@@ -243,27 +306,58 @@ $(function () {
         });
     });
 
-  // Edit Client
-  $(document).on('click', '.modal-slide-in-edit', function () {
-    // Get data from the clicked edit button
-    const id = $(this).data('id');
-    const name = $(this).data('name');
-    const description = $(this).data('description');
-    const status = $(this).data('status');
-    // Populate the modal form with the category data
-    $('#edit-category-name').val(name);
-    $('#edit-category-description').val(description);
+    $('#update-booking').on('submit', function (e) {
 
-    // Set the status checkbox based on the category's status
-    $('#edit-customSwitch').prop('checked', status === 1);
-    $('#edit-customSwitch').val(status);
-
-    // Set the form action to update the category
-    $('#edit-category-id').val(id);
-
-    // Show the modal
-    $('#modals-slide-in-edit').modal('show');
-});
+        e.preventDefault();
+        // Clear previous error messages
+        $('.invalid-feedback').text('').hide();
+        $('.is-invalid').removeClass('is-invalid');
+        // Get form action URL and initialize FormData
+        const actionUrl = $(this).attr('action');
+        const formData = new FormData(this);
+        // Include CSRF token (important for Laravel)
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        formData.append('_token', csrfToken);
+        // Send AJAX request
+        $.ajax({
+            url: actionUrl,
+            type: 'POST',
+            data: formData,
+            processData: false, // Required for FormData
+            contentType: false, // Required for FormData
+            success: function (response) 
+            {
+                console.log('response', response);
+                if(response.success) 
+                    {
+                    // Hide the modal
+                    $('#modals-slide-in-edit').modal('hide');
+                    // Optionally reload the page or update the table
+                    alert(response.message);
+                    location.reload();
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function (xhr) 
+            {
+                if (xhr.status === 422) 
+                    {
+                    // Validation errors
+                    const errors = xhr.responseJSON.errors;
+                    for (const [key, messages] of Object.entries(errors)) {
+                        // Show error message
+                        const keyName = key.includes('.') ? key.replace('.', '[').replace('.', ']') : key; // Handle nested fields
+                        $(`.${keyName}-error`).text(messages[0]).show();
+                        $(`[name="${keyName}"]`).addClass('is-invalid');
+                    }
+                } else {
+                    alert('An unexpected error occurred.');
+                    console.error(xhr);
+                }
+            }
+        });
+    });
 
 // Event listener for delete action
 $(document).on('click', '.delete-category', function () {

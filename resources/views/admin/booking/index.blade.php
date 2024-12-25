@@ -129,6 +129,66 @@
                     </div>
                 </div>
               <!-- Modal -->
+
+              <!-- Modal to Update new record -->
+              <div class="modal modal-slide-in fade" id="modals-slide-in-edit">
+                <div class="modal-dialog sidebar-sm">
+                    <form id="update-booking" class="add-new-record modal-content pt-0" method="POST" action="{{ route('admin.booking.update') }}" enctype="multipart/form-data">
+                        @csrf
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                        <div class="modal-header mb-1">
+                            <h5 class="modal-title" id="exampleModalLabel">Update Booking</h5>
+                        </div>
+                        <input type="hidden" class="booking_id" id="booking_id" name="booking_id" />
+
+                        <div class="modal-body flex-grow-1">
+                            <div class="me-1 mb-1">
+                                <label class="form-label" for="client_id">Clients</label>
+                                <select class="select2 form-select" id="client_id_Edit" name="client_id" required>
+                                    <option value="">Select Client</option>
+                                    @foreach ($clients as $client)
+                                        <option value="{{$client->id}}">{{$client->name}} - {{$client->phone}}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback client_id-error"></div>
+                            </div>
+                            <div class="me-1 mb-1">
+                                <label class="form-label" for="labour_id">Labours</label>
+                                <select class="select2 form-select" id="labour_id_Edit" name="labour_id" required>
+                                    <option value="">Select Labour</option>
+                                    @foreach ($labours as $labour)
+                                        <option value="{{$labour->id}}">{{$labour->name}} - {{$labour->phone}}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback labour_id-error"></div>
+                            </div>
+                            <div class="me-1 mb-1">
+                                <label class="form-label" for="start_date">Start Date</label>
+                                <input type="text" id="start_date_edit" name="start_date" class="form-control flatpickr-date-time" placeholder="YYYY-MM-DD HH:MM" required/>
+                                <div class="invalid-feedback start_date-error"></div>
+                            </div>
+                            <div class="me-1 mb-1">
+                                <label class="form-label" for="end_date">End Date</label>
+                                <input type="text" id="end_date_edit" name="end_date" class="form-control flatpickr-date-time" placeholder="YYYY-MM-DD HH:MM" />
+                                <div class="invalid-feedback end_date-error"></div>
+                            </div>
+                            <div class="me-1 mb-1">
+                                <label class="form-label" for="price">Amount</label>
+                                <input type="number" id="price_edit" name="price" class="form-control" placeholder="Enter Amount of Booking" required/>
+                                <div class="invalid-feedback price-error"></div>
+                            </div>
+                            <div class="me-1 mb-1">
+                                <label class="form-label" for="description">Description</label>
+                                <textarea class="form-control" id="description_edit" name="description" placeholder="Enter Description"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary data-submit me-1">Submit</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+          <!-- Modal -->
+
             </section>
             <!--/ Basic table -->
         </div>

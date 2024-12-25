@@ -67,6 +67,56 @@ class BookingService
         ]);
     }
 
+    public function update(BookingRequest $request)
+    {
+        $id      = $request->booking_id;
+
+        $booking = Booking::find($id);
+
+        if (!$booking) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking not found'
+            ], 404);
+        }
+
+        // Check for overlapping bookings
+        $bookingExist = Booking::where('labour_id', $request->labour_id)
+            ->where('id', '!=', $id) // Exclude the current booking
+            ->whereIn('status', ['pending', 'accepted'])
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('start_date', [$request->start_date, $request->end_date])
+                    ->orWhereBetween('end_date', [$request->start_date, $request->end_date])
+                    ->orWhere(function ($query) use ($request) {
+                        $query->where('start_date', '<=', $request->start_date)
+                            ->where('end_date', '>=', $request->end_date);
+                    });
+            })->exists();
+
+        if ($bookingExist) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Labour is already booked for this date range'
+            ]);
+        }
+
+        // Update booking details
+        $booking->update([
+            'client_id'    => $request->client_id,
+            'labour_id'    => $request->labour_id,
+            'start_date'   => $request->start_date,
+            'end_date'     => $request->end_date,
+            'price'        => $request->price,
+            'description'  => $request->description
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Booking updated successfully'
+        ]);
+    }
+
+
     /**
      * Delete a booking by ID.
      *
@@ -108,6 +158,15 @@ class BookingService
         return response()->json([
            'success' => false,
            'message' => 'Booking not found',
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $BookingDetail = Booking::where('id', $id)->get();
+
+        return response()->json([
+            'booking'   => $BookingDetail,
         ]);
     }
 }
