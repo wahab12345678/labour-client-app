@@ -21,14 +21,17 @@ class BookingRequest extends FormRequest
      */
     public function rules(): array
     {
+        $bookingId = $this->input('booking_id'); 
+
         return [
             'client_id' => 'required',
             'labour_id' => 'required',
             'start_date' => 'required',
+            'status' => $bookingId ? 'nullable' : 'required', // Image is not required if userId is present
             'end_date' => 'required',
             // 'description' => 'required',
             'price' => 'required',
-            'status' => 'required',
+            // 'status' => 'required',
         ];
     }
 }
