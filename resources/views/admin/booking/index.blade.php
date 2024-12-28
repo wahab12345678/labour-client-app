@@ -84,12 +84,17 @@
                                 </div>
                                 <div class="me-1 mb-1">
                                     <label class="form-label" for="labour_id">Labours</label>
-                                    <select class="select2 form-select" id="labour_id" name="labour_id" required>
-                                        <option value="">Select Labour</option>
+                                    <select class="select2 form-select" name="labour_id[]" multiple="multiple" id="default-select-multi" required>
                                         @foreach ($labours as $labour)
                                             <option value="{{$labour->id}}">{{$labour->name}} - {{$labour->phone}}</option>
                                         @endforeach
                                     </select>
+                                    {{-- <select class="select2 form-select" id="labour_id" name="labour_id" required>
+                                        <option value="">Select Labour</option>
+                                        @foreach ($labours as $labour)
+                                            <option value="{{$labour->id}}">{{$labour->name}} - {{$labour->phone}}</option>
+                                        @endforeach
+                                    </select> --}}
                                     <div class="invalid-feedback labour_id-error"></div>
                                 </div>
                                 <div class="me-1 mb-1">
@@ -154,8 +159,13 @@
                             </div>
                             <div class="me-1 mb-1">
                                 <label class="form-label" for="labour_id">Labours</label>
-                                <select class="select2 form-select" id="labour_id_Edit" name="labour_id" required>
+                                {{-- <select class="select2 form-select" id="labour_id_Edit" name="labour_id" required>
                                     <option value="">Select Labour</option>
+                                    @foreach ($labours as $labour)
+                                        <option value="{{$labour->id}}">{{$labour->name}} - {{$labour->phone}}</option>
+                                    @endforeach
+                                </select> --}}
+                                <select class="select2 form-select" name="labour_id[]" multiple="multiple" id="labour_id_Edit" required>
                                     @foreach ($labours as $labour)
                                         <option value="{{$labour->id}}">{{$labour->name}} - {{$labour->phone}}</option>
                                     @endforeach

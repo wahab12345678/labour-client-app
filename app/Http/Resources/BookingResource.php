@@ -17,11 +17,10 @@ class BookingResource extends JsonResource
         return [
             'id' => $this->id,
             'client_id' => $this->client_id,
-            'labour_id' => $this->labour_id,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
-            'client_name' => $this->client->name ?? "",
-            'labour_name' => $this->labour->name ?? "",
+            'client_name' => $this->client->name ?? "No Client Selected",
+            'labour_name' => $this->labours->pluck('name')->join(', ') ?: "No Labour Selected",
             'price' => $this->price,
             'status' => $this->status,
             'created_at' => $this->created_at->toDateTimeString(),

@@ -194,56 +194,44 @@ $(function () {
     });
 
     $(document).on('click', '.modals-slide-in-edit', function () {
-  
-        var BookingId = $(this).data('id'); 
-     
+        var BookingId = $(this).data('id');
         $.ajax({
-      
             url: `${assetPath}/edit/${BookingId}`,
-      
             method: 'GET',
-            success: function (response) 
-            {
+            success: function (response) {
               console.log(response);
-              
-              if (response.booking && response.booking.length > 0) 
-                {
-                    const clientId    = response.booking[0].client_id;   
-                    const labourId    = response.booking[0].labour_id;   
-                    const startDate   = response.booking[0].start_date; 
-                    const endDate     = response.booking[0].end_date; 
-                    const price       = response.booking[0].price; 
-                    const description = response.booking[0].description; 
-
+              if (response.booking) {
+                    const clientId    = response.booking?.client_id;
+                    const labourId    = response.labour_ids;
+                    const startDate   = response.booking?.start_date;
+                    const endDate     = response.booking?.end_date;
+                    const price       = response.booking?.price;
+                    const description = response.booking?.description;
+                    // Assign values to the fields
                     $('#client_id_Edit').val(clientId).trigger('change.select2');
                     $('#labour_id_Edit').val(labourId).trigger('change.select2');
                     $('#start_date_edit').val(startDate);
                     $('#end_date_edit').val(endDate);
                     $('#price_edit').val(price);
                     $('#description_edit').val(description);
-                    $('#booking_id').val(response.booking[0].id);
-
+                    $('#booking_id').val(response.booking.id);
                     // Update the Flatpickr instance if applicable
-                    if ($('#start_date_edit').hasClass('flatpickr-date-time')) 
-                        {
+                    if ($('#start_date_edit').hasClass('flatpickr-date-time')){
                         const flatpickrInstance = $('#start_date_edit')[0]._flatpickr;
                         if (flatpickrInstance) {
                             flatpickrInstance.setDate(startDate, true); // Set the date and trigger change event
                         }
                     }
                      // Update the Flatpickr instance if applicable
-                     if ($('#end_date_edit').hasClass('flatpickr-date-time')) 
-                        {
+                     if ($('#end_date_edit').hasClass('flatpickr-date-time')){
                         const flatpickrInstance = $('#end_date_edit')[0]._flatpickr;
                         if (flatpickrInstance) {
                             flatpickrInstance.setDate(endDate, true); // Set the date and trigger change event
                         }
                     }
-
-                } 
-                else 
-                {
-                    console.error("Booking data is missing or invalid.");
+                } else{
+                    alert("Booking data is missing or invalid.");
+                    window.location.reload();
                 }
                 $('#modals-slide-in-edit').modal('show');
             },
@@ -252,9 +240,7 @@ $(function () {
                 alert('Failed to load data.');
             }
         });
-  
       });
-
   });
     // Add New Booking
     // on submit of form
@@ -325,10 +311,10 @@ $(function () {
             data: formData,
             processData: false, // Required for FormData
             contentType: false, // Required for FormData
-            success: function (response) 
+            success: function (response)
             {
                 console.log('response', response);
-                if(response.success) 
+                if(response.success)
                     {
                     // Hide the modal
                     $('#modals-slide-in-edit').modal('hide');
@@ -339,9 +325,9 @@ $(function () {
                     alert(response.message);
                 }
             },
-            error: function (xhr) 
+            error: function (xhr)
             {
-                if (xhr.status === 422) 
+                if (xhr.status === 422)
                     {
                     // Validation errors
                     const errors = xhr.responseJSON.errors;
