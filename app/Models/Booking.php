@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
 {
-    protected $fillable = ['client_id', 'labour_id', 'start_date', 'end_date', 'status', 'price', 'description'];
+    protected $fillable = ['client_id', 'start_date', 'end_date', 'status', 'price', 'description'];
     /**
      * The client that the booking belongs to.
      *
@@ -21,8 +21,8 @@ class Booking extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function labour()
+    public function labours()
     {
-        return $this->belongsTo(User::class, 'labour_id');
+        return $this->belongsToMany(User::class, 'booking_labours', 'booking_id', 'labour_id');
     }
 }
