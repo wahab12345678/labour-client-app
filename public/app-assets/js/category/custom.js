@@ -172,6 +172,56 @@ $(function () {
       dt_basic.row($(this).parents('tr')).remove().draw();
     });
 
+    $('#store-contractor').on('submit', function (e) {
+     
+      e.preventDefault();
+      // Clear previous error messages
+      $('.invalid-feedback').text('').hide();
+      $('.is-invalid').removeClass('is-invalid');
+      // Get form action URL and initialize FormData
+      const actionUrl = $(this).attr('action');
+      const formData = new FormData(this);
+      // Include CSRF token (important for Laravel)
+      const csrfToken = $('meta[name="csrf-token"]').attr('content');
+      formData.append('_token', csrfToken);
+      // Send AJAX request
+      $.ajax({
+          url: actionUrl,
+          type: 'POST',
+          data: formData,
+          processData: false, // Required for FormData
+          contentType: false, // Required for FormData
+          success: function (response) {
+              console.log('response', response);
+              if(response.success) {
+                  // Hide the modal
+                  $('#modals-slide-in').modal('hide');
+                  // Optionally reload the page or update the table
+                  alert(response.message);
+                  location.reload();
+              } else {
+                  alert(response.message);
+              }
+          },
+          error: function (xhr) {
+              if (xhr.status === 422) {
+                  // Validation errors
+                  const errors = xhr.responseJSON.errors;
+                  for (const [key, messages] of Object.entries(errors)) {
+                      // Show error message
+                      const keyName = key.includes('.') ? key.replace('.', '[').replace('.', ']') : key; // Handle nested fields
+                      $(`.${keyName}-error`).text(messages[0]).show();
+                      $(`[name="${keyName}"]`).addClass('is-invalid');
+                  }
+              } else {
+                  alert('An unexpected error occurred.');
+                  console.error(xhr);
+              }
+          }
+      });
+  });
+
+
   });
   // Edit Category
 
@@ -215,7 +265,6 @@ $(document).on('click', '.delete-category', function () {
   // Show confirmation prompt before deletion
   if (confirm('Are you sure you want to delete this category?')) {
 
-    alert("TES");
       // Send the AJAX request to delete the category
       $.ajax({
           url: `/category/categories/${categoryId}`,  // Correct URL with category prefix

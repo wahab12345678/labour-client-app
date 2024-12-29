@@ -57,7 +57,7 @@
                 <!-- Modal to add new record -->
                 <div class="modal modal-slide-in fade" id="modals-slide-in">
                     <div class="modal-dialog sidebar-sm">
-                        <form class="add-new-record modal-content pt-0"  method="POST" action="{{ route('admin.category.create') }}">
+                        <form id ="store-category"class="add-new-record modal-content pt-0"  method="POST" action="{{ route('admin.category.create') }}">
                             @csrf
                             @method('POST') <!-- This simulates a PUT request -->
 
