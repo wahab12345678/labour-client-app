@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="block text-center">
                     <div class="footer-logo">
-                        <img src="images/footer-logo.png" alt="logo" class="img-fluid">
+                        <img src="{{ asset('images/footer-logo.png')}}" alt="logo" class="img-fluid">
                     </div>
                     <ul class="social-links-footer list-inline">
                         <li class="list-inline-item">
@@ -39,8 +39,8 @@
         <div class="row">
             <div class="col-md-6 align-self-center">
                 <div class="copyright-text">
-                    <p><a href="index.html">Eventre</a> &copy; 2021, Designed &amp; Developed by <a
-                            href="https://themefisher.com/">Themefisher</a></p>
+                    <p><a href="{{url('/')}}">{{env('APP_NAME')}}</a> &copy; 2021, Designed &amp; Developed by <a
+                            href="{{url('/')}}">{{env('APP_NAME')}}</a></p>
                 </div>
             </div>
             <div class="col-md-6">
@@ -53,22 +53,22 @@
 
 <!-- JAVASCRIPTS -->
 <!-- jQuey -->
-<script src="plugins/jquery/jquery.min.js"></script>
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/bootstrap.min.js"></script>
+<script src="{{ asset('plugins/bootstrap/bootstrap.min.js') }}"></script>
 <!-- Shuffle -->
-<script src="plugins/shuffle/shuffle.min.js"></script>
+<script src="{{ asset('plugins/shuffle/shuffle.min.js') }}"></script>
 <!-- Magnific Popup -->
-<script src="plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="{{ asset('plugins/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
 <!-- Slick Carousel -->
-<script src="plugins/slick/slick.min.js"></script>
+<script src="{{ asset('plugins/slick/slick.min.js') }}"></script>
 <!-- SyoTimer -->
-<script src="plugins/syotimer/jquery.syotimer.min.js"></script>
+<script src="{{ asset('plugins/syotimer/jquery.syotimer.min.js') }}"></script>
 <!-- Google Mapl -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU"></script>
-<script src="plugins/google-map/gmap.js"></script>
+<script src="{{ asset('plugins/google-map/gmap.js') }}"></script>
 <!-- Custom Script -->
-<script src="js/script.js"></script>
+<script src="{{ asset('js/script.js') }}"></script>
 </body>
 
 </html>

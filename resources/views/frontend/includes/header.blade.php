@@ -28,20 +28,20 @@
 
   <!-- PLUGINS CSS STYLE -->
   <!-- Bootstrap -->
-  <link href="plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ asset('plugins/bootstrap/bootstrap.min.css')}}" rel="stylesheet">
   <!-- Font Awesome -->
-  <link href="plugins/font-awsome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="{{ asset('plugins/font-awsome/css/font-awesome.min.css')}}" rel="stylesheet">
   <!-- Magnific Popup -->
-  <link href="plugins/magnific-popup/magnific-popup.css" rel="stylesheet">
+  <link href="{{ asset('plugins/magnific-popup/magnific-popup.css')}}" rel="stylesheet">
   <!-- Slick Carousel -->
-  <link href="plugins/slick/slick.css" rel="stylesheet">
-  <link href="plugins/slick/slick-theme.css" rel="stylesheet">
+  <link href="{{ asset('plugins/slick/slick.css')}}" rel="stylesheet">
+  <link href="{{ asset('plugins/slick/slick-theme.css')}}" rel="stylesheet">
   <!-- CUSTOM CSS -->
-  <link href="css/style.css" rel="stylesheet">
+  <link href="{{ asset('css/style.css')}}" rel="stylesheet">
 
   <!-- FAVICON -->
-  <link href="images/favicon.png" rel="shortcut icon">
-
+  <link href="{{ asset('images/favicon.png')}}" rel="shortcut icon">
+    @yield('header')
 </head>
 
 <body class="body-wrapper">
@@ -53,8 +53,8 @@
 <nav class="navbar main-nav border-less fixed-top navbar-expand-lg p-0">
   <div class="container-fluid p-0">
     <!-- logo -->
-    <a class="navbar-brand" href="index.html">
-      <img src="images/logo.png" alt="logo">
+    <a class="navbar-brand" href="{{ url('/') }}">
+      <img src="{{ asset('images/logo.png')}}" alt="logo">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,51 +62,51 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto">
-        <li class="nav-item dropdown active">
-          <a class="nav-link" href="#!" data-toggle="dropdown">Home <i class="fa fa-angle-down"></i>
-            <span>/</span>
-          </a>
-          <!-- Dropdown list -->
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="index.html">Homepage</a></li>
-            <li><a class="dropdown-item" href="homepage-two.html">Homepage 2</a></li>
-          </ul>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/') }}">Home
+                <span>/</span>
+            </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="speakers.html">Speakers
+          <a class="nav-link" href="{{ url('/about') }}">About Us
             <span>/</span>
           </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/contact') }}">Contact Us
+              <span>/</span>
+            </a>
+          </li>
         <li class="nav-item dropdown">
-          <a class="nav-link" href="#!" data-toggle="dropdown">Pages <i class="fa fa-angle-down"></i><span>/</span></a>
+          <a class="nav-link" href="#!" data-toggle="dropdown">Register <i class="fa fa-angle-down"></i><span>/</span></a>
           <!-- Dropdown list -->
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="about-us.html">About Us</a></li>
-            <li><a class="dropdown-item" href="single-speaker.html">Single Speaker</a></li>
-            <li><a class="dropdown-item" href="gallery.html">Gallery</a></li>
-            <li><a class="dropdown-item" href="gallery-two.html">Gallery-02</a></li>
+            <li><a class="dropdown-item" href="{{ url('/client_register') }}">Client</a></li>
+            {{-- <li><a class="dropdown-item" href="single-speaker.html">Labour</a></li>
+            <li><a class="dropdown-item" href="gallery.html">Contractor</a></li> --}}
+            {{-- <li><a class="dropdown-item" href="gallery-two.html">Gallery-02</a></li>
             <li><a class="dropdown-item" href="testimonial.html">Testimonial</a></li>
             <li><a class="dropdown-item" href="pricing.html">Pricing</a></li>
             <li><a class="dropdown-item" href="FAQ.html">FAQ</a></li>
-            <li><a class="dropdown-item" href="404.html">404</a></li>
+            <li><a class="dropdown-item" href="404.html">404</a></li> --}}
 
-            <li class="dropdown dropdown-submenu dropright">
+            {{-- <li class="dropdown dropdown-submenu dropright">
               <a class="dropdown-item dropdown-toggle" href="#!" id="dropdown0301" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sub Menu</a>
 
               <ul class="dropdown-menu" aria-labelledby="dropdown0301">
                 <li><a class="dropdown-item" href="index.html">Submenu 01</a></li>
                 <li><a class="dropdown-item" href="index.html">Submenu 02</a></li>
               </ul>
-            </li>
+            </li> --}}
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="schedule.html">Schedule<span>/</span></a>
+          <a class="nav-link" href="{{url('/services')}}">Services</a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a class="nav-link" href="sponsors.html">Sponsors<span>/</span></a>
-        </li>
-        <li class="nav-item dropdown">
+        </li> --}}
+        {{-- <li class="nav-item dropdown">
           <a class="nav-link" href="#!" data-toggle="dropdown">News <i class="fa fa-angle-down"></i><span>/</span>
           </a>
           <!-- Dropdown list -->
@@ -125,14 +125,14 @@
               </ul>
             </li>
           </ul>
-        </li>
-        <li class="nav-item">
+        </li> --}}
+        {{-- <li class="nav-item">
           <a class="nav-link" href="contact.html">Contact</a>
-        </li>
+        </li> --}}
       </ul>
-      <a href="contact.html" class="ticket">
-        <img src="images/icon/ticket.png" alt="ticket">
-        <span>Buy Ticket</span>
+      <a href="{{ url('/client_register') }}" class="ticket">
+        <img src="{{ asset('images/icon/ticket.png')}}" alt="ticket">
+        <span>Register</span>
       </a>
     </div>
   </div>
