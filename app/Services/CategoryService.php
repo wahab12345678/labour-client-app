@@ -4,6 +4,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Enums\CategoryStatus;
+use Illuminate\Support\Str;
 
 use App\Http\Requests\CategoryRequest;
 
@@ -33,6 +34,17 @@ class CategoryService
                 'description' => $request->description,
                 'status' => $request->status ==  'on' ? CategoryStatus::Active->value : CategoryStatus::Inactive->value,
             ]);
+            // check if the slug field is empty
+            if (empty($category->slug)) {
+                // Generate a unique slug
+                $slug = Str::slug($request->name);
+                $slugCount = Category::where('slug', $slug)->count();
+                // If the slug already exists, append a number to make it unique
+                if ($slugCount > 0) {
+                    $slug = $slug . '-' . ($slugCount + 1);
+                }
+                $category->update(['slug' => $slug]);
+            }
             return response()->json([
                 'success' => true,
                 'message' => 'Category Updated Successfully'
@@ -45,9 +57,17 @@ class CategoryService
     }
     public function create(CategoryRequest $request)
     {
+        // Generate a unique slug
+        $slug = Str::slug($request->name);
+        $slugCount = Category::where('slug', $slug)->count();
+        // If the slug already exists, append a number to make it unique
+        if ($slugCount > 0) {
+            $slug = $slug . '-' . ($slugCount + 1);
+        }
         Category::create([
             'name'        => $request->name,
             'description' => $request->description,
+            'slug'        => $slug,
             'status'      => $request->status ==  1 ? CategoryStatus::Active->value : CategoryStatus::Inactive->value,
         ]);
         return response()->json([

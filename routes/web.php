@@ -4,6 +4,15 @@ use Illuminate\Support\Facades\Route;
 
 // Frontend Routes
 Route::get('/', [\App\Http\Controllers\Frontend\HomeController::class, 'index'])->name('home');
+Route::get('/about', [\App\Http\Controllers\Frontend\HomeController::class, 'about'])->name('about');
+Route::get('/client_register', [\App\Http\Controllers\Frontend\HomeController::class, 'client'])->name('client_register');
+Route::post('/client_register', [\App\Http\Controllers\Frontend\HomeController::class, 'storeClient'])->name('client_register.store');
+Route::get('/contact', [\App\Http\Controllers\Frontend\HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [\App\Http\Controllers\Frontend\HomeController::class, 'storeContact'])->name('contact.store');
+Route::get('/services', [\App\Http\Controllers\Frontend\HomeController::class, 'services'])->name('services');
+Route::get('/services/{slug}', [\App\Http\Controllers\Frontend\HomeController::class, 'serviceDetail'])->name('service.details');
+Route::get('/contractor/details/{slug}', [\App\Http\Controllers\Frontend\HomeController::class, 'contractorDetail'])->name('contractor.details');
+
 Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 Route::middleware('guest')->group(function () {
     Route::get('/admin', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.home'); // Render login page here
@@ -62,7 +71,7 @@ Route::middleware('guest')->group(function () {
             Route::post('/update',  [\App\Http\Controllers\Admin\BookingController::class, 'update'])->name('admin.booking.update');
             Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\BookingController::class, 'destroy'])->name('admin.booking.destroy');
             Route::post('/change-status', [\App\Http\Controllers\Admin\BookingController::class, 'toggleStatus'])->name('admin.booking.change-status');
-       
+
             Route::get('/edit/{id}', [\App\Http\Controllers\Admin\BookingController::class,'edit'])->name('admin.booking.edit');
 
         });
