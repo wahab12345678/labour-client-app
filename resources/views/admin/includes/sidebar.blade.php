@@ -42,6 +42,8 @@
             </li>
             <li class=" nav-item {{ request()->routeIs('admin.category') ? 'active' : '' }}"><a class="d-flex align-items-center"href="{{ route('admin.category') }}"><i data-feather='corner-down-right'></i><span class="menu-title text-truncate" data-i18n="Categories">Categories</span></a>
             </li>
+            <li class=" nav-item {{ request()->routeIs('admin.contractor') ? 'active' : '' }}"><a class="d-flex align-items-center"href="{{ route('admin.contractor') }}"><i data-feather='corner-down-right'></i><span class="menu-title text-truncate" data-i18n="Contractors">Contractors</span></a>
+            </li>
             <li class=" nav-item {{ request()->routeIs('admin.labour') ? 'active' : '' }}"><a class="d-flex align-items-center"href="{{ route('admin.labour') }}"><i data-feather='corner-down-right'></i><span class="feather feather-user" data-i18n="Labours">Labours</span></a>
             </li>
             <li class=" nav-item {{ request()->routeIs('admin.client') ? 'active' : '' }}"><a class="d-flex align-items-center"href="{{ route('admin.client') }}"><i data-feather='corner-down-right'></i><span class="feather feather-user" data-i18n="Clients">Clients</span></a>

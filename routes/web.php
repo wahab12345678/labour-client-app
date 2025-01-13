@@ -33,6 +33,17 @@ Route::middleware('guest')->group(function () {
             Route::get('/edit/{id}', [\App\Http\Controllers\Admin\LabourController::class,  'edit'])->name('labour.edit');
 
         });
+        Route::prefix('Contractor')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\ContractorController::class, 'index'])->name('admin.contractor');
+            Route::get('/list', [\App\Http\Controllers\Admin\ContractorController::class, 'list'])->name('admin.contractor.list');
+            Route::post('/store', [\App\Http\Controllers\Admin\ContractorController::class, 'store'])->name('admin.contractor.store');
+            Route::post('/update', [\App\Http\Controllers\Admin\ContractorController::class, 'update'])->name('admin.contractor.update');
+            Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\ContractorController::class, 'destroy'])->name('admin.contractor.destroy');
+            Route::post('/change-status', [\App\Http\Controllers\Admin\ContractorController::class, 'toggleStatus'])->name('admin.contractor.change-status');
+
+            Route::get('/edit/{id}', [\App\Http\Controllers\Admin\ContractorController::class,  'edit'])->name('labour.edit');
+
+        });
         Route::prefix('client')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('admin.client');
             Route::get('/list', [\App\Http\Controllers\Admin\ClientController::class, 'list'])->name('admin.client.list');
