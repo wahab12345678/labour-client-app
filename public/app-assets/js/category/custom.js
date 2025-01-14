@@ -45,9 +45,15 @@ $(function () {
             },
             {
                 targets: 3, // Status
+                
                 render: function (data, type, full, meta) {
-                  return full.status; // Directly render the description
-                }
+                  // Checking if status is 1 (Active) or 0 (Inactive) and applying the appropriate badge class
+                  if (full.status == "Active") {
+                  return '<span class="badge badge-glow bg-success">Active</span>'; // Green badge for Active
+                  } else {
+                  return '<span class="badge badge-glow bg-danger">Inactive</span>'; // Red badge for Inactive
+                  }
+              }
             },
             {
                 // targets: 4, // Status
@@ -56,20 +62,42 @@ $(function () {
                 // }
                 targets: 4, // Action column
                 render: function (data, type, full, meta) {
-                    return `
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton${full.id}" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${full.id}">
-                                <li><a class="dropdown-item modal-slide-in-edit" href="javascript:void(0);" data-id="${full.id}" data-name="${full.name}" data-description="${full.description}" data-status="${full.status}">Edit</a></li>
-                                <li><a class="dropdown-item delete-category" href="javascript:void(0);" data-id="${full.id}">Delete</a></li>
-                                <li><a class="dropdown-item toggle-status" href="javascript:void(0);" data-id="${full.id}" data-status="${full.status}">
-                                    ${full.status == 1 ? 'Deactivate' : 'Activate'}
-                                </a></li>
-                            </ul>
-                        </div>
-                    `;
+                    // return `
+                    //     <div class="dropdown">
+                    //         <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton${full.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                    //             <i class="fas fa-ellipsis-v"></i>
+                    //         </button>
+                    //         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${full.id}">
+                    //             <li><a class="dropdown-item modal-slide-in-edit" href="javascript:void(0);" data-id="${full.id}" data-name="${full.name}" data-description="${full.description}" data-status="${full.status}">Edit</a></li>
+                    //             <li><a class="dropdown-item delete-category" href="javascript:void(0);" data-id="${full.id}">Delete</a></li>
+                    //             <li><a class="dropdown-item toggle-status" href="javascript:void(0);" data-id="${full.id}" data-status="${full.status}">
+                    //                 ${full.status == 1 ? 'Deactivate' : 'Activate'}
+                    //             </a></li>
+                    //         </ul>
+                    //     </div>
+                    // `;
+
+                    return (
+                      '<div class="d-inline-flex">' +
+                      '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown">' +
+                      feather.icons['more-vertical'].toSvg({ class: 'font-small-4' }) +
+                      '</a>' +
+                      '<div class="dropdown-menu dropdown-menu-end">' +
+                      // Conditionally display "Activate/Deactivate" based on the current status
+                      '<a href="javascript:;" class="dropdown-item toggle-status" data-id="' + full.id + '" data-status="' + full.status + '">' +
+                      feather.icons['archive'].toSvg({ class: 'font-small-4 me-50' }) +
+                      (full.status ==  'Active' ? 'Deactivate' : 'Activate') +
+                      '</a>' +
+                      '<a href="javascript:;" class="dropdown-item delete-category" data-id="' + full.id + '">' +
+                      feather.icons['trash-2'].toSvg({ class: 'font-small-4 me-50' }) +
+                      'Delete</a>' +
+                      '</div>' +
+                      '</div>' +
+                       // Edit button to trigger the modaldropdown-item modal-slide-in-edit
+                    '<a href="javascript:;" class="item-edit modal-slide-in-edit" data-id="' + full.id + '" data-name="' + full.name + '" data-description="' + full.description + '" data-status="' + full.status + '">' +
+                    feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
+                    '</a>'
+                        );
                 }
             }
         ],
@@ -285,6 +313,42 @@ $(document).on('click', '.delete-category', function () {
       });
   }
 });
+
+ // Change Status
+//  $('.datatables-basic tbody').on('click', '.toggle-status', function () 
+ $(document).on('click', '.toggle-status', function ()
+ {
+
+  const id     = $(this).data('id');  // Get category ID from the button data attribute
+  const status = $(this).data('status');
+
+  if (confirm('Are you sure you want to change the status of this record?')) {
+      // Send the AJAX request
+      $.ajax({
+          url: `/category/change-status/`,  // Correct URL with category prefix
+          type: 'POST', // HTTP method
+          contentType: 'application/json', // Specify JSON format
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token for Laravel
+          },
+          data: JSON.stringify({ // Convert the data to JSON string format
+              id: id,
+              status: status
+          }),
+          success: function (response) 
+          {
+              alert('Status Changed Successfully!');
+              location.reload();
+          },
+          error: function (xhr) {
+              // Handle errors
+              alert('Failed to change status of record. Please try again.');
+              console.error(xhr.responseText);
+          }
+      });
+  }
+});
+
 
 
 

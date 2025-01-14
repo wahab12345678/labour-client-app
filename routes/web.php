@@ -30,6 +30,8 @@ Route::middleware('guest')->group(function () {
             Route::post('/create', [\App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('admin.category.create');
             Route::put('/categories',  [\App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
             Route::delete('/categories/{id}', [\App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
+            Route::post('/change-status', [\App\Http\Controllers\Admin\CategoryController::class, 'toggleStatus'])->name('categories.change-status');
+
         });
         Route::prefix('labour')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\LabourController::class, 'index'])->name('admin.labour');

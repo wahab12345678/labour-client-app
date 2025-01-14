@@ -19,10 +19,10 @@ class ContractorResource extends JsonResource
             'name' => $this->name,
             'phone' => $this->phone,
             'cnic_no' => $this->meta ? $this->meta->cnic_no : null,
-            'status' => $this->status == 1 ? 'Active' : 'Inactive',
+            'status'         => $this->status == 1 ? 'Active' : 'Inactive',
             'cnic_front_img' => $this->meta ? env('APP_URL').$this->meta->cnic_front_img : null,
-            'cnic_back_img' => $this->meta ? env('APP_URL').$this->meta->cnic_back_img : null,
-            'created_at' => $this->created_at->toDateTimeString(),
+            'cnic_back_img'  => $this->meta ? env('APP_URL').$this->meta->cnic_back_img : null,
+            'created_at'     => $this->created_at->toDateTimeString(),
         ];
     }
 }

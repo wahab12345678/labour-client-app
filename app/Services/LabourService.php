@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Storage; // For file storage
 use App\Http\Requests\LabourRequest;
 use Illuminate\Support\Facades\File;
 
+use Illuminate\Support\Str;
+
+
 class LabourService
 {
     /**
@@ -105,7 +108,18 @@ class LabourService
                 'phone' => $request->phone,
                 'status' => $request->status == "1" ? UserStatus::Active->value : UserStatus::Inactive->value,
             ]);
+            // Generate a unique slug
+            $slug      = Str::slug($request->name);
+            $slugCount = UserMeta::where('slug', $slug)->count();
+
+            // If the slug already exists, append a number to make it unique
+            if ($slugCount > 0) 
+            {
+                $slug = $slug . '-' . ($slugCount + 1);
+            }
+
             // Create user meta
+
             UserMeta::create([
                 'user_id'        => $user->id,
                 'category_id'    => $request->category_id,
@@ -113,6 +127,9 @@ class LabourService
                 'cnic_front_img' => $this->storeImageInPublicFolder($request->file('cnic_front_img'), 'cnic_front'),
                 'cnic_back_img'  => $this->storeImageInPublicFolder($request->file('cnic_back_img'), 'cnic_back'),
                 'address'        => $request->address,
+                'slug'           => $slug,
+
+                
             ]);
             // Use createMany to add multiple accounts
             foreach ($request->accounts as $account) {
@@ -167,6 +184,21 @@ class LabourService
                 'cnic_no'     => $request->cnic_no,
                 'address'     => $request->address,
             ]);
+            // check if the slug field is empty
+            if (empty($userMeta->slug)) 
+            {
+                // Generate a unique slug
+
+                $slug      = Str::slug($request->name);
+                $slugCount = UserMeta::where('slug', $slug)->count();
+                
+                // If the slug already exists, append a number to make it unique
+                if ($slugCount > 0) {
+                    $slug = $slug . '-' . ($slugCount + 1);
+                }
+
+                $userMeta->update(['slug' => $slug]);
+            }
     
             // Update images only if new files are uploaded
             if ($request->hasFile('labour-cnic_front_img')) 
