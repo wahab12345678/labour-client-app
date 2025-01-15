@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Enums\CategoryStatus;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 use App\Http\Requests\CategoryRequest;
 
@@ -73,6 +74,27 @@ class CategoryService
         return response()->json([
             'success' => true,
             'message' => 'Category Çreated Successfully'
+        ]);
+    }
+
+    public function toggleStatus(Request $request)
+    {
+        $id       = $request->id;
+        $category = Category::findOrFail($id);
+        
+        if ($category ) 
+        {
+            $category ->status = $request->status == "Active" ? CategoryStatus::Inactive->value : CategoryStatus::Active->value;
+            $category ->save();
+
+            return response()->json([
+               'success' => true,
+               'message' => 'Category status updated successfully',
+            ]);
+        }
+        return response()->json([
+           'success' => false,
+           'message' => 'Labour not found',
         ]);
     }
 }

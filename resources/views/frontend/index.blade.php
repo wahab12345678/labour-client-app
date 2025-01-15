@@ -18,7 +18,7 @@
                         <h2>Conference 2017</h2>
                         <h6>02-05 July 2017 California</h6>
                         <!-- Action Button -->
-                        <a href="contact.html" class="btn btn-white-md">get ticket now</a>
+                        <a href="contact.html" class="btn btn-white-md">Get Book now</a>
                     </div>
                 </div>
             </div>

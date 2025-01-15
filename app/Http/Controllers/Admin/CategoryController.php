@@ -40,4 +40,8 @@ class CategoryController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Category deleted successfully.']);
     }
+    public function toggleStatus(CategoryService $category, Request $request)
+    {
+        return $category->toggleStatus($request);
+    }
 }
