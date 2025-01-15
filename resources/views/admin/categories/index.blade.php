@@ -113,9 +113,8 @@
               <!-- Modal -->
               <div class="modal modal-slide-in fade" id="modals-slide-in-edit">
                 <div class="modal-dialog sidebar-sm">
-                    <form class="edit-record modal-content pt-0" method="POST" action="{{ route('categories.update') }}">
+                    <form id="update-category" class="edit-record modal-content pt-0" method="POST" action="{{ route('categories.update') }}">
                         @csrf
-                        @method('PUT') <!-- This simulates a PUT request -->
 
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                         <div class="modal-header mb-1">
@@ -132,7 +131,7 @@
                                 <label class="form-label" for="edit-category-description">Description</label>
                                 <textarea class="form-control" id="edit-category-description" name="description" rows="3" placeholder="Enter Description"></textarea>
                             </div>
-                            <div class="mb-1">
+                            {{-- <div class="mb-1">
                                 <div class="form-check form-switch form-check-success">
                                     <label class="form-check-label mb-50" for="edit-customSwitch">Active</label>
                                     <input type="checkbox" class="form-check-input" id="status" name="status"  />
@@ -141,7 +140,7 @@
                                         <span class="switch-icon-right"><i data-feather="x"></i></span>
                                     </label>
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- <div class="mb-1">
                                 <label class="form-label d-block">Status</label>
                                 <div class="btn-group" role="group" aria-label="Toggle Active/Inactive">

@@ -253,36 +253,111 @@ $(function () {
   });
   // Edit Category
 
+// $(document).on('click', '.modal-slide-in-edit', function () {
+//   // Get data from the clicked edit button
+//   const id          = $(this).data('id');
+//   const name        = $(this).data('name');
+//   const description = $(this).data('description');
+//   const status      = $(this).data('status'); // Assuming 1 for Active, 0 for Inactive
+//   // Populate the modal form with the category data
+//   $('#edit-category-name').val(name);
+//   $('#edit-category-description').val(description);
+
+//   // Set the status radio button based on the category's status
+//   if (status == 'Active') 
+//   {
+//     $('#status').prop('checked', true);  // Check the checkbox
+//   } 
+//   else 
+//   {
+//     $('#status').prop('checked', false);  // Check the checkbox
+//   }
+
+//   // Store the status value in a hidden field or update the checkbox value attribute
+//   // $('#status').val(status);
+
+//   // Set the form's hidden category ID field
+//   $('#edit-category-id').val(id);
+
+//   // Show the modal
+//   $('#modals-slide-in-edit').modal('show');
+// });
+
 $(document).on('click', '.modal-slide-in-edit', function () {
-  // Get data from the clicked edit button
-  const id          = $(this).data('id');
-  const name        = $(this).data('name');
-  const description = $(this).data('description');
-  const status      = $(this).data('status'); // Assuming 1 for Active, 0 for Inactive
-  // Populate the modal form with the category data
-  $('#edit-category-name').val(name);
-  $('#edit-category-description').val(description);
+  
+  var categoryId = $(this).data('id'); 
 
-  // Set the status radio button based on the category's status
-  if (status == 'Active') 
-  {
-    $('#status').prop('checked', true);  // Check the checkbox
-  } 
-  else 
-  {
-    $('#status').prop('checked', false);  // Check the checkbox
-  }
+  $.ajax({
 
-  // Store the status value in a hidden field or update the checkbox value attribute
-  // $('#status').val(status);
+      url: `/category/edit/${categoryId}`,
 
-  // Set the form's hidden category ID field
-  $('#edit-category-id').val(id);
+      method: 'GET',
+      success: function (response) 
+      {
+        console.log(response);
 
-  // Show the modal
-  $('#modals-slide-in-edit').modal('show');
+        $('#edit-category-name').val(response.category.name);
+        $('#edit-category-description').val(response.category.description);
+
+        
+        $('#edit-category-id').val(response.category.id);
+        $('#modals-slide-in-edit').modal('show');
+      },
+      error: function (error) {
+          console.log('Error fetching data:', error);
+          alert('Failed to load data.');
+      }
+  });
+
 });
 
+$('#update-category').on('submit', function (e) {
+  e.preventDefault();
+
+  // Clear previous error messages
+  $('.invalid-feedback').text('').hide();
+  $('.is-invalid').removeClass('is-invalid');
+
+  // Get form action URL and initialize FormData
+  const actionUrl = $(this).attr('action');
+  const formData  = new FormData(this);
+  // Include CSRF token (important for Laravel)
+  const csrfToken = $('meta[name="csrf-token"]').attr('content');
+  formData.append('_token', csrfToken);
+
+  // Send AJAX request
+  $.ajax({
+      url: actionUrl,
+      type: 'POST',
+      data: formData,
+      processData: false, // Required for FormData
+      contentType: false, // Required for FormData
+      success: function (response) 
+      {
+          // Hide the modal
+          $('#modals-slide-in-edit').modal('hide');
+          // Optionally reload the page or update the table
+          alert('Category Updated successfully!');
+          location.reload();
+      },
+      error: function (xhr) {
+          if (xhr.status === 422) {
+              // Validation errors
+              const errors = xhr.responseJSON.errors;
+              for (const [key, messages] of Object.entries(errors)) {
+                  // Show error message
+                  const keyName = key.includes('.') ? key.replace('.', '[').replace('.', ']') : key; // Handle nested fields
+                  $(`.${keyName}-error`).text(messages[0]).show();
+                  $(`[name="${keyName}"]`).addClass('is-invalid');
+              }
+          } else {
+              alert('An unexpected error occurred.');
+              console.error(xhr);
+          }
+      }
+  });
+  
+});
 
 // Event listener for delete action
 // Event listener for delete action

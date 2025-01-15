@@ -24,6 +24,10 @@ class CategoryController extends Controller
         $resource = CategoryResource::collection($data);
         return response()->json(['data' => $resource]);
     }
+    public function edit(CategoryService $category,$id)
+    {
+        return $category->edit($id);
+    }
     public function update(CategoryService $category, CategoryRequest $request)
     {
         return $category->update($request);
