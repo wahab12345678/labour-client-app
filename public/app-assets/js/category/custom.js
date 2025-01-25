@@ -11,7 +11,7 @@ $(function () {
 
     // DataTable with buttons
     // --------------------------------------------------------------------
- 
+
     if (dt_basic_table.length) {
       var dt_basic = dt_basic_table.DataTable({
         ajax: assetPath + '/list',
@@ -20,8 +20,10 @@ $(function () {
         //   { data: 'id' },
           { data: 'id' }, // used for sorting so will hide this column
           { data: 'name' },
+          { data: 'Image' },
           { data: 'description' },
           { data: 'status' },
+          { data: 'is_visible' },
           { data: 'action' }
         ],
         columnDefs: [
@@ -38,14 +40,20 @@ $(function () {
                 }
             },
             {
-                targets: 2, // Description
+                targets: 2, // Image
+                render: function (data, type, full, meta) {
+                  return full.img_path ? `<img src="${full.img_path}" alt="Category Image" width="50" height="50">` : ''; // Render image or empty if not available
+                }
+              },
+            {
+                targets: 3, // Description
                 render: function (data, type, full, meta) {
                     return full.description; // Directly render the description
                 }
             },
             {
-                targets: 3, // Status
-                
+                targets: 4, // Status
+
                 render: function (data, type, full, meta) {
                   // Checking if status is 1 (Active) or 0 (Inactive) and applying the appropriate badge class
                   if (full.status == "Active") {
@@ -56,11 +64,22 @@ $(function () {
               }
             },
             {
+                targets: 5, // Visibility
+                render: function (data, type, full, meta) {
+                  // Checking if status is 1 (Active) or 0 (Inactive) and applying the appropriate badge class
+                  if (full.is_visible == 1) {
+                    return '<span class="badge badge-glow bg-success">Yes</span>'; // Green badge for Active
+                  } else {
+                    return '<span class="badge badge-glow bg-danger">No</span>'; // Red badge for Inactive
+                  }
+              }
+            },
+            {
                 // targets: 4, // Status
                 // render: function (data, type, full, meta) {
                 //     return full.status == 1 ? 'Active' : 'Inactive'; // Render status
                 // }
-                targets: 4, // Action column
+                targets: 6, // Action column
                 render: function (data, type, full, meta) {
                     // return `
                     //     <div class="dropdown">
@@ -88,6 +107,10 @@ $(function () {
                       feather.icons['archive'].toSvg({ class: 'font-small-4 me-50' }) +
                       (full.status ==  'Active' ? 'Deactivate' : 'Activate') +
                       '</a>' +
+                      '<a href="javascript:;" class="dropdown-item toggle-visible-status" data-id="' + full.id + '" data-status="' + full.is_visible + '">' +
+                        feather.icons['archive'].toSvg({ class: 'font-small-4 me-50' }) +
+                        (full.is_visible == 1 ? 'Hide from Frontend' : 'Show on Frontend') +
+                        '</a>' +
                       '<a href="javascript:;" class="dropdown-item delete-category" data-id="' + full.id + '">' +
                       feather.icons['trash-2'].toSvg({ class: 'font-small-4 me-50' }) +
                       'Delete</a>' +
@@ -194,14 +217,14 @@ $(function () {
     // });
 
     // Delete Record
-    
-    $('.datatables-basic tbody').on('click', '.delete-record', function () 
+
+    $('.datatables-basic tbody').on('click', '.delete-record', function ()
     {
       dt_basic.row($(this).parents('tr')).remove().draw();
     });
 
     $('#store-contractor').on('submit', function (e) {
-     
+
       e.preventDefault();
       // Clear previous error messages
       $('.invalid-feedback').text('').hide();
@@ -264,11 +287,11 @@ $(function () {
 //   $('#edit-category-description').val(description);
 
 //   // Set the status radio button based on the category's status
-//   if (status == 'Active') 
+//   if (status == 'Active')
 //   {
 //     $('#status').prop('checked', true);  // Check the checkbox
-//   } 
-//   else 
+//   }
+//   else
 //   {
 //     $('#status').prop('checked', false);  // Check the checkbox
 //   }
@@ -284,22 +307,22 @@ $(function () {
 // });
 
 $(document).on('click', '.modal-slide-in-edit', function () {
-  
-  var categoryId = $(this).data('id'); 
+
+  var categoryId = $(this).data('id');
 
   $.ajax({
 
       url: `/category/edit/${categoryId}`,
 
       method: 'GET',
-      success: function (response) 
+      success: function (response)
       {
         console.log(response);
 
         $('#edit-category-name').val(response.category.name);
         $('#edit-category-description').val(response.category.description);
 
-        
+
         $('#edit-category-id').val(response.category.id);
         $('#modals-slide-in-edit').modal('show');
       },
@@ -332,7 +355,7 @@ $('#update-category').on('submit', function (e) {
       data: formData,
       processData: false, // Required for FormData
       contentType: false, // Required for FormData
-      success: function (response) 
+      success: function (response)
       {
           // Hide the modal
           $('#modals-slide-in-edit').modal('hide');
@@ -356,7 +379,7 @@ $('#update-category').on('submit', function (e) {
           }
       }
   });
-  
+
 });
 
 // Event listener for delete action
@@ -364,7 +387,7 @@ $('#update-category').on('submit', function (e) {
 // Event listener for delete action
 $(document).on('click', '.delete-category', function () {
   const categoryId = $(this).data('id');  // Get category ID from the button data attribute
-  
+
   // Show confirmation prompt before deletion
   if (confirm('Are you sure you want to delete this category?')) {
 
@@ -390,7 +413,7 @@ $(document).on('click', '.delete-category', function () {
 });
 
  // Change Status
-//  $('.datatables-basic tbody').on('click', '.toggle-status', function () 
+//  $('.datatables-basic tbody').on('click', '.toggle-status', function ()
  $(document).on('click', '.toggle-status', function ()
  {
 
@@ -400,7 +423,7 @@ $(document).on('click', '.delete-category', function () {
   if (confirm('Are you sure you want to change the status of this record?')) {
       // Send the AJAX request
       $.ajax({
-          url: `/category/change-status/`,  // Correct URL with category prefix
+          url: `/category/change-status`,  // Correct URL with category prefix
           type: 'POST', // HTTP method
           contentType: 'application/json', // Specify JSON format
           headers: {
@@ -410,7 +433,7 @@ $(document).on('click', '.delete-category', function () {
               id: id,
               status: status
           }),
-          success: function (response) 
+          success: function (response)
           {
               alert('Status Changed Successfully!');
               location.reload();
@@ -424,6 +447,35 @@ $(document).on('click', '.delete-category', function () {
   }
 });
 
-
+$(document).on('click', '.toggle-visible-status', function ()
+{
+ const id     = $(this).data('id');  // Get category ID from the button data attribute
+ const status = $(this).data('status');
+ if (confirm('Are you sure you want to show this category to Frontend?')) {
+     // Send the AJAX request
+     $.ajax({
+         url: `/category/change-visibility`,  // Correct URL with category prefix
+         type: 'POST', // HTTP method
+         contentType: 'application/json', // Specify JSON format
+         headers: {
+             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token for Laravel
+         },
+         data: JSON.stringify({ // Convert the data to JSON string format
+             id: id,
+             status: status
+         }),
+         success: function (response)
+         {
+             alert('Visibility Status Changed Successfully!');
+             location.reload();
+         },
+         error: function (xhr) {
+             // Handle errors
+             alert('Failed to change status of record. Please try again.');
+             console.error(xhr.responseText);
+         }
+     });
+ }
+});
 
 
