@@ -31,6 +31,7 @@ Route::middleware('guest')->group(function () {
             Route::post('/update',  [\App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
             Route::delete('/categories/{id}', [\App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
             Route::post('/change-status', [\App\Http\Controllers\Admin\CategoryController::class, 'toggleStatus'])->name('categories.change-status');
+            Route::post('/change-visibility', [\App\Http\Controllers\Admin\CategoryController::class, 'toggleVisibilityStatus'])->name('categories.change-visibility');
             Route::get('/edit/{id}', [\App\Http\Controllers\Admin\CategoryController::class,  'edit'])->name('categories.edit');
 
         });

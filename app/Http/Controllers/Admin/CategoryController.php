@@ -48,4 +48,9 @@ class CategoryController extends Controller
     {
         return $category->toggleStatus($request);
     }
+
+    public function toggleVisibilityStatus(CategoryService $category, Request $request)
+    {
+        return $category->toggleVisibilityStatus($request);
+    }
 }

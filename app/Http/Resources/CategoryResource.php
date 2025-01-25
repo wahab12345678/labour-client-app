@@ -19,6 +19,8 @@ class CategoryResource extends JsonResource
             'name'        => $this->name,
             'description' => $this->description,
             'status'      => $this->status == 1 ? "Active" : "In Active",
+            'img_path'    => $this->img_path,
+            'is_visible' => $this->is_visible
         ];
     }
 }

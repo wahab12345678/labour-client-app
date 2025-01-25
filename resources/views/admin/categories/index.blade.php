@@ -45,8 +45,10 @@
                                     <tr>
                                         <th>id</th>
                                         <th>Name</th>
+                                        <th>Image</th>
                                         <th>Description</th>
                                         <th>Status</th>
+                                        <th>Frontend Visibility</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -57,7 +59,7 @@
                 <!-- Modal to add new record -->
                 <div class="modal modal-slide-in fade" id="modals-slide-in">
                     <div class="modal-dialog sidebar-sm">
-                        <form id ="store-category"class="add-new-record modal-content pt-0"  method="POST" action="{{ route('admin.category.create') }}">
+                        <form id ="store-category"class="add-new-record modal-content pt-0"  method="POST" action="{{ route('admin.category.create') }}" enctype="multipart/form-data">
                             @csrf
                             @method('POST') <!-- This simulates a PUT request -->
 
@@ -66,6 +68,10 @@
                                 <h5 class="modal-title" id="exampleModalLabel">New Category</h5>
                             </div>
                             <div class="modal-body flex-grow-1">
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Image</label>
+                                    <input type="file" class="form-control" id="img_path" name="img_path" accept="image/*" />
+                                </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">Name</label>
                                     <input type="text" class="form-control dt-full-name" id="basic-icon-default-fullname" name="name" placeholder="Enter Name of Category" aria-label="John Doe" />
@@ -98,7 +104,7 @@
                                     <div class="btn-group" role="group" aria-label="Toggle Active/Inactive">
                                         <input type="radio" class="btn-check" name="status" id="active" value="1" checked>
                                         <label class="btn btn-outline-success" for="active">Active</label>
-                                
+
                                         <input type="radio" class="btn-check" name="status" id="inactive" value="0">
                                         <label class="btn btn-outline-danger" for="inactive">Inactive</label>
                                     </div>
@@ -113,7 +119,7 @@
               <!-- Modal -->
               <div class="modal modal-slide-in fade" id="modals-slide-in-edit">
                 <div class="modal-dialog sidebar-sm">
-                    <form id="update-category" class="edit-record modal-content pt-0" method="POST" action="{{ route('categories.update') }}">
+                    <form id="update-category" class="edit-record modal-content pt-0" method="POST" action="{{ route('categories.update') }}" enctype="multipart/form-data">
                         @csrf
 
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
@@ -123,6 +129,10 @@
                         <input type="hidden" name="status" value="0">
 
                         <div class="modal-body flex-grow-1">
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-icon-default-fullname">Image</label>
+                                <input type="file" class="form-control" id="img_path" name="img_path" accept="image/*" />
+                            </div>
                             <div class="mb-1">
                                 <label class="form-label" for="edit-category-name">Name</label>
                                 <input type="text" class="form-control dt-full-name" id="edit-category-name" name="name" placeholder="Enter Name of Category" aria-label="Category Name" />
@@ -146,7 +156,7 @@
                                 <div class="btn-group" role="group" aria-label="Toggle Active/Inactive">
                                     <input type="radio" class="btn-check" name="status" id="active" value="1" >
                                     <label class="btn btn-outline-success" for="active">Active</label>
-                            
+
                                     <input type="radio" class="btn-check" name="status" id="inactive" value="0">
                                     <label class="btn btn-outline-danger" for="inactive">Inactive</label>
                                 </div>
@@ -158,10 +168,10 @@
                     </form>
                 </div>
             </div>
-            
 
 
-                
+
+
             </section>
             <!--/ Basic table -->
 

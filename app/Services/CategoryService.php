@@ -28,12 +28,9 @@ class CategoryService
     public function edit($id)
     {
         $CategoryDetail  = Category::where('id', $id)->first();
-
-
         return response()->json([
             'category'      => $CategoryDetail
         ]);
-
     }
 
     public function update(CategoryRequest $request)
@@ -44,6 +41,7 @@ class CategoryService
             $category->update([
                 'name' => $request->name,
                 'description' => $request->description,
+                'img_path' => $this->storeImageInPublicFolder($request->file('img_path'), 'categories'),
             ]);
             // check if the slug field is empty
             if (empty($category->slug)) {
@@ -56,15 +54,9 @@ class CategoryService
                 }
                 $category->update(['slug' => $slug]);
             }
-            return response()->json([
-                'success' => true,
-                'message' => 'Category Updated Successfully'
-            ]);
+            return back()->withSuccess('Category Updated Successfully');
         }
-        return response()->json([
-            'success' => false,
-            'message' => 'Category Not Found'
-        ]);
+        return back()->withError('Category Not Found');
     }
 
     public function create(CategoryRequest $request)
@@ -81,23 +73,18 @@ class CategoryService
             'description' => $request->description,
             'slug'        => $slug,
             'status'      => $request->status ==  1 ? CategoryStatus::Active->value : CategoryStatus::Inactive->value,
+            'img_path' => $this->storeImageInPublicFolder($request->file('img_path'), 'categories'),
         ]);
-        return response()->json([
-            'success' => true,
-            'message' => 'Category Çreated Successfully'
-        ]);
+        return back()->withSuccess('Category Created Successfully');
     }
 
     public function toggleStatus(Request $request)
     {
         $id       = $request->id;
         $category = Category::findOrFail($id);
-        
-        if ($category ) 
-        {
+        if ($category ){
             $category ->status = $request->status == "Active" ? CategoryStatus::Inactive->value : CategoryStatus::Active->value;
             $category ->save();
-
             return response()->json([
                'success' => true,
                'message' => 'Category status updated successfully',
@@ -105,7 +92,41 @@ class CategoryService
         }
         return response()->json([
            'success' => false,
-           'message' => 'Labour not found',
+           'message' => 'Category not found',
         ]);
+    }
+
+    public function toggleVisibilityStatus(Request $request)
+    {
+        $id       = $request->id;
+        $category = Category::findOrFail($id);
+        if ($category ){
+            $category ->is_visible = $request->status == "1" ? 0 : 1;
+            $category ->save();
+            return response()->json([
+               'success' => true,
+               'message' => 'Category Visibility Updated Successfully',
+            ]);
+        }
+        return response()->json([
+           'success' => false,
+           'message' => 'Category not found',
+        ]);
+    }
+
+    private function storeImageInPublicFolder($file, $directory)
+    {
+        // Define the target path in the public directory
+        $targetPath = public_path($directory);
+        // Create the directory if it doesn't exist
+        if (!file_exists($targetPath)) {
+            mkdir($targetPath, 0755, true);
+        }
+        // Generate a unique file name
+        $fileName = uniqid() . '_' . $file->getClientOriginalName();
+        // Move the file to the target directory
+        $file->move($targetPath, $fileName);
+        // Return the public path of the file
+        return $directory . '/' . $fileName;
     }
 }
