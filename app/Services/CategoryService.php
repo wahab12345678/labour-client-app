@@ -25,6 +25,17 @@ class CategoryService
     {
         return Category::find($id);
     }
+    public function edit($id)
+    {
+        $CategoryDetail  = Category::where('id', $id)->first();
+
+
+        return response()->json([
+            'category'      => $CategoryDetail
+        ]);
+
+    }
+
     public function update(CategoryRequest $request)
     {
         $id = $request->category_id;
@@ -33,7 +44,6 @@ class CategoryService
             $category->update([
                 'name' => $request->name,
                 'description' => $request->description,
-                'status' => $request->status ==  'on' ? CategoryStatus::Active->value : CategoryStatus::Inactive->value,
             ]);
             // check if the slug field is empty
             if (empty($category->slug)) {
@@ -56,6 +66,7 @@ class CategoryService
             'message' => 'Category Not Found'
         ]);
     }
+
     public function create(CategoryRequest $request)
     {
         // Generate a unique slug
