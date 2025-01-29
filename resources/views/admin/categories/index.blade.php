@@ -80,6 +80,10 @@
                                     <label class="form-label" for="basic-icon-default-post">Description</label>
                                     <textarea class="form-control dt-description" id="exampleFormControlTextarea1" name="description" rows="3" placeholder="Enter Description"></textarea>
                                 </div>
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-post">Key Point</label>
+                                    <textarea class="form-control dt-description" id="exampleFormControlTextarea1" name="key_points" rows="3" placeholder="Enter key Point"></textarea>
+                                </div>
 
                                 {{-- <div class="mb-1">
                                     <div class="form-check form-switch form-check-success">
