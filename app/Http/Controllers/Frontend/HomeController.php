@@ -19,9 +19,8 @@ class HomeController extends Controller
 {
     public function index(CategoryService $categories)
     {
-        $categories      = $categories->list();
 
-        return view('frontend.index', compact('categories'));
+        return view('frontend.index');
 
         // return view('frontend.index');
     }
