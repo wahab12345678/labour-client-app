@@ -115,10 +115,12 @@ class HomeController extends Controller
 
     public function contractorDetail($slug)
     {
-        $contractor = User::where('slug', $slug)->first();
+        $contractor = User::whereHas('meta', function($query) use ($slug) {
+            $query->where('slug', $slug);
+        })->first();
         if (!$contractor) {
             abort(404);
         }
-        abort(404);
+        return view('frontend.contractor-detail', compact('contractor'));
     }
 }
