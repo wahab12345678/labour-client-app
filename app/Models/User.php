@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserAccount::class, 'user_id', 'id');
     }
+
+    public function contractorImages()
+    {
+        return $this->hasMany(ContractorImage::class, 'contractor_id', 'id');
+    }
 }

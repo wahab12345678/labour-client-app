@@ -5,6 +5,7 @@
 /public/storage
 /public/cnic_front
 /public/cnic_back
+/public/contractors
 /storage/*.key
 /storage/pail
 /vendor

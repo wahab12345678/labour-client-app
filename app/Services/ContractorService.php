@@ -9,6 +9,7 @@ use App\Models\UserMeta;
 use App\Models\AccountType;
 use App\Enums\UserStatus;
 use App\Models\UserAccount;
+use App\Models\ContractorImage;
 use Illuminate\Support\Facades\DB; // Attach the DB facade
 use Illuminate\Support\Facades\Storage; // For file storage
 use App\Http\Requests\ContractorRequest;
@@ -122,6 +123,15 @@ class ContractorService
                     'account_title' => $account['title'],
                 ]);
             }
+            // Create a pictures
+            if($request->has('pictures')) {
+                foreach ($request->file('pictures') as $picture) {
+                    ContractorImage::create([
+                        'contractor_id' => $user->id,
+                        'image_url' => $this->storeImageInPublicFolder($picture, 'contractors'),
+                    ]);
+                }
+            }
             // Assign role to the user
             $user->assignRole('contractor');
             DB::commit();
@@ -144,11 +154,11 @@ class ContractorService
         $id  = $request->contractor_id;
         DB::beginTransaction();
 
-        try 
+        try
         {
             // Find the user by ID
             $user = User::findOrFail($id);
-            
+
             // Update the user's basic information
             $user->update([
                 'name'   => $request->name,
@@ -156,31 +166,31 @@ class ContractorService
                 'phone'  => $request->phone,
                 'status' => $request->status == "1" ? UserStatus::Active->value : UserStatus::Inactive->value,
             ]);
-    
+
             // Update user meta
             $userMeta = $user->meta; // Assuming you have a one-to-one relationship with UserMeta
             $userMeta->update([
                 'cnic_no'     => $request->cnic_no,
                 'address'     => $request->address,
             ]);
-    
+
             // Update images only if new files are uploaded
-            if ($request->hasFile('labour-cnic_front_img')) 
+            if ($request->hasFile('labour-cnic_front_img'))
             {
                 $userMeta->cnic_front_img = $this->storeImageInPublicFolder($request->file('labour-cnic_front_img'), 'cnic_front');
             }
-            if ($request->hasFile('labour-cnic_back_img')) 
+            if ($request->hasFile('labour-cnic_back_img'))
             {
                 $userMeta->cnic_back_img = $this->storeImageInPublicFolder($request->file('labour-cnic_back_img'), 'cnic_back');
             }
-    
+
             // Save the updated user meta
             $userMeta->save();
-    
+
             // Update user accounts
             // First, delete existing accounts
             $user->accounts()->delete();
-            
+
             // Add updated accounts
             foreach ($request->accounts as $account) {
                 UserAccount::create([
@@ -190,20 +200,31 @@ class ContractorService
                     'account_title'   => $account['title'],
                 ]);
             }
-    
+
+            // Create a pictures
+            if($request->has('pictures')) {
+                $user->contractorImages()->delete();
+                foreach ($request->file('pictures') as $picture) {
+                    ContractorImage::create([
+                        'contractor_id' => $user->id,
+                        'image_url' => $this->storeImageInPublicFolder($picture, 'contractors'),
+                    ]);
+                }
+            }
+
             // Assign role if not already assigned
-            if (!$user->hasRole('contractor')) 
+            if (!$user->hasRole('contractor'))
             {
                 $user->assignRole('contractor');
             }
-    
+
             DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'contractor updated successfully!',
             ], 200);
-        } 
-        catch (\Exception $e) 
+        }
+        catch (\Exception $e)
         {
             DB::rollBack();
             return response()->json([
@@ -213,8 +234,8 @@ class ContractorService
             ], 500);
         }
     }
-    
-    
+
+
     /**
      * Store uploaded file in the public folder.
      *
@@ -290,7 +311,7 @@ class ContractorService
         $accountTypeList =   $this->accountTypeList();
 
         $user = User::where('id', $id)->with('accounts','meta')->get();
-       
+
 
         return response()->json([
             'user'            => $user,
