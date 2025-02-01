@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB; // Attach the DB facade
 use Illuminate\Support\Facades\Storage; // For file storage
 use App\Http\Requests\ContractorRequest;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ContractorService
 {
@@ -106,6 +107,12 @@ class ContractorService
                 'phone' => $request->phone,
                 'status' => $request->status == "1" ? UserStatus::Active->value : UserStatus::Inactive->value,
             ]);
+            // Generate a unique slug
+            $slug = Str::slug($request->name);
+            $slugCount = UserMeta::where('slug', $slug)->count();
+            if ($slugCount > 0){
+                $slug = $slug . '-' . ($slugCount + 1);
+            }
             // Create user meta
             UserMeta::create([
                 'user_id'        => $user->id,
@@ -113,6 +120,7 @@ class ContractorService
                 'cnic_front_img' => $this->storeImageInPublicFolder($request->file('cnic_front_img'), 'cnic_front'),
                 'cnic_back_img'  => $this->storeImageInPublicFolder($request->file('cnic_back_img'), 'cnic_back'),
                 'address'        => $request->address,
+                'slug'           => $slug,
             ]);
             // Use createMany to add multiple accounts
             foreach ($request->accounts as $account) {
@@ -173,7 +181,15 @@ class ContractorService
                 'cnic_no'     => $request->cnic_no,
                 'address'     => $request->address,
             ]);
-
+            // check if the slug field is empty
+            if (empty($userMeta->slug)) {
+                $slug      = Str::slug($request->name);
+                $slugCount = UserMeta::where('slug', $slug)->count();
+                if ($slugCount > 0) {
+                    $slug = $slug . '-' . ($slugCount + 1);
+                }
+                $userMeta->update(['slug' => $slug]);
+            }
             // Update images only if new files are uploaded
             if ($request->hasFile('labour-cnic_front_img'))
             {
@@ -283,9 +299,18 @@ class ContractorService
                     File::delete($cnicBackPath); // Delete the back image
                 }
             }
+            if ($user->contractorImages) {
+                foreach($user->contractorImages as $image) {
+                    $imagePath = public_path($image->image_url);
+                    if (File::exists($imagePath)) {
+                        File::delete($imagePath); // Delete the front image
+                    }
+                }
+            }
             // Delete associated user meta, accounts, and roles
             UserMeta::where('user_id', $user->id)->delete();
             UserAccount::where('user_id', $user->id)->delete();
+            ContractorImage::where('contractor_id', $user->id)->delete();
             $user->roles()->detach(); // Detach all roles from the user
             // Delete the user
             $user->delete();

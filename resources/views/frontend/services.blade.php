@@ -118,63 +118,63 @@
 </section>
 
 <!--====  End of Page Title  ====-->
-<section class="section pricing">
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="section-title">
-					<h3>Our <span class="alternate">Services</span></h3>
-					<p>
-                        At {{env('APP_NAME')}}, we are committed to providing top-notch solutions for both labor and client booking needs. With a focus on efficiency, reliability, and customer satisfaction, we offer a wide range of services to meet your unique requirements. Whether you're looking for skilled professionals or want to book services for your business, we’re here to help.
+<section class="section pricing py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <div class="section-title">
+                    <h2 class="text-uppercase font-weight-bold">Our <span class="text-warning">Services</span></h2>
+                    <p class="lead text-muted mx-auto" style="max-width: 800px;">
+                        At {{ env('APP_NAME') }}, we are committed to providing top-notch solutions for both labor and client booking needs. With a focus on efficiency, reliability, and customer satisfaction, we offer a wide range of services to meet your unique requirements. Whether you're looking for skilled professionals or want to book services for your business, we’re here to help.
                     </p>
-				</div>
-			</div>
-		</div>
+                </div>
+            </div>
+        </div>
+
         @php
             $categories = \App\Models\Category::where('status', '1')->get();
         @endphp
-		<div class="row">
+
+        <div class="row">
             @foreach ($categories as $key => $category)
                 <div class="col-lg-4 col-md-6 mb-4">
-
                     <!-- Pricing Item -->
-                    <div class="pricing-item featured card shadow-lg border-light">
-                        <div class="card-body">
+                    <div class="pricing-item card h-100 shadow-sm border-0 transition-all hover-shadow">
+                        <div class="card-body p-4">
                             <!-- Image -->
-                            <div class="text-center">
-                                <img src="{{ $category->img_path }}" alt="{{ $category->img_path }}" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                            <div class="text-center mb-4">
+                                <img src="{{ asset($category->img_path) }}" alt="{{ $category->name }}" class="img-fluid rounded-lg" style="max-height: 200px; object-fit: cover;">
                             </div>
 
                             <!-- Title -->
-                            <div class="pricing-heading text-center mb-4">
+                            <div class="pricing-heading text-center mb-3">
                                 <h5 class="text-uppercase font-weight-bold text-dark">{{ $category->name }}</h5>
                             </div>
 
-                            <!-- Price / Description -->
-                            <div class="price text-center mb-3">
+                            <!-- Description -->
+                            <div class="price text-center mb-4">
                                 <p class="text-muted description">{{ Str::limit($category->description, 100) }}</p>
                             </div>
 
                             <!-- Call to Action Button -->
                             <div class="text-center">
-                                <a href="{{ route('service.details', $category->slug) }}" class="btn btn-orange btn-lg">Learn More</a>
+                                <a href="{{ route('service.details', $category->slug) }}" class="btn btn-warning btn-lg px-4">Learn More</a>
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
-
-	</div>
+    </div>
 </section>
 
-<section class="section pricing">
+<section class="section pricing py-5 bg-light">
     <div class="container">
         <div class="row">
-            <div class="col-12">
-                <div class="section-title text-center mb-5">
-                    <h3 class="text-uppercase font-weight-bold">Our <span class="alternate">Contractors</span></h3>
-                    <p class="text-muted">
+            <div class="col-12 text-center mb-5">
+                <div class="section-title">
+                    <h2 class="text-uppercase font-weight-bold">Our <span class="text-warning">Contractors</span></h2>
+                    <p class="lead text-muted mx-auto" style="max-width: 800px;">
                         At {{ env('APP_NAME') }}, we pride ourselves on working with a dedicated team of skilled contractors who deliver high-quality results across a variety of sectors. Whether you are looking for specialized labor, experienced tradespeople, or general contractors, our network of trusted professionals ensures your projects are completed on time and to the highest standards.
                     </p>
                 </div>
@@ -187,18 +187,23 @@
 
         <div class="row">
             @foreach ($contractors as $contractor)
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <!-- Contractor Card -->
-                <div class="contractor-card card shadow-sm border-light">
-                    <div class="image">
-                        <img src="{{ $contractor->image_url ?? 'images/speakers/speaker-one.jpg' }}" alt="{{ $contractor->name }}" class="img-fluid rounded-circle mx-auto d-block mt-2" style="max-width: 150px;">
-                    </div>
-                    <div class="card-body text-center">
-                        <h5 class="card-title">{{ $contractor->name }}</h5>
-                        <a href="{{ route('contractor.details', $contractor->meta->slug ?? '#') }}" class="btn btn-warning btn-sm">View Profile</a>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <!-- Contractor Card -->
+                    <div class="contractor-card card h-100 shadow-sm border-0 transition-all hover-shadow">
+                        <div class="card-body p-4 text-center">
+                            <!-- Image -->
+                            <div class="image mb-4">
+                                <img src="{{ $contractor->image_url ?? 'images/speakers/speaker-one.jpg' }}" alt="{{ $contractor->name }}" class="img-fluid rounded-circle mx-auto d-block" style="max-width: 150px; height: 150px; object-fit: cover;">
+                            </div>
+
+                            <!-- Name -->
+                            <h5 class="card-title text-uppercase font-weight-bold text-dark mb-3">{{ $contractor->name }}</h5>
+
+                            <!-- Call to Action Button -->
+                            <a href="{{ route('contractor.details', $contractor->meta->slug ?? '#') }}" class="btn btn-warning btn-sm px-4">View Profile</a>
+                        </div>
                     </div>
                 </div>
-            </div>
             @endforeach
         </div>
     </div>
