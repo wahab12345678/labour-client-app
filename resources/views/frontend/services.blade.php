@@ -136,7 +136,7 @@
 		<div class="row">
             @foreach ($categories as $key => $category)
                 <div class="col-lg-4 col-md-6 mb-4">
-                    
+
                     <!-- Pricing Item -->
                     <div class="pricing-item featured card shadow-lg border-light">
                         <div class="card-body">
@@ -144,17 +144,17 @@
                             <div class="text-center">
                                 <img src="{{ $category->img_path }}" alt="{{ $category->img_path }}" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
                             </div>
-        
+
                             <!-- Title -->
                             <div class="pricing-heading text-center mb-4">
                                 <h5 class="text-uppercase font-weight-bold text-dark">{{ $category->name }}</h5>
                             </div>
-        
+
                             <!-- Price / Description -->
                             <div class="price text-center mb-3">
                                 <p class="text-muted description">{{ Str::limit($category->description, 100) }}</p>
                             </div>
-        
+
                             <!-- Call to Action Button -->
                             <div class="text-center">
                                 <a href="{{ route('service.details', $category->slug) }}" class="btn btn-orange btn-lg">Learn More</a>
@@ -164,7 +164,7 @@
                 </div>
             @endforeach
         </div>
-        
+
 	</div>
 </section>
 
@@ -191,11 +191,11 @@
                 <!-- Contractor Card -->
                 <div class="contractor-card card shadow-sm border-light">
                     <div class="image">
-                        <img src="images/speakers/speaker-one.jpg" alt="contractor" class="img-fluid rounded-circle mx-auto d-block mt-2" style="max-width: 150px;">
+                        <img src="{{ $contractor->image_url ?? 'images/speakers/speaker-one.jpg' }}" alt="{{ $contractor->name }}" class="img-fluid rounded-circle mx-auto d-block mt-2" style="max-width: 150px;">
                     </div>
                     <div class="card-body text-center">
-                        <h5 class="card-title >{{ $contractor->name }}</h5>
-                        {{-- <a href="{{ route('contractor.details', $contractor->meta->slug ?? '#') }}" class="btn btn-warning btn-sm">View Profile</a> --}}
+                        <h5 class="card-title">{{ $contractor->name }}</h5>
+                        <a href="{{ route('contractor.details', $contractor->meta->slug ?? '#') }}" class="btn btn-warning btn-sm">View Profile</a>
                     </div>
                 </div>
             </div>

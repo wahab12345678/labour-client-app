@@ -50,12 +50,14 @@
                 <h2 class="text-uppercase text-warning font-weight-bold">{{ $category->name }}</h2>
                 <!-- Category Description -->
                 <p class="text-muted mt-3">{{ $category->description }}</p>
-                <h2 class="text-uppercase text-warning font-weight-bold">Key point</h2>
-                <ul class="list-group mt-4">
-                    @foreach(json_decode($category->key_points) as $item)
-                        <li class="list-group-item">{{ $item }}</li>
-                    @endforeach
-                </ul>
+                @if (isset($category->key_points) && !empty($category->key_points))
+                    <h2 class="text-uppercase text-warning font-weight-bold">Key point</h2>
+                    <ul class="list-group mt-4">
+                        @foreach(json_decode($category->key_points) as $item)
+                            <li class="list-group-item">{{ $item }}</li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
         </div>
     </div>
