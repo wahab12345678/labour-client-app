@@ -25,7 +25,7 @@ class ContractorRequest extends FormRequest
 
         return [
             'name' => 'required',
-            // 'phone' => 'required|unique:users',
+            'pictures.*' => 'image|mimes:jpeg,png,jpg,gif,svg',
             'phone'             => 'required|unique:users,phone,' . $contractorId,
             'address'           => 'required',
             'cnic_no'           => 'required|numeric',

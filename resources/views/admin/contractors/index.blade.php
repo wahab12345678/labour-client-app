@@ -69,8 +69,13 @@
                             </div>
                             <div class="modal-body flex-grow-1">
                                 <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Pictures</label>
+                                    <input type="file" class="form-control labour-pictures" id="basic-icon-default-fullname" name="pictures[]" accept="image/*" multiple required />
+                                    <div class="invalid-feedback pictures-error"></div>
+                                </div>
+                                <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">Name</label>
-                                    <input type="text" class="form-control labour-name" id="basic-icon-default-fullname" name="name" placeholder="Enter Name of Labour" aria-label="John Doe" required/>
+                                    <input type="text" class="form-control labour-name" id="basic-icon-default-fullname" name="name" placeholder="Enter Name of Contractor" aria-label="John Doe" required/>
                                     <div class="invalid-feedback name-error"></div>
                                 </div>
                                 <div class="mb-1">
@@ -85,12 +90,12 @@
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">CNIC Front Image</label>
-                                    <input type="file" class="form-control labour-cnic_front_img" id="basic-icon-default-fullname" name="cnic_front_img" required/>
+                                    <input type="file" class="form-control labour-cnic_front_img" id="basic-icon-default-fullname" name="cnic_front_img" accept="image/*" required/>
                                     <div class="invalid-feedback cnic_front_img-error"></div>
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">CNIC Back Image</label>
-                                    <input type="file" class="form-control labour-cnic_back_img" id="basic-icon-default-fullname" name="cnic_back_img" required/>
+                                    <input type="file" class="form-control labour-cnic_back_img" id="basic-icon-default-fullname" name="cnic_back_img" accept="image/*" required/>
                                     <div class="invalid-feedback cnic_back_img-error"></div>
                                 </div>
                                 <div class="mb-1">
@@ -178,6 +183,11 @@
 
                         <div class="modal-body flex-grow-1">
                             <div class="mb-1">
+                                <label class="form-label" for="basic-icon-default-fullname">Pictures</label>
+                                <input type="file" class="form-control labour-pictures" id="basic-icon-default-fullname" name="pictures[]" accept="image/*" multiple />
+                                <div class="invalid-feedback pictures-error"></div>
+                            </div>
+                            <div class="mb-1">
                                 <label class="form-label" for="basic-icon-default-fullname">Name</label>
                                 <input type="text" class="form-control labour-name" id="basic-icon-default-fullname" name="name" placeholder="Enter Name of Labour" aria-label="John Doe" required/>
                                 <div class="invalid-feedback name-error"></div>
@@ -187,7 +197,7 @@
                                 <input type="text" class="form-control labour-phone" id="basic-icon-default-fullname" name="phone" placeholder="Enter Phone Number" aria-label="03002200222" required/>
                                 <div class="invalid-feedback phone-error"></div>
                             </div>
-                            
+
                             <div class="mb-1">
                                 <label class="form-label" for="basic-icon-default-fullname">CNIC Number</label>
                                 <input type="text" class="form-control labour-cnic_no" id="basic-icon-default-fullname" name="cnic_no" placeholder="Enter CNIC without dashes" aria-label="3660100000000" required/>
@@ -212,11 +222,11 @@
                                 <textarea id="basic-icon-default-fullname" class="form-control labour-address" name="address" placeholder="Enter Address" aria-label="Address" required></textarea>
                                 <div class="invalid-feedback address-error"></div>
                             </div>
-                          
+
                             <div class="mb-3">
                                 <h5 class="form-label">Account Details</h5>
                                 <div id="account-details-wrapper-edit">
-                            
+
                                 </div>
                                 <button type="button" id="add-account-btn-edit" class="btn btn-info btn-sm mt-1">+ Add</button>
                             </div>
