@@ -42,6 +42,7 @@ class CategoryService
                 'name' => $request->name,
                 'description' => $request->description,
                 'img_path' => $this->storeImageInPublicFolder($request->file('img_path'), 'categories'),
+
             ]);
             // check if the slug field is empty
             if (empty($category->slug)) {
@@ -68,12 +69,15 @@ class CategoryService
         if ($slugCount > 0) {
             $slug = $slug . '-' . ($slugCount + 1);
         }
+
         Category::create([
             'name'        => $request->name,
             'description' => $request->description,
             'slug'        => $slug,
             'status'      => $request->status ==  1 ? CategoryStatus::Active->value : CategoryStatus::Inactive->value,
-            'img_path' => $this->storeImageInPublicFolder($request->file('img_path'), 'categories'),
+            'img_path'    => $this->storeImageInPublicFolder($request->file('img_path'), 'categories'),
+            'key_points'  => json_encode(explode("\n", $request->key_points)), // Convert to JSON
+
         ]);
         return back()->withSuccess('Category Created Successfully');
     }

@@ -7,6 +7,27 @@
         --theme-black: #000000;   /* Black */
         --theme-white: #ffffff;   /* White */
     }
+    .pricing-item, .contractor-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Ensures equal height */
+    min-height: 400px; /* Adjust as needed */
+}
+
+.pricing-item img, .contractor-card img {
+    width: 100%; /* Full width */
+    height: 200px; /* Fixed height */
+    object-fit: cover; /* Ensures images are uniformly cropped */
+    border-radius: 8px; /* Slight rounding for a better look */
+}
+
+.card-body {
+    flex-grow: 1; /* Ensures content stretches evenly */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
     .section {
         padding: 40px 0 !important;
@@ -115,29 +136,35 @@
 		<div class="row">
             @foreach ($categories as $key => $category)
                 <div class="col-lg-4 col-md-6 mb-4">
+                    
                     <!-- Pricing Item -->
                     <div class="pricing-item featured card shadow-lg border-light">
                         <div class="card-body">
+                            <!-- Image -->
+                            <div class="text-center">
+                                <img src="{{ $category->img_path }}" alt="{{ $category->img_path }}" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                            </div>
+        
                             <!-- Title -->
                             <div class="pricing-heading text-center mb-4">
-                                <div class="title">
-                                    <h5 class="text-uppercase font-weight-bold text-dark">{{ 'Service ' . ($key + 1) }}</h5>
-                                </div>
+                                <h5 class="text-uppercase font-weight-bold text-dark">{{ $category->name }}</h5>
                             </div>
-                            <!-- Price -->
+        
+                            <!-- Price / Description -->
                             <div class="price text-center mb-3">
-                                <h2 class="text-orange">{{ $category->name }}</h2> <!-- Orange color for category name -->
-                                <p class="text-muted description">{{ $category->description }}</p>
+                                <p class="text-muted description">{{ Str::limit($category->description, 100) }}</p>
                             </div>
+        
                             <!-- Call to Action Button -->
                             <div class="text-center">
-                                <a href="{{ route('service.details', $category->slug) }}" class="btn btn-orange btn-lg">Learn More</a> <!-- Orange button -->
+                                <a href="{{ route('service.details', $category->slug) }}" class="btn btn-orange btn-lg">Learn More</a>
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
+        
 	</div>
 </section>
 
@@ -167,7 +194,7 @@
                         <img src="images/speakers/speaker-one.jpg" alt="contractor" class="img-fluid rounded-circle mx-auto d-block mt-2" style="max-width: 150px;">
                     </div>
                     <div class="card-body text-center">
-                        <h5 class="card-title text-dark font-weight-bold">{{ $contractor->name }}</h5>
+                        <h5 class="card-title >{{ $contractor->name }}</h5>
                         {{-- <a href="{{ route('contractor.details', $contractor->meta->slug ?? '#') }}" class="btn btn-warning btn-sm">View Profile</a> --}}
                     </div>
                 </div>

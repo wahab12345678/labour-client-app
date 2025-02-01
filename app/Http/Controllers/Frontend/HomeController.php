@@ -12,12 +12,17 @@ use App\Enums\UserStatus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Services\CategoryService;
+
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(CategoryService $categories)
     {
+
         return view('frontend.index');
+
+        // return view('frontend.index');
     }
 
     public function about()
