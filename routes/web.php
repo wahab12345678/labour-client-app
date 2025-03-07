@@ -12,6 +12,8 @@ Route::post('/contact', [\App\Http\Controllers\Frontend\HomeController::class, '
 Route::get('/services', [\App\Http\Controllers\Frontend\HomeController::class, 'services'])->name('services');
 Route::get('/services/{slug}', [\App\Http\Controllers\Frontend\HomeController::class, 'serviceDetail'])->name('service.details');
 Route::get('/contractor/details/{slug}', [\App\Http\Controllers\Frontend\HomeController::class, 'contractorDetail'])->name('contractor.details');
+Route::get('/feedback-form/{url}', [\App\Http\Controllers\Frontend\HomeController::class, 'feedbackForm'])->name('feedback-form.form');
+Route::post('/feedback-form/store', [\App\Http\Controllers\Frontend\HomeController::class, 'feedbackFormStore'])->name('feedback-form.store');
 
 Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 Route::middleware('guest')->group(function () {
@@ -75,7 +77,7 @@ Route::middleware('guest')->group(function () {
             Route::post('/update',  [\App\Http\Controllers\Admin\BookingController::class, 'update'])->name('admin.booking.update');
             Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\BookingController::class, 'destroy'])->name('admin.booking.destroy');
             Route::post('/change-status', [\App\Http\Controllers\Admin\BookingController::class, 'toggleStatus'])->name('admin.booking.change-status');
-
+            Route::post('/feedback/send', [\App\Http\Controllers\Admin\BookingController::class, 'sendFeedbackEmail'])->name('admin.booking.send-feedback-email');
             Route::get('/edit/{id}', [\App\Http\Controllers\Admin\BookingController::class,'edit'])->name('admin.booking.edit');
 
         });
