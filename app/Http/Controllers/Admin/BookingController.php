@@ -74,4 +74,9 @@ class BookingController extends Controller
     {
         return $booking->toggleStatus($request);
     }
+
+    public function sendFeedbackEmail(BookingService $booking, Request $request)
+    {
+        return $booking->sendFeedbackEmail($request);
+    }
 }

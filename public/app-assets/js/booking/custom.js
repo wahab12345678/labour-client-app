@@ -66,6 +66,9 @@ $(function () {
                                     '</a>'
                                 );
                             }).join('') + // Combine all status options into one string
+                            '<a href="javascript:;" class="dropdown-item send-feedback" data-id="' + full.id + '">' +
+                            feather.icons['message-circle'].toSvg({ class: 'font-small-4 me-50' }) +
+                            'Send Feedback</a>' +
                             '<a href="javascript:;" class="dropdown-item delete-record">' +
                             feather.icons['trash-2'].toSvg({ class: 'font-small-4 me-50' }) +
                             'Delete</a>' +
@@ -389,4 +392,26 @@ $("#add-account-btn").on("click", function () {
 // Remove Account Button Click
 $("#account-details-wrapper").on("click", ".btn-remove-account", function () {
     $(this).closest(".account-detail").remove();
+});
+
+$(document).on('click', '.send-feedback', function () {
+    var recordId = $(this).data('id');
+    // Show confirmation prompt before sending feedback
+    if (!confirm('Are you sure you want to send feedback?')) {
+        return;
+    }
+    $.ajax({
+        url: '/booking/feedback/send',  // Update with your API endpoint
+        type: 'POST',
+        data: { id: recordId },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token for Laravel
+        },
+        success: function (response) {
+            alert(response.message);
+        },
+        error: function (xhr, status, error) {
+            alert('Error sending feedback: ' + xhr.responseText);
+        }
+    });
 });

@@ -12,7 +12,7 @@
 					<h3>Contact Us</h3>
 				</div>
 				<ol class="breadcrumb justify-content-center p-0 m-0">
-				  <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+				  <li class="breadcrumb-item"><a href="/">Home</a></li>
 				  <li class="breadcrumb-item active">Contact Us</li>
 				</ol>
 			</div>

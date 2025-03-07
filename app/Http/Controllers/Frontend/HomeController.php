@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ContactUs;
+use App\Models\Booking;
+use App\Models\Review;
 use App\Models\User;
 use App\Models\UserMeta;
 use App\Models\Category;
@@ -13,7 +15,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Services\CategoryService;
-
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class HomeController extends Controller
 {
@@ -122,5 +125,49 @@ class HomeController extends Controller
             abort(404);
         }
         return view('frontend.contractor-detail', compact('contractor'));
+    }
+
+    public function feedbackForm($url)
+    {
+        try {
+            $id = Crypt::decryptString($url);
+            $bookingExist = Booking::find($id);
+            if (!$bookingExist) {
+                abort(404, 'Booking not found');
+            }
+            $reviewExist = Review::where(['booking_id' => $bookingExist->id])->first();
+            if ($reviewExist) {
+                abort(404, 'Feedback already submitted for this booking');
+            }
+            return view('feedback.form', compact('id', 'url'));
+        } catch (DecryptException $e) {
+            abort(404, 'Invalid Feedback Link');
+        }
+    }
+
+    public function feedbackFormStore(Request $request)
+    {
+        $validatedData = request()->validate([
+            'rating'      => ['required', 'integer','min:1','max:5'],
+            'comment'   => ['required','string','min:5','max:500'],
+            'url' => ['required','string']
+        ]);
+        $id = Crypt::decryptString($validatedData['url']);
+        $bookingExist = Booking::find($id);
+        if (!$bookingExist) {
+            abort(404, 'Booking not found');
+        }
+        $reviewExist = Review::where(['booking_id' => $bookingExist->id])->first();
+        if ($reviewExist) {
+            abort(404, 'Feedback already submitted for this booking');
+        }
+        Review::create([
+            'booking_id' => $bookingExist->id,
+            'rating'      => $validatedData['rating'],
+            'comment'   => $validatedData['comment'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return redirect('/')->withSuccess('Feedback submitted successfully');
     }
 }

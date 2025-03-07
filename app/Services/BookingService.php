@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB; // Attach the DB facade
 use App\Http\Requests\BookingRequest;
 use Illuminate\Support\Facades\File;
 use App\Enums\BookingStatus;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FeedbackMail;
+use Illuminate\Support\Facades\Crypt;
 
 class BookingService
 {
@@ -255,6 +258,35 @@ class BookingService
         return response()->json([
             'booking'   => $BookingDetail,
             'labour_ids' => $labourIds
+        ]);
+    }
+
+    public function sendFeedbackEmail(Request $request)
+    {
+        $id = $request->id;
+        $BookingDetail = Booking::where('id', $id)->first();
+        if(!$BookingDetail) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking Not Found',
+            ]);
+        }
+        $userExist = User::find($BookingDetail->client_id);
+        if(!$userExist) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User Not Found',
+            ]);
+        }
+        // Encrypt the ID
+        $encryptedId = Crypt::encryptString($request->id);
+        // Generate feedback link
+        $feedbackLink = url('/feedback-form/' . $encryptedId);
+        // Send email
+        Mail::to($userExist->email)->send(new FeedbackMail($feedbackLink));
+        return response()->json([
+            'success' => true,
+            'message' => 'Feedback email sent successfully!'
         ]);
     }
 }
