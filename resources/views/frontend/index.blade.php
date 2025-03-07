@@ -32,30 +32,55 @@
     padding: 15px;
     flex-grow: 1;
 }
+.img-fluid1 {
+    max-width: 100%;
+    height: 392px;
+}
 
 .speaker-item .content h5, .speaker-item .content p {
     margin: 0;
 }
 
 </style>
-    <section class="banner bg-banner-one overlay">
+    
+    {{-- <section class="banner bg-banner-one overlay">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <!-- Content Block -->
                     <div class="block">
                         <!-- Coundown Timer -->
-                        <div class="timer"></div>
-                        <h1>Business</h1>
-                        <h2>Conference 2017</h2>
-                        <h6>02-05 July 2017 California</h6>
+                        <div class=""></div>
+                        <h1>Apna</h1>
+                        <h2>Mazdoor</h2>
+                        <br>
+                        <h2>0321 7514920</h2>
                         <!-- Action Button -->
-                        <a href="contact.html" class="btn btn-white-md">Get Book now</a>
+                        {{-- <a href="contact.html" class="btn btn-white-md">Get Book now</a> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> --}}
+
+    <section class="banner bg-banner-one overlay text-start py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Content Block -->
+                    <div class="block text-white">
+                        <h1 class="display-4 fw-bold" style="margin-top:50px">Apna</h1>
+                        <h2 class="display-5">Mazdoor</h2>
+                        <h2 class="mt-3 fs-3"><i class="fas fa-phone-alt text-danger"></i> 0321 7514920</h2>
+    
+                        <!-- Action Button -->
+                        {{-- <a href="{{ route('contact') }}" class="btn btn-light btn-lg mt-4">Get Book Now</a> --}}
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
 
     <!--====  End of Banner  ====-->
 
@@ -63,7 +88,7 @@
     =            About            =
     ============================-->
 
-    <section class="section about">
+    {{-- <section class="section about">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6 align-self-center">
@@ -73,7 +98,7 @@
                 </div>
                 <div class="col-lg-8 col-md-6 align-self-center">
                     <div class="content-block">
-                        <h2>About The <span class="alternate">Eventre</span></h2>
+                        <h2>About <span class="alternate">Us</span></h2>
                         <div class="description-one">
                             <p>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusm tempor incididunt ut labore dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco.
@@ -94,8 +119,46 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
+    <section class="section about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 align-self-center">
+                    <div class="image-block bg-about">
+                        {{-- <img class="img-fluid" src="images/speakers/featured-speaker.jpg" alt=""> --}}
+                        <img class="img-fluid" src="images/speakers/abcc.jpg" alt="">
 
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-6 align-self-center">
+                    <div class="content-block">
+                        <h2>About <span class="alternate">Labour Client</span></h2>
+                        <div class="description-one">
+                            <p>
+                                Labour Client is your trusted platform for connecting skilled laborers with clients who need reliable services. 
+                                We simplify hiring with a seamless booking system that ensures fair opportunities for workers and quality service for clients.
+                            </p>
+                        </div>
+                        <div class="description-two">
+                            <p>
+                                Our mission is to empower workers with job opportunities while offering clients verified professionals for their needs. 
+                                With secure transactions, fair pricing, and an easy hiring process, we make finding or offering labor hassle-free.
+                            </p>
+                        </div>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <a href="{{ route('contact') }}" class="btn btn-main-md">Get Started</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="{{ route('about') }}" class="btn btn-transparent-md">Read More</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <!--====  End of About  ====-->
 
     <!--==============================
@@ -109,7 +172,7 @@
                     <!-- Section Title -->
                     <div class="section-title white">
                         <h3>One <span class="alternate">Services</span></h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusm tempor incididunt ut labore</p>
+                        {{-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusm tempor incididunt ut labore</p> --}}
                     </div>
                 </div>
             </div>
@@ -916,13 +979,16 @@
                     <!-- Get ticket info -->
                     <div class="content-block">
                         <h2>Get Book <span class="alternate">Now!</span></h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmtempor incidi</p>
-                        <a href="" class="btn btn-main-md">Book Now</a>
+                        {{-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmtempor incidi</p> --}}
+                        <a href="{{ route('contact') }}" class="btn btn-main-md">Book Now</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="image-block"><img src="images/speakers/speaker-ticket.png" alt="" class="img-fluid"></div>
+        <div class="image-block"><img src="images/speakers/NEW_labour.png" alt="" class="img-fluid1"></div>
+        {{-- <div class="image-block"><img src="images/speakers/abcc.png" alt="" class="img-fluid"></div> --}}
+
+       
     </section>
 
     <!--====  End of Call to Action Ticket  ====-->
@@ -931,7 +997,7 @@
     =            Sponsors            =
     ===============================-->
 
-    <section class="sponsors section bg-sponsors overlay-white">
+    {{-- <section class="sponsors section bg-sponsors overlay-white">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -1016,7 +1082,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!--====  End of Sponsors  ====-->
 
@@ -1144,7 +1210,7 @@
     =            Call to Action Subscribe            =
     ===============================================-->
 
-    <section class="cta-subscribe bg-subscribe overlay-dark">
+    {{-- <section class="cta-subscribe bg-subscribe overlay-dark">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 mr-auto">
@@ -1169,7 +1235,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!--====  End of Call to Action Subscribe  ====-->
 

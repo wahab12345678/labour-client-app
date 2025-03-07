@@ -130,9 +130,9 @@
           <a class="nav-link" href="contact.html">Contact</a>
         </li> --}}
       </ul>
-      <a href="{{ url('/client_register') }}" class="ticket">
+      <a href="{{ url('/contact') }}" class="ticket">
         <img src="{{ asset('images/icon/ticket.png')}}" alt="ticket">
-        <span>Register</span>
+        <span>Book Now</span>
       </a>
     </div>
   </div>
