@@ -8,7 +8,9 @@
             <div class="col-md-12">
                 <div class="block text-center">
                     <div class="footer-logo">
-                        <img src="{{ asset('images/footer-logo.png')}}" alt="logo" class="img-fluid">
+                        {{-- <img src="{{ asset('images/footer-logo.png')}}" alt="logo" class="img-fluid"> --}}
+                        <img style="MAX-WIDTH: 182PX;margin-top: 24px;" src="{{ asset('images/final_logo.png')}}" alt="logo" class="img-fluid">
+
                     </div>
                     <ul class="social-links-footer list-inline">
                         <li class="list-inline-item">

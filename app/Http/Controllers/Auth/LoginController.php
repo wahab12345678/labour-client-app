@@ -26,7 +26,8 @@ class LoginController extends Controller
     {
         $result = $this->authService->authenticate($request->validated());
         if ($result['success']) {
-            return redirect()->route('admin.dashboard')->with('success', $result['message']);
+            // return redirect()->route('admin.dashboard')->with('success', $result['message']);
+            return redirect()->route('admin.category')->with('success', $result['message']);
         }
         // Add the email to session and return errors
         return back()->with(['error' => $result['message']]); // Retains email in input

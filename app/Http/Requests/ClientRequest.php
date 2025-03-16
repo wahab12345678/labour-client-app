@@ -31,10 +31,10 @@ class ClientRequest extends FormRequest
             'cnic_front_img' => $clientId ? 'nullable' : 'required', // Image is not required if userId is present
             'cnic_back_img' => $clientId ? 'nullable' : 'required', // Image is not required if userId is present
             'status' => 'required',
-            'accounts' => 'required|array|min:1', // Ensure accounts is an array with at least one item
-            'accounts.*.type' => 'required|integer|exists:account_types,id', // Ensure type exists in the account_types table
-            'accounts.*.number' => 'required|string|max:255', // Validate account number
-            'accounts.*.title' => 'required|string|max:255', // Validate account title
+            'accounts' =>  $clientId ? 'nullable' : 'required|array|min:1', // Ensure accounts is an array with at least one item
+            'accounts.*.type' =>  $clientId ? 'nullable' : 'required|integer|exists:account_types,id', // Ensure type exists in the account_types table
+            'accounts.*.number' =>  $clientId ? 'nullable' : 'required|string|max:255', // Validate account number
+            'accounts.*.title' => $clientId ? 'nullable' : 'required|string|max:255', // Validate account title
         ];
     }
 }

@@ -30,12 +30,15 @@ $(function () {
             createdRow: function (row, data, dataIndex) {
                 // Add data-id attribute to the row
                 $(row).attr('data-id', data.id);
+                $(row).find('td:eq(0)').css('pointer-events', 'none');
+
             },
           columnDefs: [
             {
               targets: 0, // id
               render: function (data, type, full, meta) {
                 return full.id; // Directly render the id
+                
               }
             },
             {
