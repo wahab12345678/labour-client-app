@@ -103,6 +103,8 @@ class ClientService
            $user->accounts()->delete();
            
            // Add updated accounts
+        if (!empty($request->accounts) && is_array($request->accounts)) {
+
            foreach ($request->accounts as $account) {
                UserAccount::create([
                    'user_id'         => $user->id,
@@ -111,6 +113,7 @@ class ClientService
                    'account_title'   => $account['title'],
                ]);
            }
+        }
    
             DB::commit();
             return response()->json([

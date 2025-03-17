@@ -36,8 +36,8 @@
     <div class="shadow-bottom"></div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class=" nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center"href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a>
-            </li>
+            {{-- <li class=" nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center"href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a>
+            </li> --}}
             <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Modules</span><i data-feather="more-horizontal"></i>
             </li>
             <li class=" nav-item {{ request()->routeIs('admin.category') ? 'active' : '' }}"><a class="d-flex align-items-center"href="{{ route('admin.category') }}"><i data-feather='corner-down-right'></i><span class="menu-title text-truncate" data-i18n="Categories">Categories</span></a>

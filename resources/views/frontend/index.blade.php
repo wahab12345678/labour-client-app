@@ -68,10 +68,10 @@
             {{ session('message') }}
         </div>
     @endif
-    <section class="banner bg-banner-one overlay text-start py-5">
+    <section class="banner bg-banner-one overlay text-start py-5" style="padding-bottom: 5rem !important;">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div style="margin-top: 50px" class="col-lg-8" >
                     <!-- Content Block -->
                     <div class="block text-white">
                         <h1 class="display-4 fw-bold" style="margin-top:50px">Apna</h1>
