@@ -41,7 +41,7 @@ class CategoryService
             $category->update([
                 'name' => $request->name,
                 'description' => $request->description,
-                'img_path' => $this->storeImageInPublicFolder($request->file('img_path'), 'categories'),
+                'key_points'  => json_encode(explode("\n", $request->key_points)), // Convert to JSON
 
             ]);
             // check if the slug field is empty
@@ -53,8 +53,14 @@ class CategoryService
                 if ($slugCount > 0) {
                     $slug = $slug . '-' . ($slugCount + 1);
                 }
+                
+                if ($request->file('img_path')) {
+                    $data['img_path'] = $this->storeImageInPublicFolder($request->file('img_path'), 'categories');
+                }
+            
                 $category->update(['slug' => $slug]);
             }
+            
             return back()->withSuccess('Category Updated Successfully');
         }
         return back()->withError('Category Not Found');
