@@ -46,8 +46,8 @@
                                     <tr>
                                         <th>id</th>
                                         <th>Booking ID</th>
-                                        <th>Reviewer Name</th>
-                                        <th>Reviewee Name</th>
+                                        {{-- <th>Reviewer Name</th>
+                                        <th>Reviewee Name</th> --}}
                                         <th>Rating</th>
                                         <th>Comment</th>
                                         <th>Created At</th>

@@ -18,8 +18,8 @@ $(function () {
             columns: [
                 { data: 'id' },
                 { data: 'booking_id' },
-                { data: 'reviewer_name' },
-                { data: 'reviewee_name' },
+                // { data: 'reviewer_name' },
+                // { data: 'reviewee_name' },
                 { data: 'rating' },
                 { data: 'comment' },
                 { data: 'created_at' },
