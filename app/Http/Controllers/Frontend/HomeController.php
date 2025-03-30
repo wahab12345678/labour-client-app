@@ -137,7 +137,7 @@ class HomeController extends Controller
             }
             $reviewExist = Review::where(['booking_id' => $bookingExist->id])->first();
             if ($reviewExist) {
-                abort(404, 'Feedback already submitted for this booking');
+                return redirect('/')->withSuccess('Feedback already submitted for this booking');
             }
             return view('feedback.form', compact('id', 'url'));
         } catch (DecryptException $e) {
