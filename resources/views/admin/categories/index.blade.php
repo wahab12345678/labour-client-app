@@ -145,6 +145,10 @@
                                 <label class="form-label" for="edit-category-description">Description</label>
                                 <textarea class="form-control" id="edit-category-description" name="description" rows="3" placeholder="Enter Description"></textarea>
                             </div>
+                            <div class="mb-1">
+                                <label class="form-label" for="basic-icon-default-post">Key Point</label>
+                                <textarea class="form-control dt-description" id="edit-key-point" name="key_points" rows="3" placeholder="Enter key Point"></textarea>
+                            </div>
                             {{-- <div class="mb-1">
                                 <div class="form-check form-switch form-check-success">
                                     <label class="form-check-label mb-50" for="edit-customSwitch">Active</label>

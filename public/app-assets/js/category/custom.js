@@ -322,6 +322,13 @@ $(document).on('click', '.modal-slide-in-edit', function () {
         $('#edit-category-name').val(response.category.name);
         $('#edit-category-description').val(response.category.description);
 
+        let keyPoints = response.category.key_points;
+
+        // Check if keyPoints is a string, then parse it
+        if (typeof keyPoints === "string") {
+            keyPoints = JSON.parse(keyPoints);
+        }
+        $('#edit-key-point').val(keyPoints.join("\n"));
 
         $('#edit-category-id').val(response.category.id);
         $('#modals-slide-in-edit').modal('show');

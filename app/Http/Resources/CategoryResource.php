@@ -18,6 +18,7 @@ class CategoryResource extends JsonResource
             'id'          => $this->id,
             'name'        => $this->name,
             'description' => $this->description,
+            'key_points' => $this->key_points, // Include key_points column
             'status'      => $this->status == 1 ? "Active" : "In Active",
             'img_path'    => $this->img_path,
             'is_visible' => $this->is_visible
