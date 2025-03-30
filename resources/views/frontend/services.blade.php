@@ -187,7 +187,6 @@
 
         <div class="row">
             @foreach ($contractors as $contractor)
-<<<<<<< Updated upstream
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <!-- Contractor Card -->
                     <div class="contractor-card card h-100 shadow-sm border-0 transition-all hover-shadow">
@@ -203,18 +202,6 @@
                             <!-- Call to Action Button -->
                             <a href="{{ route('contractor.details', $contractor->meta->slug ?? '#') }}" class="btn btn-warning btn-sm px-4">View Profile</a>
                         </div>
-=======
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <!-- Contractor Card -->
-                <div class="contractor-card card shadow-sm border-light">
-                    <div class="image">
-                        <img src="images/speakers/speaker-one.jpg" alt="contractor" class="img-fluid rounded-circle mx-auto d-block mt-2" style="max-width: 150px;">
-                    </div>
-                    <div class="card-body text-center">
-                        <h5></h5>
-                        <h5 class="card-title" > {{ $contractor->name }} </h5>
-                        {{-- <a href="{{ route('contractor.details', $contractor->meta->slug ?? '#') }}" class="btn btn-warning btn-sm">View Profile</a> --}}
->>>>>>> Stashed changes
                     </div>
                 </div>
             @endforeach
