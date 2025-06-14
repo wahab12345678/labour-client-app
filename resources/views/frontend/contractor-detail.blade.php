@@ -87,7 +87,7 @@
                             </a>
                             <div class="work-description p-3 bg-white">
                                 <h5 class="mb-1">Project {{ $loop->iteration }}</h5>
-                                <p class="text-muted">{{ $image->description ?? 'Project details unavailable' }}</p>
+                                {{-- <p class="text-muted">{{ $image->description ?? 'Project details unavailable' }}</p> --}}
                             </div>
                         </div>
 
