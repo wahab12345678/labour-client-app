@@ -34,6 +34,7 @@ class CategoryController extends Controller
     }
     public function create(CategoryService $category, CategoryRequest $request)
     {
+    //    dd($request->all());
         return $category->create($request);
     }
 

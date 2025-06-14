@@ -29,46 +29,15 @@ $(function () {
                 $(row).attr('data-id', data.id);
             },
             columnDefs: [
-                // {
-                //     targets: 5, // Rating
-                //     render: function (data, type, full, meta) {
-                //         return `<div class="full-star-ratings" data-rateyo-full-star="true"></div>`;
-                //     }
-                // },
-                // {
-                //     targets: 6, // Comment
-                //     render: function (data, type, full, meta) {
-                //         return full.comment;
-                //     }
-                // },
-                // {
-                //     targets: 8, // Action column
-                //     render: function (data, type, full, meta) {
-                //         return (
-                //             '<div class="d-inline-flex">' +
-                //             '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown">' +
-                //             feather.icons['more-vertical'].toSvg({ class: 'font-small-4' }) +
-                //             '</a>' +
-                //             '<div class="dropdown-menu dropdown-menu-end">' +
-                //             ['pending', 'accepted', 'completed', 'cancelled'].map(status => {
-                //                 return (
-                //                     '<a href="javascript:;" class="dropdown-item change-status" data-id="' + full.id + '" data-status="' + status + '">' +
-                //                     feather.icons['repeat'].toSvg({ class: 'font-small-4 me-50' }) +
-                //                     (status.charAt(0).toUpperCase() + status.slice(1)) + // Capitalize the status
-                //                     '</a>'
-                //                 );
-                //             }).join('') + // Combine all status options into one string
-                //             '<a href="javascript:;" class="dropdown-item delete-record">' +
-                //             feather.icons['trash-2'].toSvg({ class: 'font-small-4 me-50' }) +
-                //             'Delete</a>' +
-                //             '</div>' +
-                //             '</div>' +
-                //             '<a href="javascript:;" class="item-edit">' +
-                //             feather.icons['edit'].toSvg({ class: 'font-small-4' }) +
-                //             '</a>'
-                //         );
-                //     }
-                // }
+                {
+                    targets: 4, // 'created_at' column index
+                    render: function (data) {
+                        if (!data) return '';
+                        const [datePart] = data.split(' ');
+                        const [year, month, day] = datePart.split('-');
+                        return `${day}:${month}:${year}`;
+                    }
+                }
             ],
             dom: '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-end"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
             displayLength: 7,

@@ -77,9 +77,9 @@
 <!--================================
 =            Google Map            =
 =================================-->
-<section class="map">
+<!-- <section class="map"> -->
 	<!-- Google Map -->
-	<div id="map" data-latitude="40.712776" data-longitude="-74.005974" data-marker="images/icon/marker.png" data-marker-name="{{env('APP_NAME')}}"></div>
+	<!-- <div id="map" data-latitude="40.712776" data-longitude="-74.005974" data-marker="images/icon/marker.png" data-marker-name="{{env('APP_NAME')}}"></div>
 	<div class="address-block">
 		<h4>Docklands Convention</h4>
 		<ul class="address-list p-0 m-0">
@@ -87,7 +87,7 @@
 			<li><i class="fa fa-phone"></i><span>[00] 000 000 000</span></li>
 		</ul>
 		<a href="#" class="btn btn-white-md">Get Direction</a>
-	</div>
-</section>
+	</div> -->
+<!-- </section> -->
 <!--====  End of Google Map  ====-->
 @endsection

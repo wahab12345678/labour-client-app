@@ -75,12 +75,16 @@
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">Phone Number</label>
-                                    <input type="text" class="form-control client-phone" id="basic-icon-default-fullname" name="phone" placeholder="Enter Phone Number" aria-label="03002200222" required/>
+                                    <!-- <input type="text" class="form-control client-phone" id="basic-icon-default-fullname" name="phone" placeholder="Enter Phone Number" aria-label="03002200222" required/> -->
+                                    <input type="text" class="form-control client-phone" id="basic-icon-default-fullname" name="phone" placeholder="Enter Phone Number" aria-label="03002200222"   pattern="03[0-9]{9}" maxlength="11"  oninput="this.value=this.value.replace(/[^0-9]/g,'')"  required/>
+
                                     <div class="invalid-feedback phone-error"></div>
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">CNIC Number</label>
-                                    <input type="text" class="form-control client-cnic_no" id="basic-icon-default-fullname" name="cnic_no" placeholder="Enter CNIC without dashes" aria-label="3660100000000" required/>
+                                    <!-- <input type="text" class="form-control client-cnic_no" id="basic-icon-default-fullname" name="cnic_no" placeholder="Enter CNIC without dashes" aria-label="3660100000000" required/> -->
+                                    <input type="text" class="form-control client-cnic_no" id="basic-icon-default-fullname" name="cnic_no" placeholder="Enter CNIC without dashes" aria-label="3660100000000"    pattern="[0-9]{13}" maxlength="13"   oninput="this.value=this.value.replace(/[^0-9]/g,'')" required/>
+
                                     <div class="invalid-feedback cnic_no-error"></div>
                                 </div>
                                 <div class="mb-1">
@@ -183,12 +187,16 @@
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">Phone Number</label>
-                                    <input type="text" class="form-control client-phone" id="basic-icon-default-fullname" name="phone" placeholder="Enter Phone Number" aria-label="03002200222" required/>
+                                    <!-- <input type="text" class="form-control client-phone" id="basic-icon-default-fullname" name="phone" placeholder="Enter Phone Number" aria-label="03002200222" required/> -->
+                                    <input type="text" class="form-control client-phone" id="basic-icon-default-fullname" name="phone" placeholder="Enter Phone Number" aria-label="03002200222"   pattern="03[0-9]{9}" maxlength="11"  oninput="this.value=this.value.replace(/[^0-9]/g,'')"  required/>
+
                                     <div class="invalid-feedback phone-error"></div>
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">CNIC Number</label>
-                                    <input type="text" class="form-control client-cnic_no" id="basic-icon-default-fullname" name="cnic_no" placeholder="Enter CNIC without dashes" aria-label="3660100000000" required/>
+                                    <!-- <input type="text" class="form-control client-cnic_no" id="basic-icon-default-fullname" name="cnic_no" placeholder="Enter CNIC without dashes" aria-label="3660100000000" required/> -->
+                                    <input type="text" class="form-control client-cnic_no" id="basic-icon-default-fullname" name="cnic_no" placeholder="Enter CNIC without dashes" aria-label="3660100000000"    pattern="[0-9]{13}" maxlength="13"   oninput="this.value=this.value.replace(/[^0-9]/g,'')" required/>
+
                                     <div class="invalid-feedback cnic_no-error"></div>
                                 </div>
                                 <div class="mb-1">

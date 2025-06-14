@@ -309,7 +309,8 @@ $(function () {
 $(document).on('click', '.modal-slide-in-edit', function () {
 
   var categoryId = $(this).data('id');
-
+  alert(categoryId);
+  
   $.ajax({
 
       url: `/category/edit/${categoryId}`,
@@ -328,6 +329,7 @@ $(document).on('click', '.modal-slide-in-edit', function () {
         if (typeof keyPoints === "string") {
             keyPoints = JSON.parse(keyPoints);
         }
+        console.log(keyPoints);
         $('#edit-key-point').val(keyPoints.join("\n"));
 
         $('#edit-category-id').val(response.category.id);

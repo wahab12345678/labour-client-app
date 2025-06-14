@@ -79,10 +79,19 @@ $(function () {
               }
             },
             {
+              // targets: 7, // Created at
+              // render: function (data, type, full, meta) {
+              //   return full.created_at; // Render creation date
+              // }
               targets: 7, // Created at
               render: function (data, type, full, meta) {
-                return full.created_at; // Render creation date
+                const date = new Date(full.created_at);
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+                const year = date.getFullYear();
+                return `${day}:${month}:${year}`;
               }
+              
             },
             {
               targets: 8, // Action column

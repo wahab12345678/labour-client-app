@@ -21,12 +21,14 @@ class CategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+            // dd('validation triggered'); // For debug only
+
         return [
             'name'        => 'required',
             'description' => 'required',
             'status'      => 'required',
-            'status'      => 'required',
-            'key_points'  => 'required'
+            'key_points'  => 'required',
+            'img_path'    => 'required'
 
         ];
     }

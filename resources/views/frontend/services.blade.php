@@ -17,7 +17,8 @@
 
 .pricing-item img, .contractor-card img {
     width: 100%; /* Full width */
-    height: 200px; /* Fixed height */
+    /* height: 200px; Fixed height */
+      height: 275px;
     object-fit: cover; /* Ensures images are uniformly cropped */
     border-radius: 8px; /* Slight rounding for a better look */
 }
@@ -130,9 +131,11 @@
                 </div>
             </div>
         </div>
+            <!-- $categories = \App\Models\Category::where('status', '1')->get(); -->
 
         @php
-            $categories = \App\Models\Category::where('status', '1')->get();
+            $categories = \App\Models\Category::where('is_visible', '1')->get();
+
         @endphp
 
         <div class="row">
@@ -143,7 +146,7 @@
                         <div class="card-body p-4">
                             <!-- Image -->
                             <div class="text-center mb-4">
-                                <img src="{{ asset($category->img_path) }}" alt="{{ $category->name }}" class="img-fluid rounded-lg" style="max-height: 200px; object-fit: cover;">
+                                <img src="{{ asset($category->img_path) }}" alt="{{ $category->name }}" class="img-fluid rounded-lg" style="max-height: 275px; object-fit: cover;">
                             </div>
 
                             <!-- Title -->
@@ -182,7 +185,8 @@
         </div>
 
         @php
-            $contractors = \App\Models\User::role('contractor')->get();
+            $contractors = \App\Models\User::role('contractor')->where('status', 1)->get();
+
         @endphp
 
         <div class="row">

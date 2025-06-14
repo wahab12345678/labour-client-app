@@ -61,7 +61,7 @@
                     <div class="modal-dialog sidebar-sm">
                         <form id ="store-category"class="add-new-record modal-content pt-0"  method="POST" action="{{ route('admin.category.create') }}" enctype="multipart/form-data">
                             @csrf
-                            @method('POST') <!-- This simulates a PUT request -->
+                            <!-- @method('POST') This simulates a PUT request -->
 
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                             <div class="modal-header mb-1">
@@ -70,19 +70,31 @@
                             <div class="modal-body flex-grow-1">
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">Image</label>
-                                    <input type="file" class="form-control" id="img_path" name="img_path" accept="image/*" />
+                                    <input type="file" class="form-control" id="img_path" name="img_path" accept="image/*"  class="@error('img_path') is-invalid @enderror" required/>
+                                    @error('img_path')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-fullname">Name</label>
-                                    <input type="text" class="form-control dt-full-name" id="basic-icon-default-fullname" name="name" placeholder="Enter Name of Category" aria-label="John Doe" />
+                                    <input type="text" class="form-control dt-full-name" id="basic-icon-default-fullname" name="name" placeholder="Enter Name of Category" aria-label="John Doe"  class="@error('name') is-invalid @enderror" required />
+                                    @error('name')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-post">Description</label>
-                                    <textarea class="form-control dt-description" id="exampleFormControlTextarea1" name="description" rows="3" placeholder="Enter Description"></textarea>
+                                    <textarea class="form-control dt-description" id="exampleFormControlTextarea1" name="description" rows="3" placeholder="Enter Description" class="@error('description') is-invalid @enderror" required></textarea>
+                                    @error('description')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-1">
                                     <label class="form-label" for="basic-icon-default-post">Key Point</label>
-                                    <textarea class="form-control dt-description" id="exampleFormControlTextarea1" name="key_points" rows="3" placeholder="Enter key Point"></textarea>
+                                    <textarea class="form-control dt-description" id="exampleFormControlTextarea1" name="key_points" rows="3" placeholder="Enter key Point"  class="@error('key_points') is-invalid @enderror" required></textarea>
+                                      @error('key_points')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                      @enderror
                                 </div>
 
                                 {{-- <div class="mb-1">
@@ -97,7 +109,7 @@
                                 </div> --}}
                                 {{-- <div class="mb-1">
                                     <label class="form-label" for="category-type">Category Type</label>
-                                    <select class="form-select" id="status" name="status">
+                                    <select class="form-select" id="status" name="status" required>
                                         <option value="" selected disabled>Select Category Type</option>
                                         <option value="1">Active</option>
                                         <option value="O">In Active</option>

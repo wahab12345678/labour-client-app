@@ -76,7 +76,7 @@
                     <div class="block text-white">
                         <h1 class="display-4 fw-bold" style="margin-top:50px">Apna</h1>
                         <h2 class="display-5">Mazdoor</h2>
-                        <h2 class="mt-3 fs-3"><i class="fas fa-phone-alt text-danger"></i> 0321 7514920</h2>
+                        <h2 class="mt-3 fs-3" style="margin-left: -104px;"><i style="color: #ff6600" class="fas fa-phone-alt "></i> 0321 7514920</h2>
 
                         <!-- Action Button -->
                         {{-- <a href="{{ route('contact') }}" class="btn btn-light btn-lg mt-4">Get Book Now</a> --}}
@@ -137,10 +137,10 @@
                 </div>
                 <div class="col-lg-8 col-md-6 align-self-center">
                     <div class="content-block">
-                        <h2>About <span class="alternate">Labour Client</span></h2>
+                        <h2>About <span class="alternate">Apna Mazdoor</span></h2>
                         <div class="description-one">
                             <p>
-                                Labour Client is your trusted platform for connecting skilled laborers with clients who need reliable services.
+                               Apna Mazdoor is your trusted platform for connecting skilled laborers with clients who need reliable services.
                                 We simplify hiring with a seamless booking system that ensures fair opportunities for workers and quality service for clients.
                             </p>
                         </div>
@@ -151,9 +151,9 @@
                             </p>
                         </div>
                         <ul class="list-inline">
-                            <li class="list-inline-item">
+                            <!-- <li class="list-inline-item">
                                 <a href="{{ route('contact') }}" class="btn btn-main-md">Get Started</a>
-                            </li>
+                            </li> -->
                             <li class="list-inline-item">
                                 <a href="{{ route('about') }}" class="btn btn-transparent-md">Read More</a>
                             </li>
@@ -176,14 +176,14 @@
                 <div class="col-12">
                     <!-- Section Title -->
                     <div class="section-title white">
-                        <h3>One <span class="alternate">Services</span></h3>
+                        <h3>Our <span class="alternate">Services</span></h3>
                         {{-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusm tempor incididunt ut labore</p> --}}
                     </div>
                 </div>
             </div>
             <div class="row">
                 @php
-                $categories = \App\Models\Category::where('status', '1')->get();
+                $categories = \App\Models\Category::where('is_visible', '1')->get();
                @endphp
                 @foreach($categories as $category)
 
@@ -1248,7 +1248,6 @@
     =            Google Map            =
     =================================-->
     <section class="map">
-        <!-- Google Map -->
         <div id="map" data-latitude="31.582045" data-longitude="74.329376" data-marker="images/icon/marker.png" data-marker-name="ApnaMazdoor"></div>
         <div class="address-block">
             <h4>Lahore, Pakistan</h4>

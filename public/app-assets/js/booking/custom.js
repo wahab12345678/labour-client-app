@@ -44,9 +44,39 @@ $(function () {
                     }
                 },
                 {
+                    targets: 3, // Labour Name
+                      render: function (data, type, full, meta) {
+                        const date = new Date(full.start_date);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+                        const year = date.getFullYear();
+                        return `${day}:${month}:${year}`;
+                    }
+                },
+                {
+                    targets: 4, // Labour Name
+                      render: function (data, type, full, meta) {
+                        const date = new Date(full.end_date);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+                        const year = date.getFullYear();
+                        return `${day}:${month}:${year}`;
+                    }
+                },
+                {
                     targets: 5, // Status
                     render: function (data, type, full, meta) {
                         return `<span class="badge badge-glow bg-${full.status == 'completed' ? 'success' : 'info'}">${full.status.toUpperCase()}</span>`;
+                    }
+                },
+                {
+                    targets: 7, // Labour Name
+                      render: function (data, type, full, meta) {
+                        const date = new Date(full.created_at);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+                        const year = date.getFullYear();
+                        return `${day}:${month}:${year}`;
                     }
                 },
                 {

@@ -36,7 +36,21 @@
 					<img class="img-fluid" src="images/speakers/abcc.jpg" alt="">
 
 				</div>
+				<!-- <br>
+				<div class="image-block bg-about">
+					{{-- <img class="img-fluid" src="images/speakers/featured-speaker.jpg" alt=""> --}}
+					<img class="img-fluid" src="images/speakers/OSHA-in-Pakistan.jpg" alt="">
+
+				</div>
+				<br>
+				<div class="image-block bg-about">
+					{{-- <img class="img-fluid" src="images/speakers/featured-speaker.jpg" alt=""> --}}
+					<img class="img-fluid" src="images/speakers/abcc.jpg" alt="">
+
+				</div> -->
+				
 			</div>
+			
 			<div class="col-lg-8 col-md-6 align-self-center">
 				<div class="content-block">
 					<h2>About The <span class="alternate">{{env('APP_NAME')}}</span></h2>
@@ -87,11 +101,11 @@
                             Join {{env('APP_NAME')}} today and experience a smarter way to connect with skilled laborers or find work opportunities!
                         </p><br/>
                     </div>
-					<ul class="list-inline">
+					<!-- <ul class="list-inline">
 						<li class="list-inline-item">
 							<a href="{{url('contact')}}" class="btn btn-main-md">Contact Us</a>
 						</li>
-					</ul>
+					</ul> -->
 				</div>
 			</div>
 		</div>

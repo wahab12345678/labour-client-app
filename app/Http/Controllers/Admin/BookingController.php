@@ -18,8 +18,12 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $data['clients'] = User::role('client')->get();
-        $data['labours'] = User::role('labour')->get();
+        // $data['clients'] = User::role('client')->get();
+        // $data['labours'] = User::role('labour')->get();
+
+        $data['clients'] = User::role('client')->where('status', 1)->get();
+        $data['labours'] = User::role('labour')->where('status', 1)->get();
+
         return view('admin.booking.index',$data);
     }
 
