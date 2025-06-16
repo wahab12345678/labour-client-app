@@ -18,6 +18,11 @@ use App\Services\CategoryService;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 
+use App\Mail\ClientMessageMail;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactMessageMail;
+
+
 class HomeController extends Controller
 {
     public function index(CategoryService $categories)
@@ -54,6 +59,15 @@ class HomeController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+          // Send email to your Gmail
+        Mail::to('abdulwahabtariq00@gmail.com')->send(new ContactMessageMail($validatedData));
+        return back()->with('message', 'Your message has been sent successfully.');
+        DB::commit();
+        // Commit transaction
+        // DB::commit();
+        // return back()->with('message', 'Client Registered Successfully.');
+     
+
         return back()->with('message', 'Your message has been sent successfully.');
     }
 
@@ -71,13 +85,14 @@ class HomeController extends Controller
             $validatedData = $request->validate([
                 'name'    => 'required|string|max:255',
                 'phone'   => 'required|string|regex:/^[0-9]{10,20}$/|unique:users,phone',
+                'email'    => 'required|email|max:255|unique:users,email',
                 'cnic_no' => 'required|numeric|digits:13|unique:user_metas,cnic_no',
                 'address' => 'required|string|max:255',
             ]);
             // Create the user
             $user = User::create([
                 'name'     => $validatedData['name'],
-                'email'    => $validatedData['phone'] . '@gmail.com',  // You might want to change email generation logic
+                'email' => $validatedData['email'], // ✅ Use real email
                 'password' => Hash::make('password'),  // Use a secure password (generate a random one or ask user to set it)
                 'phone'    => $validatedData['phone'],
                 'status'   => UserStatus::Inactive->value,
@@ -90,9 +105,15 @@ class HomeController extends Controller
             ]);
             // Assign role
             $user->assignRole('client');
-            // Commit transaction
+           
+            // Send email to your Gmail
+            Mail::to('abdulwahabtariq00@gmail.com')->send(new ClientMessageMail($validatedData));
             DB::commit();
-            return back()->with('message', 'Client Registered Successfully.');
+            return back()->with('message', 'Your message has been sent successfully.');
+
+            // // Commit transaction
+            // DB::commit();
+            // return back()->with('message', 'Client Registered Successfully.');
         } catch (ValidationException $e) {
             DB::rollBack();
             return back()->withErrors($e->errors())->withInput();

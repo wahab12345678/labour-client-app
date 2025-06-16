@@ -45,19 +45,25 @@
 
         <form id="clientForm" action="{{ route('client_register.store') }}" method="POST" class="row">
             @csrf
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <input type="text" class="form-control main @error('name') is-invalid @enderror" name="name" id="name" placeholder="Name" value="{{ old('name') }}" required>
                 @error('name')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <input type="text" class="form-control main @error('phone') is-invalid @enderror" name="phone" id="phone" placeholder="Phone" value="{{ old('phone') }}" required>
                 @error('phone')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <input type="email" class="form-control main @error('cnic_no') is-invalid @enderror" name="email" id="email" placeholder="Email. (abc@gmail.com)" value="{{ old('email') }}" required>
+                @error('email')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+             <div class="col-md-3">
                 <input type="number" class="form-control main @error('cnic_no') is-invalid @enderror" name="cnic_no" id="cnic_no" placeholder="CNIC No. (Without dashes)" value="{{ old('cnic_no') }}" required>
                 @error('cnic_no')
                     <span class="text-danger">{{ $message }}</span>

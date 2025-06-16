@@ -502,7 +502,6 @@ $(document).on('click', '.delete-category', function () {
   // Show confirmation prompt before deletion
   if (confirm('Are you sure you want to delete this category?')) {
 
-    alert("TES");
       // Send the AJAX request to delete the category
       $.ajax({
           url: `/category/categories/${categoryId}`,  // Correct URL with category prefix
