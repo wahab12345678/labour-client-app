@@ -20,10 +20,10 @@ $(function () {
         //   { data: 'id' },
           { data: 'id' }, // used for sorting so will hide this column
           { data: 'name' },
-          { data: 'Image' },
-          { data: 'description' },
+          { data: 'email' },
+          { data: 'phone' },
           { data: 'status' },
-          { data: 'is_visible' },
+          { data: 'role' },
           { data: 'action' }
         ],
         columnDefs: [
@@ -40,20 +40,19 @@ $(function () {
                 }
             },
             {
-                targets: 2, // Image
+                targets: 2, // Name
                 render: function (data, type, full, meta) {
-                  return full.img_path ? `<img src="${full.img_path}" alt="Category Image" width="50" height="50">` : ''; // Render image or empty if not available
+                    return full.email; // Directly render the name
                 }
-              },
-            {
-                targets: 3, // Description
+            },
+             {
+                targets: 3, // Name
                 render: function (data, type, full, meta) {
-                    return full.description; // Directly render the description
+                    return full.phone; // Directly render the name
                 }
             },
             {
                 targets: 4, // Status
-
                 render: function (data, type, full, meta) {
                   // Checking if status is 1 (Active) or 0 (Inactive) and applying the appropriate badge class
                   if (full.status == "Active") {
@@ -64,15 +63,10 @@ $(function () {
               }
             },
             {
-                targets: 5, // Visibility
+                targets: 5, // Role
                 render: function (data, type, full, meta) {
-                  // Checking if status is 1 (Active) or 0 (Inactive) and applying the appropriate badge class
-                  if (full.is_visible == 1) {
-                    return '<span class="badge badge-glow bg-success">Yes</span>'; // Green badge for Active
-                  } else {
-                    return '<span class="badge badge-glow bg-danger">No</span>'; // Red badge for Inactive
-                  }
-              }
+                    return '<span class="badge bg-info">' + full.role + '</span>';
+                }
             },
             {
                 // targets: 4, // Status
@@ -81,21 +75,7 @@ $(function () {
                 // }
                 targets: 6, // Action column
                 render: function (data, type, full, meta) {
-                    // return `
-                    //     <div class="dropdown">
-                    //         <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton${full.id}" data-bs-toggle="dropdown" aria-expanded="false">
-                    //             <i class="fas fa-ellipsis-v"></i>
-                    //         </button>
-                    //         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${full.id}">
-                    //             <li><a class="dropdown-item modal-slide-in-edit" href="javascript:void(0);" data-id="${full.id}" data-name="${full.name}" data-description="${full.description}" data-status="${full.status}">Edit</a></li>
-                    //             <li><a class="dropdown-item delete-category" href="javascript:void(0);" data-id="${full.id}">Delete</a></li>
-                    //             <li><a class="dropdown-item toggle-status" href="javascript:void(0);" data-id="${full.id}" data-status="${full.status}">
-                    //                 ${full.status == 1 ? 'Deactivate' : 'Activate'}
-                    //             </a></li>
-                    //         </ul>
-                    //     </div>
-                    // `;
-
+                   
                     return (
                       '<div class="d-inline-flex">' +
                       '<a class="pe-1 dropdown-toggle hide-arrow text-primary" data-bs-toggle="dropdown">' +
@@ -107,10 +87,6 @@ $(function () {
                       feather.icons['archive'].toSvg({ class: 'font-small-4 me-50' }) +
                       (full.status ==  'Active' ? 'Deactivate' : 'Activate') +
                       '</a>' +
-                      '<a href="javascript:;" class="dropdown-item toggle-visible-status" data-id="' + full.id + '" data-status="' + full.is_visible + '">' +
-                        feather.icons['archive'].toSvg({ class: 'font-small-4 me-50' }) +
-                        (full.is_visible == 1 ? 'Hide from Frontend' : 'Show on Frontend') +
-                        '</a>' +
                       '<a href="javascript:;" class="dropdown-item delete-category" data-id="' + full.id + '">' +
                       feather.icons['trash-2'].toSvg({ class: 'font-small-4 me-50' }) +
                       'Delete</a>' +
@@ -223,7 +199,7 @@ $(function () {
       dt_basic.row($(this).parents('tr')).remove().draw();
     });
 
-    $('#store-contractor').on('submit', function (e) {
+    $('#store-user').on('submit', function (e) {
 
       e.preventDefault();
       // Clear previous error messages
@@ -308,30 +284,21 @@ $(function () {
 
 $(document).on('click', '.modal-slide-in-edit', function () {
 
-  var categoryId = $(this).data('id');
-  
+  var userId = $(this).data('id');
+  // alert(userId);
   $.ajax({
 
-      url: `/category/edit/${categoryId}`,
+      url: `/user/edit/${userId}`,
 
       method: 'GET',
       success: function (response)
       {
-        console.log(response);
 
-        $('#edit-category-name').val(response.category.name);
-        $('#edit-category-description').val(response.category.description);
+        $('#edit_name').val(response.user.name);
+        $('#edit_email').val(response.user.email);
+        $('#edit_phone').val(response.user.phone);
+        $('#edit-user_id').val(response.user.id);
 
-        let keyPoints = response.category.key_points;
-
-        // Check if keyPoints is a string, then parse it
-        if (typeof keyPoints === "string") {
-            keyPoints = JSON.parse(keyPoints);
-        }
-        console.log(keyPoints);
-        $('#edit-key-point').val(keyPoints.join("\n"));
-
-        $('#edit-category-id').val(response.category.id);
         $('#modals-slide-in-edit').modal('show');
       },
       error: function (error) {
@@ -342,9 +309,8 @@ $(document).on('click', '.modal-slide-in-edit', function () {
 
 });
 
-$('#update-category').on('submit', function (e) {
+$('#update-user').on('submit', function (e) {
   e.preventDefault();
-
   // Clear previous error messages
   $('.invalid-feedback').text('').hide();
   $('.is-invalid').removeClass('is-invalid');
@@ -368,7 +334,7 @@ $('#update-category').on('submit', function (e) {
           // Hide the modal
           $('#modals-slide-in-edit').modal('hide');
           // Optionally reload the page or update the table
-          alert('Category Updated successfully!');
+          alert('user Updated successfully!');
           location.reload();
       },
       error: function (xhr) {
@@ -394,14 +360,14 @@ $('#update-category').on('submit', function (e) {
 // Event listener for delete action
 // Event listener for delete action
 $(document).on('click', '.delete-category', function () {
-  const categoryId = $(this).data('id');  // Get category ID from the button data attribute
+  const userId = $(this).data('id');  // Get category ID from the button data attribute
 
   // Show confirmation prompt before deletion
   if (confirm('Are you sure you want to delete this category?')) {
 
       // Send the AJAX request to delete the category
       $.ajax({
-          url: `/category/categories/${categoryId}`,  // Correct URL with category prefix
+          url: `/user/users/${userId}`,  // Correct URL with category prefix
           type: 'DELETE',  // HTTP method
           data: {
               _token: $('meta[name="csrf-token"]').attr('content')  // Include CSRF token
@@ -428,10 +394,10 @@ $(document).on('click', '.delete-category', function () {
   const id     = $(this).data('id');  // Get category ID from the button data attribute
   const status = $(this).data('status');
 
-  if (confirm('Are you sure you want to change the status of this record?')) {
+  if (confirm('Are you sure you want to change the role of this record?')) {
       // Send the AJAX request
       $.ajax({
-          url: `/category/change-status`,  // Correct URL with category prefix
+          url: `/user/change-status`,  // Correct URL with category prefix
           type: 'POST', // HTTP method
           contentType: 'application/json', // Specify JSON format
           headers: {

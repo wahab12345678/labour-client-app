@@ -1,0 +1,181 @@
+@extends('admin.includes.main')
+@section('header')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+
+<link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
+@endsection
+@section('content')
+<!-- BEGIN: Content-->
+<div class="app-content content ">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+        <div class="content-header row">
+            <div class="content-header-left col-md-9 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-12">
+                        <h2 class="content-header-title float-start mb-0">Category</h2>
+                        {{-- <div class="breadcrumb-wrapper">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#">Datatable</a>
+                                </li>
+                                <li class="breadcrumb-item active">Basic
+                                </li>
+                            </ol>
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-body">
+            <!-- Basic table -->
+            <section id="basic-datatable">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <table class="datatables-basic table">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+
+                                        <th>Status</th>
+                                        <th>Role</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal to add new record -->
+                <div class="modal modal-slide-in fade" id="modals-slide-in">
+                    <div class="modal-dialog sidebar-sm">
+                        <form id ="store-user"class="add-new-record modal-content pt-0"  method="POST" action="{{ route('admin.user.create') }}" enctype="multipart/form-data">
+                            @csrf
+                            <!-- @method('POST') This simulates a PUT request -->
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                            <div class="modal-header mb-1">
+                                <h5 class="modal-title" id="exampleModalLabel">New User</h5>
+                            </div>
+                            <div class="modal-body flex-grow-1">
+                                
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Name</label>
+                                    <input type="text" class="form-control dt-full-name" id="basic-icon-default-fullname" name="name" placeholder="Enter Name" aria-label="John Doe"  class="@error('name') is-invalid @enderror" required />
+                                    @error('name')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                 <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Email</label>
+                                    <input type="email" class="form-control dt-full-name" id="basic-icon-default-fullname" name="email" placeholder="Enter Eamil" aria-label="John Doe"  class="@error('email') is-invalid @enderror" required />
+                                    @error('email')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Phone Number</label>
+                                    <input type="text" class="form-control labour-phone" id="basic-icon-default-fullname" name="phone" placeholder="Enter Phone Number" aria-label="03002200222"   pattern="03[0-9]{9}" maxlength="11"  oninput="this.value=this.value.replace(/[^0-9]/g,'')"  required/>
+                                    @error('phone')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror 
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label d-block">Status</label>
+                                    <div class="btn-group" role="group" aria-label="Toggle Active/Inactive">
+                                        <input type="radio" class="btn-check" name="status" id="active" value="1" checked>
+                                        <label class="btn btn-outline-success" for="active">Active</label>
+
+                                        <input type="radio" class="btn-check" name="status" id="inactive" value="0">
+                                        <label class="btn btn-outline-danger" for="inactive">Inactive</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary data-submit me-1" >Submit</button>
+                                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+              <!-- Modal -->
+              <div class="modal modal-slide-in fade" id="modals-slide-in-edit">
+                <div class="modal-dialog sidebar-sm">
+                    <form id="update-user" class="edit-record modal-content pt-0" method="POST" action="{{ route('admin.user.update') }}" enctype="multipart/form-data">
+                        @csrf
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                        <div class="modal-header mb-1">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                        </div>
+                        <input type="hidden" name="status" value="0">
+
+                        <div class="modal-body flex-grow-1">
+                            <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Name</label>
+                                    <input type="text" class="form-control dt-full-name" id="edit_name" name="name" placeholder="Enter Name" aria-label="John Doe"  class="@error('name') is-invalid @enderror" required />
+                                    @error('edit_name')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                 <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Email</label>
+                                    <input type="email" class="form-control dt-full-name" id="edit_email" name="email" placeholder="Enter Eamil" aria-label="John Doe"  class="@error('email') is-invalid @enderror" required />
+                                    @error('edit_email')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label" for="basic-icon-default-fullname">Phone Number</label>
+                                    <input type="text" class="form-control labour-phone" id="edit_phone" name="phone" placeholder="Enter Phone Number" aria-label="03002200222"   pattern="03[0-9]{9}" maxlength="11"  oninput="this.value=this.value.replace(/[^0-9]/g,'')"  required/>
+                                    @error('edit_phone')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror 
+                                </div>
+                            <input type="hidden" class="form-control dt-full-name" id="edit-user_id" name="user_id" placeholder="Enter Name of Category" aria-label="Category Name" />
+                            <button type="submit" class="btn btn-primary data-submit me-1" id="update-category">Save Changes</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+            </section>
+            <!--/ Basic table -->
+
+        </div>
+    </div>
+</div>
+<!-- END: Content-->
+@endsection
+@section('footer')
+    <script src="../../../app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/jszip.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/pdfmake.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/vfs_fonts.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/buttons.html5.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/buttons.print.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js"></script>
+    <script src="../../../app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script>
+    <!-- BEGIN: Page JS-->
+    <script src="../../../app-assets/js/user/custom.js"></script>
+    <!-- END: Page JS-->
+@endsection

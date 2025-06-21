@@ -65,6 +65,8 @@
             </li>
             <li class=" nav-item {{ request()->routeIs('admin.review') ? 'active' : '' }}"><a class="d-flex align-items-center"href="{{ route('admin.review') }}"><i data-feather='corner-down-right'></i><span class="feather feather-user" data-i18n="Reviews">Reviews</span></a>
             </li>
+                <li class=" nav-item {{ request()->routeIs('admin.user') ? 'active' : '' }}"><a class="d-flex align-items-center"href="{{ route('admin.user') }}"><i data-feather='corner-down-right'></i><span class="feather feather-user" data-i18n="Reviews">User</span></a>
+            </li>
         </ul>
     </div>
 </div>

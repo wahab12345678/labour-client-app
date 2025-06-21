@@ -21,7 +21,7 @@ class ClientMessageMail extends Mailable
     {
         $this->data = $data;
     }
-     public function build()
+    public function build()
     {
         return $this->subject('New Contact Message from ' . $this->data['name'])
                     ->view('emails.client_message')

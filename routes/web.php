@@ -89,5 +89,23 @@ Route::middleware('guest')->group(function () {
             // Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('admin.review.destroy');
             // Route::post('/change-status', [\App\Http\Controllers\Admin\ReviewController::class, 'toggleStatus'])->name('admin.review.change-status');
         });
+        Route::prefix('user')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.user');
+            Route::get('/list', [\App\Http\Controllers\Admin\UserController::class, 'list'])->name('admin.user.list');
+            Route::post('/change-status', [\App\Http\Controllers\Admin\UserController::class, 'toggleStatus'])->name('user.change-status');
+            Route::delete('/users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('user.destroy');
+            Route::post('/create', [\App\Http\Controllers\Admin\UserController::class, 'create'])->name('admin.user.create');
+            Route::post('/update',  [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.user.update');
+            Route::get('/edit/{id}', [\App\Http\Controllers\Admin\UserController::class,  'edit'])->name('admin.user.edit');
+
+            // Route::post('/store', [\App\Http\Controllers\Admin\LabourController::class, 'store'])->name('admin.labour.store');
+            // Route::post('/update', [\App\Http\Controllers\Admin\LabourController::class, 'update'])->name('admin.labour.update');
+            // Route::delete('/delete/{id}', [\App\Http\Controllers\Admin\LabourController::class, 'destroy'])->name('admin.labour.destroy');
+            // Route::get('/edit/{id}', [\App\Http\Controllers\Admin\LabourController::class,  'edit'])->name('labour.edit');
+
+
+
+        });
+
     });
 // Backend Routes End
